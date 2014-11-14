@@ -86,12 +86,12 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 
     private void loadGfx() {     
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");  
-        mTextureAustrianBear = new BitmapTextureAtlas(getTextureManager(), 46, 54);  
-        mAustrianBearTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mTextureAustrianBear, this, "austrian_bear.png", 0, 0);
+        mTextureAustrianBear = new BitmapTextureAtlas(getTextureManager(), 65, 65);  
+        mAustrianBearTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mTextureAustrianBear, this, "playerOne.png", 0, 0);
         mTextureAustrianBear.load();
         
-        mTexturePiglet = new BitmapTextureAtlas(getTextureManager(), 46, 54);  
-        mPigletTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mTexturePiglet, this, "piglet.png", 0, 0);
+        mTexturePiglet = new BitmapTextureAtlas(getTextureManager(), 65, 65);  
+        mPigletTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mTexturePiglet, this, "playerTwo.png", 0, 0);
         mTexturePiglet.load();
        
     }
