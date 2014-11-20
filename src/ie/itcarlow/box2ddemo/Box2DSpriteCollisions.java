@@ -1,6 +1,8 @@
 package ie.itcarlow.box2ddemo;
 
 
+import java.util.List;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -18,6 +20,7 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import com.badlogic.gdx.math.Vector2;
@@ -40,14 +43,26 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
+	
+	//PlayerOne
 	private BitmapTextureAtlas PlayerOneTexture;
-	private BitmapTextureAtlas PlayerTwoTexture;
 	private ITextureRegion mPlayerOneTextureRegion;
+	
+	//PlayerTwo
+	private BitmapTextureAtlas PlayerTwoTexture;
 	private ITextureRegion mPlayerTwoTextureRegion;
+	private Sprite mPlayerTwo;
+	
+	//Floor
+	private BitmapTextureAtlas FloorTexture;
+	private ITextureRegion mFloorTextureRegion;
+	private List<Sprite>  mFloor;
+	
+	//Scene
 	private Scene mScene;
-	private Sprite mPlayerTwo;	
-
+	
+	
+	//Assorted Variables
 	private PhysicsWorld mPhysicsWorld;
 	Vector2 velocity, sprite1,sprite2;
 	float velX,velY,speed = 50;
@@ -84,15 +99,21 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     }
 
     private void loadGfx() {     
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");  
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); 
+        
+        //PlayerOne
         PlayerOneTexture = new BitmapTextureAtlas(getTextureManager(), 65, 65);  
         mPlayerOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneTexture, this, "playerOne.png", 0, 0);
         PlayerOneTexture.load();
         
+        //PlayerTwo
         PlayerTwoTexture = new BitmapTextureAtlas(getTextureManager(), 65, 65);  
         mPlayerTwoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerTwoTexture, this, "playerTwo.png", 0, 0);
         PlayerTwoTexture.load();
-       
+        
+        //Floor
+       FloorTexture = new BitmapTextureAtlas(getTextureManager(),960,960);
+       mFloorTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(FloorTexture, this, "FloorSprite.png", 0, 0);
     }
 
     
