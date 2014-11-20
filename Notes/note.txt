@@ -1,0 +1,7 @@
+123: Initializing the AStarPathFinder
+
+205 - 213: Converting screen/scene coordinates to map tiles and using the pathfinder.
+
+224: The method loadPathFound - using the path returned by the pathfinder to move an entity.
+
+The MyMap class in the third post.

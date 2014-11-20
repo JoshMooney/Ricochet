@@ -1,5 +1,6 @@
 package ie.itcarlow.box2ddemo;
 
-public class Player {
+public class Player 
+{
 
 }
