@@ -1,14 +1,8 @@
 package ie.itcarlow.box2ddemo;
-<<<<<<< HEAD
-=======
 
-
-<<<<<<< HEAD
 import java.util.List;
 
-=======
->>>>>>> 89024679bdf1585f28bd84fcba5bea9dbc43313f
->>>>>>> 90b5784fa9c79e8fb5aaa7fc81ea5355bb9f38ec
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -62,7 +56,7 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	//Floor
 	private BitmapTextureAtlas FloorTexture;
 	private ITextureRegion mFloorTextureRegion;
-	private List<Sprite>  mFloor;
+	private List<Sprite>  mFloorList;
 	
 	//Scene
 	private Scene mScene;
@@ -154,15 +148,11 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
            public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
                                         final float pTouchAreaLocalX,
                                         final float pTouchAreaLocalY) {
-        	   //y2-y1 ,x2-x1
-        	   //velocity.x = (sprite2.x - sprite1.x)/speed;
-               //velocity.y = (sprite2.y - sprite1.y)/speed;
                setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
                return true;
            }
        };
-       //sprite1.x= austrianBear.getX();
-      // sprite1.y= austrianBear.getY();
+       
       mPlayerTwo = new Sprite(centerX, centerY, this.mPlayerTwoTextureRegion, this.getVertexBufferObjectManager())
 	   {
     	  @Override
@@ -174,21 +164,34 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     	  }
     	  
        };
-       //sprite2.x= mPiglet.getX();
-       //.y= mPiglet.getY();
-       
-       //austrianBear.setPosition(austrianBear.getX() + velocity.x, austrianBear.getY() + velocity.y); 
-       
+       for(int i = 0; i < 10; i++){
+    	   mFloorList.add(new Sprite(centerX, centerY, this.mPlayerTwoTextureRegion, this.getVertexBufferObjectManager())
+		   {
+	    	  @Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+	                  final float pTouchAreaLocalX,
+	                  final float pTouchAreaLocalY){
+	    		  setBodyPosition(this, PlayerOne, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  return true; 
+	    	  }
+	       });
+       }
        
 	   mScene.attachChild(PlayerOne);
+	   createPhysicsBodies(PlayerOne); 
 	   this.mScene.registerTouchArea(PlayerOne);
+	   
 	   mScene.attachChild(mPlayerTwo);
 	   this.mScene.registerTouchArea(mPlayerTwo);
+	   createPhysicsBodies(mPlayerTwo);
+	   
+	   for(int i = 0; i < 10; i++){
+		   mScene.attachChild(mFloorList.get(i));
+		   createPhysicsBodies(mFloorList.get(i)); 
+		   this.mScene.registerTouchArea(mFloorList.get(i));
+	   }
 	   
 	   setUpBox2DWorld();
-	   
-	   createPhysicsBodies(PlayerOne);  
-	   createPhysicsBodies(mPlayerTwo);  	   
 	   this.mEngine.registerUpdateHandler(this);
 	   pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
