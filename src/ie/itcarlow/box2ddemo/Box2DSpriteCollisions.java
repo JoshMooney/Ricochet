@@ -1,8 +1,14 @@
 package ie.itcarlow.box2ddemo;
+<<<<<<< HEAD
+=======
 
 
+<<<<<<< HEAD
 import java.util.List;
 
+=======
+>>>>>>> 89024679bdf1585f28bd84fcba5bea9dbc43313f
+>>>>>>> 90b5784fa9c79e8fb5aaa7fc81ea5355bb9f38ec
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -82,7 +88,8 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	// ===========================================================
 
 	@Override
-	public EngineOptions onCreateEngineOptions() {
+	public EngineOptions onCreateEngineOptions() 
+	{
 		final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
 		return new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);
