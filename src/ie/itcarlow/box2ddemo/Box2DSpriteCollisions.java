@@ -1,4 +1,9 @@
 package ie.itcarlow.box2ddemo;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 89024679bdf1585f28bd84fcba5bea9dbc43313f
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -104,7 +109,7 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     	
   		this.mScene = new Scene();
   		this.mScene.setBackground(new Background(0, 125, 58));
-  	    pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);  		
+  	    pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);  
   	}
 
 
@@ -136,13 +141,14 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
       // sprite1.y= austrianBear.getY();
       mPlayerTwo = new Sprite(centerX, centerY, this.mPlayerTwoTextureRegion, this.getVertexBufferObjectManager())
 	   {
-           @Override
-           public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
-                                        final float pTouchAreaLocalX,
-                                        final float pTouchAreaLocalY) {
-               setBodyPosition(this, PlayerOne, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
-               return true;
-           }
+    	  @Override
+		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+                  final float pTouchAreaLocalX,
+                  final float pTouchAreaLocalY){
+    		  setBodyPosition(this, PlayerOne, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+    		  return true; 
+    	  }
+    	  
        };
        //sprite2.x= mPiglet.getX();
        //.y= mPiglet.getY();
