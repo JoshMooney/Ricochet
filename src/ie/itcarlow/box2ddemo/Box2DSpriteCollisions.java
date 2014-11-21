@@ -1,5 +1,9 @@
 package ie.itcarlow.box2ddemo;
 
+import ie.itcarlow.box2ddemo.scene.SceneManager;
+
+import java.util.ArrayList;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -21,6 +25,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
+
+import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -50,7 +56,7 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	//Floor
 	private BitmapTextureAtlas FloorTexture;
 	private ITextureRegion mFloorTextureRegion;
-	private List<Sprite>  mFloorList;
+	private ArrayList<Sprite>  mFloorList;
 	
 	//Scene
 	private Scene mScene;

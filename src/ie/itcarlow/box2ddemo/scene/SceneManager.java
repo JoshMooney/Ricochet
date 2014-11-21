@@ -14,13 +14,15 @@ public class SceneManager
 	 
 	 private BaseScene currentScene;
 	 private Engine engine = ResourceManager.getInstance().engine;
+
+	 public enum SceneType { 
+		 SCENE_MENU, SCENE_GAME
+	 }
 	 
-	 public enum SceneType{SCENE_MENU,SCENE_GAME}
-	 
-	 public void setMenuScene(OnCreateResourcesCallback cb)
+	 public void setMenuScene(OnCreateSceneCallback cb)
 	 {
 		 ResourceManager.getInstance().LoadMenuResources();
-		 menuScene = new MenuScene();
+		 menuScene = new MainMenuScene();
 		 setScene(menuScene);
 		 currentScene.createScene();
 		 cb.onCreateResourcesFinished(menuScene);

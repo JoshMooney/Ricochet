@@ -6,6 +6,8 @@ import ie.itcarlow.box2ddemo.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public abstract class BaseScene extends Scene
@@ -21,6 +23,18 @@ public abstract class BaseScene extends Scene
 		this.vbom = ResourceManager.getInstance().vbom;
 		this.activity = ResourceManager.getInstance().activity;
 		this.camera = ResourceManager.getInstance().camera;
+	}
+	
+	protected Sprite createSprite(float x, float y, ITextureRegion region, VertexBufferObjectManager vbom, )
+	{
+		Sprite sprite = new Sprite(x, y, region, vbom) {
+			
+			@Override
+			protected void preDraw(GLState glState, Camera camera){
+				super.preDraw(glState, camera);
+				glState.enableDither();
+			}
+		}
 	}
 	
 	public abstract void createScene();
