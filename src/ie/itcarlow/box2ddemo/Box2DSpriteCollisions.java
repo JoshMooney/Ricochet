@@ -2,11 +2,11 @@ package ie.itcarlow.box2ddemo;
 
 import java.util.List;
 
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -17,11 +17,14 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.input.touch.controller.MultiTouch;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
+
+import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -33,16 +36,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHandler {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-
-	private static final int CAMERA_WIDTH = 720;
+		private static final int CAMERA_WIDTH = 720;
 	private static final int CAMERA_HEIGHT = 480;
 
-	// ===========================================================
-	// Fields
-	// ===========================================================
+	private Camera camera;
 	
 	//PlayerOne
 	private BitmapTextureAtlas PlayerOneTexture;
@@ -63,43 +60,48 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	
 	
 	//Assorted Variables
+	int numberOfFloorTiles = 1;
 	private PhysicsWorld mPhysicsWorld;
 	Vector2 velocity, sprite1,sprite2;
 	float velX,velY,speed = 50;
 	boolean mCollided = false;
-	
-	
-	// ===========================================================
-	// Constructors
-	// ===========================================================
 
-	// ===========================================================
-	// Getter & Setter
-	// ========================================================
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
+	private BuildableBitmapTextureAtlas tiledTextureAtlas;
+	private ITextureRegion wall_region, floor_region;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() 
 	{
-		final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
-		return new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);
+		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);
+		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
+		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
+		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+		if(!MultiTouch.isSupported(this))
+			Toast.makeText(this, "Sorry your devvice does not support multitouch", Toast.LENGTH_LONG);
+		return engineOptions;
 	}
 
     @Override
-	public void onCreateResources(
-       OnCreateResourcesCallback pOnCreateResourcesCallback)
-			throws Exception {
-
-    	 loadGfx();
-		 pOnCreateResourcesCallback.onCreateResourcesFinished();
+	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception 
+	{
+    	ResourceManager.prepareManager(getEngine(), this, camera, getVertexBufferObjectManager());
+    	loadGfx();
+		pOnCreateResourcesCallback.onCreateResourcesFinished();
 
     }
 
-    private void loadGfx() {     
+    public void LoadTileResources()
+    {
+    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Map"); 
+    	tiledTextureAtlas = new BuildableBitmapTextureAtlas(getTextureManager(), 65, 65);  
+    	wall_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, this, "Wall.png", 0, 0);
+    	floor_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, this, "Floor.png", 0, 0);
+    	PlayerOneTexture.load();
+    }
+    
+    private void loadGfx() 
+    {     
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); 
         
         //PlayerOne
@@ -113,8 +115,9 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
         PlayerTwoTexture.load();
         
         //Floor
-       FloorTexture = new BitmapTextureAtlas(getTextureManager(),960,960);
-       mFloorTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(FloorTexture, this, "FloorSprite.png", 0, 0);
+        FloorTexture = new BitmapTextureAtlas(getTextureManager(),65,65);
+        mFloorTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(FloorTexture, this, "FloorSprite.png", 0, 0);
+        FloorTexture.load();
     }
 
     
@@ -134,14 +137,12 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     @Override
 	public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) 
           throws Exception {
-
-       // Setup coordinates for the sprite in order that it will
-       //  be centered on the camera.
 	   final float centerX = (CAMERA_WIDTH - this.mPlayerOneTextureRegion.getWidth()) / 2;
 	   final float centerY = (CAMERA_HEIGHT - this.mPlayerOneTextureRegion.getHeight()) / 2;
  
-	   // Create the austrian bear and add it to the scene.
 	   
+	   
+	   //PlayerOne
 	   final Sprite PlayerOne = new Sprite(centerX+100, centerY, this.mPlayerOneTextureRegion, this.getVertexBufferObjectManager())
 	   {
            @Override
@@ -153,7 +154,8 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
            }
        };
        
-      mPlayerTwo = new Sprite(centerX, centerY, this.mPlayerTwoTextureRegion, this.getVertexBufferObjectManager())
+       //PlayerTwo
+       mPlayerTwo = new Sprite(centerX, centerY, this.mPlayerTwoTextureRegion, this.getVertexBufferObjectManager())
 	   {
     	  @Override
 		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
@@ -164,28 +166,33 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     	  }
     	  
        };
-       for(int i = 0; i < 10; i++){
-    	   mFloorList.add(new Sprite(centerX, centerY, this.mPlayerTwoTextureRegion, this.getVertexBufferObjectManager())
+       
+       //Floor
+       for(int i = 0; i < numberOfFloorTiles; i= i+1){
+    	   mFloorList.add(new Sprite(centerX - 50, centerY, this.mFloorTextureRegion, this.getVertexBufferObjectManager())
 		   {
 	    	  @Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
 	                  final float pTouchAreaLocalX,
 	                  final float pTouchAreaLocalY){
-	    		  setBodyPosition(this, PlayerOne, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  setBodyPosition(PlayerOne, this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
 	    		  return true; 
 	    	  }
 	       });
        }
        
+       //PlayerOne
 	   mScene.attachChild(PlayerOne);
 	   createPhysicsBodies(PlayerOne); 
 	   this.mScene.registerTouchArea(PlayerOne);
 	   
+	   //PlayerTwo
 	   mScene.attachChild(mPlayerTwo);
 	   this.mScene.registerTouchArea(mPlayerTwo);
 	   createPhysicsBodies(mPlayerTwo);
 	   
-	   for(int i = 0; i < 10; i++){
+	   //Floor
+	   for(int i = 0; i < numberOfFloorTiles; i++){
 		   mScene.attachChild(mFloorList.get(i));
 		   createPhysicsBodies(mFloorList.get(i)); 
 		   this.mScene.registerTouchArea(mFloorList.get(i));
@@ -195,10 +202,6 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	   this.mEngine.registerUpdateHandler(this);
 	   pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
 
     private void setUpBox2DWorld() {
     	// Set up your physics world here.
@@ -213,6 +216,7 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     	velocity = Vector2Pool.obtain(velX, velY);
     }
     
+
     private void createPhysicsBodies(final Sprite Playerone) {
     	// Create your Box2D bodies here.
     	final FixtureDef PLAYER_FIX = PhysicsFactory.createFixtureDef(1.5f,0.45f, 0.3f);
@@ -226,12 +230,7 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 
     }
     
-    /*
-     * Helper method that translates the associated physics body to the specified coordinates.
-     * 
-	 * @param pX The desired x coordinate for this sprite.
-	 * @param pY The desired y coordinate for this sprite.
-     */
+   
     private void setBodyPosition(final Sprite sprite, final float pX, final float pY) {
     	
     	//Body body = PhysicsFactory.createCircleBody(mPhysicsWorld, puck, BodyType.DynamicBody, PLAYER_FIX);
@@ -248,10 +247,6 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     
     
 private void setBodyPosition(final Sprite sprite, final Sprite sprite2, final float pX, final float pY) {
-    	
-    	//Body body = PhysicsFactory.createCircleBody(mPhysicsWorld, puck, BodyType.DynamicBody, PLAYER_FIX);
-    	//body.setLinearDamping(0.4f);
-    	//puck.setUserData(body); // puck is a Sprite
 		
     	final Body body = (Body) sprite.getUserData();
         final float widthD2 = sprite.getWidth() / 2;
@@ -265,6 +260,7 @@ private void setBodyPosition(final Sprite sprite, final Sprite sprite2, final fl
 
 
 private ContactListener createContactListener() {
+
 	
 	ContactListener levelContactListener = new ContactListener() {
         @Override
@@ -296,15 +292,9 @@ private ContactListener createContactListener() {
 }
 
 @Override
+
 public void onUpdate(float pSecondsElapsed) {
-	// TODO Auto-generated method stub
-	// Only do this ONCE if a collision has occurred (hint: you need a boolean variable to
-		// store the collision state)
 	if(mCollided == true){
-		//mEngine.runOnUpdateThread(new Runnable(){ 
-			//@Override
-			//public void run() {
-				// Find the physics connector associated with the sprite mPiglet
 				PhysicsConnector connector = mPhysicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(mPlayerTwo);
 				// Unregister the physics connector
 				mPhysicsWorld.unregisterPhysicsConnector(connector);
@@ -312,8 +302,6 @@ public void onUpdate(float pSecondsElapsed) {
 				mPhysicsWorld.destroyBody(connector.getBody());
 				
 				mScene.detachChild(mPlayerTwo);
-		//}
-		//});
 		mCollided = false;
 	}
 }
@@ -324,9 +312,5 @@ public void reset() {
 	
 }
 
-
-    // ===========================================================
- 	// Inner and Anonymous Classes
- 	// ===========================================================
     
 }
