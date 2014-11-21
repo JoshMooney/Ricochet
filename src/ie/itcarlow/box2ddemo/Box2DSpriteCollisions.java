@@ -1,7 +1,5 @@
 package ie.itcarlow.box2ddemo;
 
-import java.util.List;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -24,8 +22,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import android.widget.Toast;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -36,7 +32,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHandler {
-		private static final int CAMERA_WIDTH = 720;
+		
+	private static final int CAMERA_WIDTH = 720;
 	private static final int CAMERA_HEIGHT = 480;
 
 	private Camera camera;
@@ -83,21 +80,12 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	}
 
     @Override
-	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception 
+	public void onCreateResources(OnCreateResourcesCallback cb) throws Exception 
 	{
     	ResourceManager.prepareManager(getEngine(), this, camera, getVertexBufferObjectManager());
     	loadGfx();
-		pOnCreateResourcesCallback.onCreateResourcesFinished();
-
-    }
-
-    public void LoadTileResources()
-    {
-    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Map"); 
-    	tiledTextureAtlas = new BuildableBitmapTextureAtlas(getTextureManager(), 65, 65);  
-    	wall_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, this, "Wall.png", 0, 0);
-    	floor_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, this, "Floor.png", 0, 0);
-    	PlayerOneTexture.load();
+    	
+    	cb.onCreateResourcesFinished();
     }
     
     private void loadGfx() 
@@ -124,9 +112,9 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     
     
     @Override
-  	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
-  			throws Exception {
-    	
+  	public void onCreateScene(OnCreateSceneCallback cb) throws Exception 
+  	{
+    	SceneManager.getInstance().setMenuScene(cb);
     	
   		this.mScene = new Scene();
   		this.mScene.setBackground(new Background(0, 125, 58));
