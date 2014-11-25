@@ -8,6 +8,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public abstract class BaseScene extends Scene
@@ -25,16 +26,18 @@ public abstract class BaseScene extends Scene
 		this.camera = ResourceManager.getInstance().camera;
 	}
 	
-	protected Sprite createSprite(float x, float y, ITextureRegion region, VertexBufferObjectManager vbom, )
+	protected Sprite createSprite(float x, float y, ITextureRegion region, VertexBufferObjectManager vbom)
 	{
-		Sprite sprite = new Sprite(x, y, region, vbom) {
-			
+		Sprite sprite = new Sprite(x, y, region, vbom) 
+		{	
 			@Override
-			protected void preDraw(GLState glState, Camera camera){
+			protected void preDraw(GLState glState, Camera camera)
+			{
 				super.preDraw(glState, camera);
 				glState.enableDither();
 			}
-		}
+		};
+		return sprite;
 	}
 	
 	public abstract void createScene();

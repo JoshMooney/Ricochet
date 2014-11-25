@@ -20,18 +20,19 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	@Override
 	public void createScene() 
 	{
-		setBackground(new Background(Color.WHITE));		
+		setBackground(new Background(Color.WHITE));	
+		createMenu();
 	}
 
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
+		System.exit(0);
 		
 	}
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
+		ResourceManager.getInstance().UnloadMenuResources();
 		
 	}
 	
@@ -48,7 +49,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 		menu.buildAnimations();
 		menu.setBackgroundEnabled(false);
 		playItem.setPosition(playItem.getX(), playItem.getY() + 20);
-		exitItem.setPosition(playItem.getX(), playItem.getY() + 75);
+		exitItem.setPosition(playItem.getX(), playItem.getY() + 100);
 		
 		menu.setOnMenuItemClickListener(this);
 		setChildScene(menu);
@@ -56,6 +57,15 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 
 	public boolean onMenuItemClicked(MenuScene scene, IMenuItem item, float localX, float localY)
 	{
+		switch(item.getID())
+		{
+		case MENU_PLAY:
+			SceneManager.getInstance().setGameScene();
+			return true;
+		case MENU_EXIT:
+			System.exit(0);
+			return true;
+		}
 		return false;
 	}
 }

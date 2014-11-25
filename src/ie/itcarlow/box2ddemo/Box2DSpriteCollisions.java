@@ -24,8 +24,12 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.ui.IGameInterface.OnCreateResourcesCallback;
+import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
+import org.andengine.ui.IGameInterface.OnPopulateSceneCallback;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
@@ -37,8 +41,8 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHandler {
-		
+public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHandler 
+{		
 	private static final int CAMERA_WIDTH = 720;
 	private static final int CAMERA_HEIGHT = 480;
 
@@ -69,9 +73,6 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	float velX,velY,speed = 50;
 	boolean mCollided = false;
 
-	private BuildableBitmapTextureAtlas tiledTextureAtlas;
-	private ITextureRegion wall_region, floor_region;
-
 	@Override
 	public EngineOptions onCreateEngineOptions() 
 	{
@@ -88,16 +89,14 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     @Override
 	public void onCreateResources(OnCreateResourcesCallback cb) throws Exception 
 	{
-    	ResourceManager.prepareManager(getEngine(), this, camera, getVertexBufferObjectManager());
-    	loadGfx();
-    	
+    	ResourceManager.prepareManager(getEngine(), this, camera, getVertexBufferObjectManager());	
     	cb.onCreateResourcesFinished();
     }
     
-    private void loadGfx() 
-    {     
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); 
-        
+    //private void loadGfx() 
+    //{     
+        //BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); 
+        /*
         //PlayerOne
         PlayerOneTexture = new BitmapTextureAtlas(getTextureManager(), 65, 65);  
         mPlayerOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneTexture, this, "playerOne.png", 0, 0);
@@ -111,31 +110,26 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
         //Floor
         FloorTexture = new BitmapTextureAtlas(getTextureManager(),65,65);
         mFloorTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(FloorTexture, this, "FloorSprite.png", 0, 0);
-        FloorTexture.load();
-    }
+        FloorTexture.load();*/
+    //}
 
-    
-    
-    
     @Override
   	public void onCreateScene(OnCreateSceneCallback cb) throws Exception 
   	{
     	SceneManager.getInstance().setMenuScene(cb);
-    	
+    	/*
   		this.mScene = new Scene();
-  		this.mScene.setBackground(new Background(0, 125, 58));
-  	    pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);  
+  		this.mScene.setBackground(new Background(0, 125, 58));*/
+  		cb.onCreateSceneFinished(SceneManager.getInstance().menuScene);  
   	}
 
 
     @Override
-	public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) 
-          throws Exception {
-	   final float centerX = (CAMERA_WIDTH - this.mPlayerOneTextureRegion.getWidth()) / 2;
-	   final float centerY = (CAMERA_HEIGHT - this.mPlayerOneTextureRegion.getHeight()) / 2;
- 
-	   
-	   
+	public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception 
+	{
+	   //final float centerX = (CAMERA_WIDTH - this.mPlayerOneTextureRegion.getWidth()) / 2;
+	   //final float centerY = (CAMERA_HEIGHT - this.mPlayerOneTextureRegion.getHeight()) / 2;
+	   /*
 	   //PlayerOne
 	   final Sprite PlayerOne = new Sprite(centerX+100, centerY, this.mPlayerOneTextureRegion, this.getVertexBufferObjectManager())
 	   {
@@ -191,13 +185,14 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 		   createPhysicsBodies(mFloorList.get(i)); 
 		   this.mScene.registerTouchArea(mFloorList.get(i));
 	   }
-	   
-	   setUpBox2DWorld();
+	   */
+	   //setUpBox2DWorld();
 	   this.mEngine.registerUpdateHandler(this);
 	   pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 
-    private void setUpBox2DWorld() {
+    private void setUpBox2DWorld() 
+    {	/*
     	// Set up your physics world here.
     	final Vector2 v = Vector2Pool.obtain(0, 0);
     	// Establish world with no gravity, second param 
@@ -207,10 +202,9 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 
     	Vector2Pool.recycle(v);
     	this.mScene.registerUpdateHandler(mPhysicsWorld);
-    	velocity = Vector2Pool.obtain(velX, velY);
+    	velocity = Vector2Pool.obtain(velX, velY);*/
     }
     
-
     private void createPhysicsBodies(final Sprite Playerone) {
     	// Create your Box2D bodies here.
     	final FixtureDef PLAYER_FIX = PhysicsFactory.createFixtureDef(1.5f,0.45f, 0.3f);
@@ -240,7 +234,7 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     }
     
     
-private void setBodyPosition(final Sprite sprite, final Sprite sprite2, final float pX, final float pY) {
+    private void setBodyPosition(final Sprite sprite, final Sprite sprite2, final float pX, final float pY) {
 		
     	final Body body = (Body) sprite.getUserData();
         final float widthD2 = sprite.getWidth() / 2;
@@ -253,58 +247,78 @@ private void setBodyPosition(final Sprite sprite, final Sprite sprite2, final fl
     }
 
 
-private ContactListener createContactListener() {
-
-	
-	ContactListener levelContactListener = new ContactListener() {
+ /*   private ContactListener createContactListener() 
+{	
+	ContactListener levelContactListener = new ContactListener() 
+	{
         @Override
-        public void beginContact(Contact contact) {
+        public void beginContact(Contact contact) 
+        {
         	mCollided = true;
         	/*Body body = contact.getFixtureA().getBody();
         	if(body.getUserData().equals("PlayerTwo")) {
         		
-        	} */
+        	} 
         }
         @Override
-        public void endContact(Contact contact) {
+        public void endContact(Contact contact) 
+        {
            
                        
         }
         @Override
-        public void preSolve(Contact contact, Manifold oldManifold) {
+        public void preSolve(Contact contact, Manifold oldManifold) 
+        {
            
            
         }
         @Override
-        public void postSolve(Contact contact, ContactImpulse impulse) {
+        public void postSolve(Contact contact, ContactImpulse impulse) 
+        {
             
            
         }
     };
-	
 	return levelContactListener;
-}
+}*/
 
 @Override
-
-public void onUpdate(float pSecondsElapsed) {
-	if(mCollided == true){
-				PhysicsConnector connector = mPhysicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(mPlayerTwo);
-				// Unregister the physics connector
-				mPhysicsWorld.unregisterPhysicsConnector(connector);
-				// Destroy the body
-				mPhysicsWorld.destroyBody(connector.getBody());
-				
-				mScene.detachChild(mPlayerTwo);
-		mCollided = false;
+	public void onUpdate(float pSecondsElapsed) 
+	{
+		/*if(mCollided == true)
+		{
+			PhysicsConnector connector = mPhysicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(mPlayerTwo);
+			// Unregister the physics connector
+			mPhysicsWorld.unregisterPhysicsConnector(connector);
+			// Destroy the body
+			mPhysicsWorld.destroyBody(connector.getBody());
+			
+			mScene.detachChild(mPlayerTwo);
+			mCollided = false;
+		}*/
 	}
-}
 
 @Override
-public void reset() {
+	protected void onDestroy()
+{
+	super.onDestroy();
+	System.exit(0);
+}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+	if(keyCode == KeyEvent.KEYCODE_BACK)
+	{
+		SceneManager.getInstance().getCurrentScene().onBackPressed();
+	}
+	return false;
+	}
+
+
+@Override
+	public void reset() {
 	// TODO Auto-generated method stub
 	
 }
-
-    
 }

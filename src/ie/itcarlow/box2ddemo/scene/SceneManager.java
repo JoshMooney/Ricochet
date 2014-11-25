@@ -3,12 +3,12 @@ package ie.itcarlow.box2ddemo.scene;
 import ie.itcarlow.box2ddemo.ResourceManager;
 
 import org.andengine.engine.Engine;
-import org.andengine.ui.IGameInterface.OnCreateResourcesCallback;
+import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
 public class SceneManager 
 {
-	 private BaseScene menuScene;
-	 private BaseScene gameScene;
+	 public BaseScene menuScene;
+	 public BaseScene gameScene;
 	 
 	 private static final SceneManager INSTANCE = new SceneManager();
 	 
@@ -25,11 +25,22 @@ public class SceneManager
 		 menuScene = new MainMenuScene();
 		 setScene(menuScene);
 		 currentScene.createScene();
-		 cb.onCreateResourcesFinished(menuScene);
+		 cb.onCreateSceneFinished(menuScene);
+	 }
+	 
+	 public void setGameScene()
+	 {
+		 ResourceManager.getInstance().LoadTileManager();
+		 ResourceManager.getInstance().LoadGameResources();
+		 gameScene = new GameScene();
+		 setScene(gameScene);
+		 currentScene.createScene();
 	 }
 	 
 	 public void setScene(BaseScene scene)
 	 {
+		 if(currentScene != null)
+			 currentScene.disposeScene();
 		 engine.setScene(scene);
 		 currentScene = scene;
 	 }
