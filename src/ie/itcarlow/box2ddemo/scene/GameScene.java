@@ -39,8 +39,7 @@ public class GameScene extends BaseScene
 	
 	private void setBackground()
 	{
-		setBackground(new Background(Color.RED));
-		
+		setBackground(new Background(Color.WHITE));
 	}
 	
 	private void createHUD()
@@ -69,8 +68,16 @@ public class GameScene extends BaseScene
 
 	private void createTiles()
 	{
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(-50, 100).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(50, 100).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(100, -100).CreateBodyAndAttach(this, physicsWorld);
+		int tileSize = 48;
+		for (int i = 0; i < 10; i++)
+		{
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(0, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 14, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
+		}
+		for (int i = 0; i < 15; i++)
+		{
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, 0).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, tileSize * 9).CreateBodyAndAttach(this, physicsWorld);
+		}
 	}
 }

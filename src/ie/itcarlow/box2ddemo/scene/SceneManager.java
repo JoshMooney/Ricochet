@@ -30,8 +30,9 @@ public class SceneManager
 	 
 	 public void setGameScene()
 	 {
-		 ResourceManager.getInstance().LoadTileManager();
 		 ResourceManager.getInstance().LoadGameResources();
+		 ResourceManager.getInstance().LoadTileManager();
+		 
 		 gameScene = new GameScene();
 		 setScene(gameScene);
 		 currentScene.createScene();

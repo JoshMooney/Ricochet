@@ -33,6 +33,7 @@ public class ResourceManager
 	public ITextureRegion player_region;
 	
 	public TileManager tileManager;
+	public int tileSize = 50;
 	
 	public void LoadMenuResources()
 	{
@@ -78,7 +79,7 @@ public class ResourceManager
     public void LoadTileResources()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Map/"); 
-    	tiledTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 100, 100);
+    	tiledTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 256, 256);
     	
     	wall_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, activity, "Wall.png");
     	floor_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, activity, "Floor.png");
@@ -107,7 +108,7 @@ public class ResourceManager
 	}
 	
 	public void LoadTileManager()
-	{
+	{	
 		LoadTileResources();
 		tileManager = new TileManager(vbom);
 	}
