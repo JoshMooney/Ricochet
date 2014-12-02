@@ -1,6 +1,6 @@
 package ie.itcarlow.box2ddemo;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -8,6 +8,7 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -18,6 +19,7 @@ import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.controller.MultiTouch;
+import org.andengine.input.touch.detector.SurfaceGestureDetector;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
@@ -41,9 +43,12 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 
 	private Camera camera;
 	
+	
 	//PlayerOne
 	private BitmapTextureAtlas PlayerOneTexture;
 	private ITextureRegion mPlayerOneTextureRegion;
+	//MoveTo Variable will be location for A* to move to
+	private Vector2 MoveTo;
 	
 	//PlayerTwo
 	private BitmapTextureAtlas PlayerTwoTexture;
@@ -53,11 +58,10 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	//Floor
 	private BitmapTextureAtlas FloorTexture;
 	private ITextureRegion mFloorTextureRegion;
-	private List<Sprite>  mFloorList;
+	private ArrayList<Sprite>  mFloorList;
 	
 	//Scene
 	private Scene mScene;
-	
 	
 	//Assorted Variables
 	int numberOfFloorTiles = 1;
@@ -65,7 +69,11 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	Vector2 velocity, sprite1,sprite2;
 	float velX,velY,speed = 50;
 	boolean mCollided = false;
-
+	
+	//Touch Screen Gestures
+	//OnSwipeTouchListener SwipeListener = new OnSwipeTouchListener(getBaseContext());
+	
+	//Maps
 	private BuildableBitmapTextureAtlas tiledTextureAtlas;
 	private ITextureRegion wall_region, floor_region;
 
@@ -88,16 +96,16 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     	ResourceManager.prepareManager(getEngine(), this, camera, getVertexBufferObjectManager());
     	loadGfx();
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
-
+		mScene.getOnSceneTouchListener(); 
     }
 
     public void LoadTileResources()
     {
-    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Map"); 
+    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Map/"); 
     	tiledTextureAtlas = new BuildableBitmapTextureAtlas(getTextureManager(), 65, 65);  
-    	wall_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, this, "Wall.png", 0, 0);
-    	floor_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, this, "Floor.png", 0, 0);
-    	PlayerOneTexture.load();
+    	//wall_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, this, "Wall.png", 0, 0);
+    	//floor_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tiledTextureAtlas, this, "Floor.png", 0, 0);
+    	//PlayerOneTexture.load();
     }
     
     private void loadGfx() 
@@ -114,10 +122,11 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
         mPlayerTwoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerTwoTexture, this, "playerTwo.png", 0, 0);
         PlayerTwoTexture.load();
         
-        //Floor
+        //Tiles
         FloorTexture = new BitmapTextureAtlas(getTextureManager(),65,65);
-        mFloorTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(FloorTexture, this, "FloorSprite.png", 0, 0);
+        mFloorTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(FloorTexture, this, "Floor.png", 0, 0);
         FloorTexture.load();
+        
     }
 
     
@@ -130,13 +139,17 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
     	
   		this.mScene = new Scene();
   		this.mScene.setBackground(new Background(0, 125, 58));
-  	    pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);  
+  		
+  	    pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);
   	}
 
 
     @Override
 	public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) 
           throws Exception {
+    	
+    	
+    	configGestureDetection();
 	   final float centerX = (CAMERA_WIDTH - this.mPlayerOneTextureRegion.getWidth()) / 2;
 	   final float centerY = (CAMERA_HEIGHT - this.mPlayerOneTextureRegion.getHeight()) / 2;
  
@@ -161,26 +174,29 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
                   final float pTouchAreaLocalX,
                   final float pTouchAreaLocalY){
-    		  setBodyPosition(this, PlayerOne, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+    		  setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
     		  return true; 
     	  }
     	  
        };
        
+       mFloorList = new ArrayList<Sprite>();
        //Floor
-       for(int i = 0; i < numberOfFloorTiles; i= i+1){
-    	   mFloorList.add(new Sprite(centerX - 50, centerY, this.mFloorTextureRegion, this.getVertexBufferObjectManager())
+       for(int i = 0; i < numberOfFloorTiles; i++){
+    	   mFloorList.add(new Sprite(centerX - 70, centerY, this.mFloorTextureRegion, this.getVertexBufferObjectManager())
 		   {
 	    	  @Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
 	                  final float pTouchAreaLocalX,
 	                  final float pTouchAreaLocalY){
-	    		  setBodyPosition(PlayerOne, this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  MoveTo = new Vector2(pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  setBodyPosition(PlayerOne, MoveTo.x, MoveTo.y);
 	    		  return true; 
 	    	  }
 	       });
        }
        
+       setUpBox2DWorld();
        //PlayerOne
 	   mScene.attachChild(PlayerOne);
 	   createPhysicsBodies(PlayerOne); 
@@ -194,11 +210,11 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	   //Floor
 	   for(int i = 0; i < numberOfFloorTiles; i++){
 		   mScene.attachChild(mFloorList.get(i));
-		   createPhysicsBodies(mFloorList.get(i)); 
+		  // createPhysicsBodies(mFloorList.get(i)); 
 		   this.mScene.registerTouchArea(mFloorList.get(i));
 	   }
 	   
-	   setUpBox2DWorld();
+	  
 	   this.mEngine.registerUpdateHandler(this);
 	   pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
@@ -225,7 +241,7 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
  			   PLAYER_FIX);
     	mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(Playerone, body, true, true));
     	 Playerone.setUserData(body);
-    	 body.applyLinearImpulse(velocity, body.getWorldCenter());
+    	 //body.applyLinearImpulse(velocity, body.getWorldCenter());
 
 
     }
@@ -261,7 +277,7 @@ private void setBodyPosition(final Sprite sprite, final Sprite sprite2, final fl
 
 private ContactListener createContactListener() {
 
-	
+
 	ContactListener levelContactListener = new ContactListener() {
         @Override
         public void beginContact(Contact contact) {
@@ -294,7 +310,7 @@ private ContactListener createContactListener() {
 @Override
 
 public void onUpdate(float pSecondsElapsed) {
-	if(mCollided == true){
+	/*if(mCollided == true){
 				PhysicsConnector connector = mPhysicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(mPlayerTwo);
 				// Unregister the physics connector
 				mPhysicsWorld.unregisterPhysicsConnector(connector);
@@ -303,7 +319,7 @@ public void onUpdate(float pSecondsElapsed) {
 				
 				mScene.detachChild(mPlayerTwo);
 		mCollided = false;
-	}
+	}*/
 }
 
 @Override
@@ -312,5 +328,87 @@ public void reset() {
 	
 }
 
+/*()@Override
+public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+	// TODO Auto-generated method stub
+	// Handle the scene touch event here.
+	if ( pSceneTouchEvent.getAction() == TouchEvent.ACTION_DOWN ) {
+		SwipeListener.onTouch(mRenderSurfaceView, pSceneTouchEvent.getMotionEvent() );
+		
+	}
+	return false;
+}*/
+
+private void configGestureDetection() {
+	this.runOnUiThread(new Runnable() {
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			setupGestureDetection();
+		}
+	});
+		
+}
+
+private void setupGestureDetection(){
+
+   
+
+SurfaceGestureDetector surfaceGestureDetector = new SurfaceGestureDetector(this.getBaseContext(), 1f) {
+
+@Override
+ protected boolean onSwipeUp() {
+ System.out.println("onSwipeUp");
+ return true;
+}
+
+@Override
+protected boolean onSwipeRight() {
+System.out.println("onSwipeRight");
+return true;
+}
+
+ @Override
+ protected boolean onSwipeLeft() {
+ System.out.println("onSwipeLeft");
+ return true;
+ }
+
+@Override
+ protected boolean onSwipeDown() {
+ System.out.println("onSwipeDown");
+ return true;
+ }
+
+@Override
+ protected boolean onSingleTap() {
+ System.out.println("onSingleTap");
+ return true;
+}
+
+ @Override
+  protected boolean onDoubleTap() {
+  System.out.println("onDoubleTap");
+  return true;
+ }
+
+ @Override
+ public boolean onManagedTouchEvent(TouchEvent pSceneTouchEvent) {    
+  return super.onManagedTouchEvent(pSceneTouchEvent);
+ }
+
+@Override
+public boolean onSceneTouchEvent(Scene pScene,
+  TouchEvent pSceneTouchEvent) {    
+  return super.onSceneTouchEvent(pScene, pSceneTouchEvent);
+}
+};
+
+    surfaceGestureDetector.setEnabled(true);
+
+
+  mScene.setOnSceneTouchListener(surfaceGestureDetector);
+ }
     
 }

@@ -10,8 +10,8 @@ public class TileManager
 
 	public TileManager(VertexBufferObjectManager vbom)
 	{
-		tiles.add(new Tile("Wall", 1, 0, 0, 5f, 0, .5f, ResourceManager.getInstance().wall_region, vbom));
-		tiles.add(new Tile("Floor", 2, 0, 0, 5f, 0, .5f, ResourceManager.getInstance().floor_region, vbom));	
+		//tiles.add(new Tile("Wall", 1, 0, 0, 5f, 0, .5f, ResourceManager.getInstance().wall_region, vbom));
+		//tiles.add(new Tile("Floor", 2, 0, 0, 5f, 0, .5f, ResourceManager.getInstance().floor_region, vbom));	
 	}
 	
 	public Tile getTileByID(int id)
