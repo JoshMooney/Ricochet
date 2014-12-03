@@ -2,6 +2,7 @@ package ie.itcarlow.box2ddemo;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -11,6 +12,8 @@ import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtla
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
+
+import com.badlogic.gdx.math.Vector2;
 
 public class ResourceManager 
 {
@@ -30,7 +33,19 @@ public class ResourceManager
 	public ITextureRegion floor_region;
 	
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
-	public ITextureRegion player_region;
+	
+	//PlayerOne
+	private BuildableBitmapTextureAtlas PlayerOneAtlas;
+	public ITextureRegion mPlayerOneTextureRegion;
+	//MoveTo Variable will be location for A* to move to
+	//private Vector2 MoveTo;
+		
+	//PlayerTwo
+	private BuildableBitmapTextureAtlas PlayerTwoAtlas;
+	public ITextureRegion mPlayerTwoTextureRegion;
+	public Sprite mPlayerTwo;
+		
+
 	
 	public TileManager tileManager;
 	public int tileSize = 50;
@@ -60,7 +75,14 @@ public class ResourceManager
 	{
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65, TextureOptions.BILINEAR);
-		player_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "playerOne.png");
+		
+		//PlayerOne
+        PlayerOneAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65);  
+        mPlayerOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "playerOne.png");
+        
+        //PlayerTwo
+        PlayerTwoAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65);  
+        mPlayerTwoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerTwoAtlas, activity, "playerTwo.png");
 	
 		try{
 			gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
