@@ -16,11 +16,12 @@ public class GameScene extends BaseScene
 	private PhysicsWorld physicsWorld;
 	
 	@Override
-	public void createScene() {
+	public void createScene() 
+	{
 		setBackground();
 		createHUD();
 		createPhysics();
-		addPlayer();
+		//addPlayer();
 		createTiles();
 		//camera.setChaseEntity(playerSprite);	//We are not using this
 	}
@@ -32,9 +33,9 @@ public class GameScene extends BaseScene
 	}
 
 	@Override
-	public void disposeScene() {
+	public void disposeScene() 
+	{
 		ResourceManager.getInstance().UnloadGameResources();
-		
 	}
 	
 	private void setBackground()
@@ -69,6 +70,7 @@ public class GameScene extends BaseScene
 	private void createTiles()
 	{
 		int tileSize = 48;
+
 		for (int i = 0; i < 10; i++)
 		{
 			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(0, tileSize * i).CreateBodyAndAttach(this, physicsWorld);

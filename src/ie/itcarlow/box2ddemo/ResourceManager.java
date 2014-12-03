@@ -59,7 +59,7 @@ public class ResourceManager
 	public void LoadGameResources()
 	{
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65, TextureOptions.BILINEAR);
 		player_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "playerOne.png");
 	
 		try{
