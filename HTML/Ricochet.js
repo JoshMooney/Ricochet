@@ -1,5 +1,12 @@
 var game;
 
+//touch input
+var mouseX, mouseY, 
+// is this running in a touch capable environment?
+touchable = 'createTouch' in document,
+touches = []; // array of touch vectors
+
+//Box2D
  var b2Vec2 = Box2D.Common.Math.b2Vec2
 , b2BodyDef = Box2D.Dynamics.b2BodyDef
 , b2Body = Box2D.Dynamics.b2Body
@@ -11,6 +18,7 @@ var game;
 , b2CircleShape = Box2D.Collision.Shapes.b2CircleShape
 , b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 
+//Sprites
 var Scale = 30;
 
 function Game()
@@ -25,6 +33,31 @@ Game.prototype.Inisalise = function()
 	this.mms = new MainMenuScene();
 	this.world = new b2World(new b2Vec2(0, 0)/*gravity*/,true/*allow sleep*/);
 	this.playerOne = new Player(Scale, this.screenwidth, this.screenheight);
+	setupTouch();
+}
+
+function setupTouch()
+{
+	if(touchable) {
+		game.canvas.addEventListener( 'touchstart', onTouchStart, false );
+		game.canvas.addEventListener( 'touchmove', onTouchMove, false );
+		game.canvas.addEventListener( 'touchend', onTouchEnd, false );
+		window.onorientationchange = resetCanvas;  
+		window.onresize = resetCanvas;  
+	} 
+	else {
+		console.log("not touchable");		
+		document.addEventListener("click", function(e){game.mms.getClickPosiiton(e);} );
+	}
+}
+
+function resetCanvas (e) {  
+ 	// resize the canvas - but remember - this clears the canvas too. 
+  	game.canvas.width = window.innerWidth; 
+	game.canvas.height = window.innerHeight;
+	
+	//make sure we scroll to the top left. 
+	window.scrollTo(0,0); 
 }
 
 window.requestAnimFrame = (function(){
@@ -41,12 +74,8 @@ window.requestAnimFrame = (function(){
 function main()
 {
 	game = new Game();
-	game.Inisalise();	
-	//game.ctx;
-	//Call canvas function
 	game.initCanvas();
-	document.addEventListener("click", function(e){game.mms.getClickPosiiton(e);} );
-	//document.addEventListener("keydown", function(e){game.paddle.Move(e);} );
+	game.Inisalise();
 	requestAnimFrame(update);
 }
 
@@ -88,6 +117,49 @@ Game.prototype.draw = function()
 	//this.ctx.strokeText("Player | AI Player",this.canvas.width/2 -100,50);
 	//this.ctx.strokeText("" + this.aiScore +" | " + this.playerScore,this.canvas.width/2 -30,90);
 
+	//touch
+	if(touchable) {
+		for(var i=0; i<touches.length; i++)
+		{
+			var touch = touches[i]; 
+			game.ctx.beginPath(); 
+			game.ctx.fillStyle = "white";
+			game.ctx.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30); 
+			game.ctx.beginPath(); 
+			game.ctx.strokeStyle = "red";
+			game.ctx.lineWidth = "6";
+			game.ctx.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true); 
+			game.ctx.stroke();
+		}
+	} else {
+		game.ctx.fillStyle	 = "white"; 
+		game.ctx.fillText("mouse : "+mouseX+", "+mouseY, mouseX, mouseY); 	
+	}
+
+}
+
+
+function onTouchStart(e) {
+ 
+	touches = e.touches; 
+	//alert("touch!");
+	draw();
+
+}
+
+
+ 
+function onTouchMove(e) {
+	 // Prevent the browser from doing its default thing (scroll, zoom)
+	e.preventDefault();
+	touches = e.touches; 
+	
+} 
+ 
+function onTouchEnd(e) { 
+   
+   	touches = e.touches; 
+   
 }
 
 function rgb(r, g, b) 
