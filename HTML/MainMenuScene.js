@@ -1,5 +1,6 @@
-var MENU_PLAY = 1;
-var MENU_EXIT = 0;
+var MENU_PLAY = 0;
+var MENU_MULTI = 1;
+var MENU_EXIT = 2;
 
 //Button varibles
 var playPosX;
@@ -19,13 +20,23 @@ var exitSizeY;
 
 function MainMenuScene()
 {
-	this.playSizeX = this.multiSizeX = this.endSizeX = 300;
-	this.playSizeY = this.multiSizeY = this.endSizeY = 90;
+	this.MENU_PLAY = 0;
+	this.MENU_MULTI = 1;
+	this.MENU_EXIT = 2;
+
+	this.playSizeX = this.multiSizeX = this.exitSizeX = 300;
+	this.playSizeY = this.multiSizeY = this.exitSizeY = 90;
 
 	this.createMenu();
 
 	this.image = new Image();
 	this.image.src = "../assets/gfx/Menu/play.png"
+
+	this.image1 = new Image();
+	this.image1.src = "../assets/gfx/Menu/multiplayer.png"
+
+	this.image2 = new Image();
+	this.image2.src = "../assets/gfx/Menu/exit.png"
 	//console.log("MainMenuScene Initaliser called");
 }
 
@@ -43,11 +54,32 @@ MainMenuScene.prototype.getClickPosiiton = function(e)
   		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
   		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
 	} 
-	//x -= game.screenwidth;
-	//y -= game.screenheight;
-	//x *= -1;
-	//y *= -1;
-	console.log(x + ", " + y)
+	this.CheckButtonTouch(x,y);
+	//console.log(x + ", " + y)
+}
+
+MainMenuScene.prototype.CheckButtonTouch = function(x, y)
+{
+	if (x > this.playPosX && x < this.playPosX + this.playSizeX &&
+		y > this.playPosY && y < this.playPosY + this.playSizeY)
+	{
+			//this.onMenuItemClicked(this.MENU_PLAY);
+			console.log("MENU_PLAY")
+	}
+
+	if (x > this.multiPosX && x < this.multiPosX + this.multiSizeX &&
+		y > this.multiPosY && y < this.multiPosY + this.multiSizeY)
+	{
+			//this.onMenuItemClicked(this.MENU_MULTI);
+			console.log("MENU_Multi")
+	}
+
+	if (x > this.exitPosX && x < this.exitPosX + this.exitSizeX &&
+		y > this.exitPosY && y < this.exitPosY + this.exitSizeY)
+	{
+			this.onMenuItemClicked(2);
+			//console.log("MENU_EXIT")
+	}
 }
 
 MainMenuScene.prototype.disposeScene = function()	
@@ -58,22 +90,31 @@ MainMenuScene.prototype.disposeScene = function()
 MainMenuScene.prototype.createMenu = function()
 {
 	this.playPosX = (game.screenwidth / 2) - (this.playSizeX/2);
-	this.playPosY = (game.screenheight / 4);
+	this.playPosY = (game.screenheight / 7);
 
-	this.multiSizeX = (game.screenwidth / 2) - (this.playSizeX/2);
-	this.multiSizeY = (game.screenheight / 4) * 3;
-	//console.log("MainMenuScene createMenu called");
+	this.multiPosX = (game.screenwidth / 2) - (this.multiSizeX/2);
+	this.multiPosY = (game.screenheight / 7) * 3;
+
+	this.exitPosX = (game.screenwidth / 2) - (this.exitSizeX/2);
+	this.exitPosY = (game.screenheight / 7) * 5;
+	console.log(this.exitPosX + ", " + this.exitPosY);
 }
 
 MainMenuScene.prototype.onMenuItemClicked = function(e)
 {
 	switch(e)
 	{
-		case MENU_PLAY:
-			SceneManager.getInstance().setGameScene();
-			return true;
-		case MENU_EXIT:
-			return true;
+		case this.MENU_PLAY:
+			//SceneManager.getInstance().setGameScene();
+			break;
+
+		case this.MENU_MULTI:
+			//SceneManager.getInstance().setMultiplayerScene();
+			break;
+
+		case this.MENU_EXIT:
+			//SceneManager.getInstance().setInfoScene();
+			break;
 	}
 	return false;
 }
@@ -82,4 +123,6 @@ MainMenuScene.prototype.Draw = function()
 {
 	//console.log("MainMenuDraw Called:")
 	game.ctx.drawImage(this.image, this.playPosX, this.playPosY, this.playSizeX, this.playSizeY);
+	game.ctx.drawImage(this.image1, this.multiPosX, this.multiPosY, this.multiSizeX, this.multiSizeY);
+	game.ctx.drawImage(this.image2, this.exitPosX, this.exitPosY, this.exitSizeX, this.exitSizeY);
 }
