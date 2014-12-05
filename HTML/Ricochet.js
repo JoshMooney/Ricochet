@@ -1,5 +1,9 @@
 var game;
 
+//gestures
+var SWIPE_MIN_DISTANCE = 5;
+var SWIPE_THRESHOLD_VELOCITY = 50;
+
 //touch input
 var mouseX, mouseY, 
 // is this running in a touch capable environment?
@@ -34,6 +38,7 @@ Game.prototype.Inisalise = function()
 	this.world = new b2World(new b2Vec2(0, 0)/*gravity*/,true/*allow sleep*/);
 	this.playerOne = new Player(Scale, this.screenwidth, this.screenheight);
 	setupTouch();
+	configGestureDetection();
 }
 
 function setupTouch()
@@ -153,7 +158,7 @@ function onTouchMove(e) {
 	 // Prevent the browser from doing its default thing (scroll, zoom)
 	e.preventDefault();
 	touches = e.touches; 
-	
+	onFling(e.touches[0].pageX, e.touches[0].pageY);
 } 
  
 function onTouchEnd(e) { 
@@ -176,3 +181,83 @@ function rgb(r, g, b)
 	}
 	return Math.max(min, Math.min(value, max)); 
 };
+
+
+/*//gestures ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+function setupGestureDetection(){
+	var surfaceGestureDetector = new SurfaceGestureDetector(activity.getBaseContext(), 1f) {
+		function onSwipeUp() {
+			System.out.println("onSwipeUp");
+			return true;
+		}
+
+		@Override
+		function onSwipeRight() {
+			System.out.println("onSwipeRight");
+			return true;
+		}
+
+		function onSwipeLeft() {
+			System.out.println("onSwipeLeft");
+			return true;
+		}
+
+		function onSwipeDown() {
+			System.out.println("onSwipeDown");
+			return true;
+		}
+
+		function onSingleTap() {
+			System.out.println("onSingleTap");
+			return true;
+		}
+
+		function onDoubleTap() {
+			System.out.println("onDoubleTap");
+			return true;
+		}
+
+		function onManagedTouchEvent(TouchEvent pSceneTouchEvent) {    
+			return super.onManagedTouchEvent(pSceneTouchEvent);
+		}
+
+		function onSceneTouchEvent(Scene pScene,TouchEvent pSceneTouchEvent) {    
+			return super.onSceneTouchEvent(pScene, pSceneTouchEvent);
+		}
+	};
+	surfaceGestureDetector.setEnabled(true);
+	setOnSceneTouchListener(surfaceGestureDetector);
+}
+
+
+function configGestureDetection() {
+	activity.runOnUiThread(new Runnable() {
+		function run() {
+			// TODO Auto-generated method stub
+			setupGestureDetection();
+		}
+	});
+			
+}*/
+
+
+function onFling( e1X, e1Y,  e2X, e2Y,  velocityX,  velocityY) {
+    if(e1X - e2X > SWIPE_MIN_DISTANCE ) {
+        //From Right to Left
+        return true;
+    }  
+    else if (e2X - e1X > SWIPE_MIN_DISTANCE ) {
+        //From Left to Right
+        return true;
+    }
+    if(e1Y - e2Y > SWIPE_MIN_DISTANCE ) {
+        //From Bottom to Top
+        return true;
+    }  
+    else if (e2Y - e1Y > SWIPE_MIN_DISTANCE ) {
+        //From Top to Bottom
+        return true;
+    }
+    return false;
+}
+        
