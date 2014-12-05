@@ -17,10 +17,12 @@ function Game()
 {
 	this.screenwidth = window.innerWidth;
 	this.screenheight = window.innerHeight;
+
 }
 
 Game.prototype.Inisalise = function()
 {
+	this.mms = new MainMenuScene();
 	this.world = new b2World(new b2Vec2(0, 0)/*gravity*/,true/*allow sleep*/);
 	this.playerOne = new Player(Scale, this.screenwidth, this.screenheight);
 }
@@ -43,7 +45,8 @@ function main()
 	//game.ctx;
 	//Call canvas function
 	game.initCanvas();
-	document.addEventListener("keydown", function(e){game.paddle.Move(e);} );
+	document.addEventListener("click", function(e){game.mms.getClickPosiiton(e);} );
+	//document.addEventListener("keydown", function(e){game.paddle.Move(e);} );
 	requestAnimFrame(update);
 }
 
@@ -81,6 +84,7 @@ Game.prototype.draw = function()
 	game.ctx.font = "30px Arial";
 
 	game.playerOne.Draw();
+	game.mms.Draw();
 	//this.ctx.strokeText("Player | AI Player",this.canvas.width/2 -100,50);
 	//this.ctx.strokeText("" + this.aiScore +" | " + this.playerScore,this.canvas.width/2 -30,90);
 
