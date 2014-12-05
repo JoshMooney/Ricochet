@@ -20,6 +20,10 @@ var exitSizeY;
 
 function MainMenuScene()
 {
+	this.MENU_PLAY = 0;
+	this.MENU_MULTI = 1;
+	this.MENU_EXIT = 2;
+
 	this.playSizeX = this.multiSizeX = this.exitSizeX = 300;
 	this.playSizeY = this.multiSizeY = this.exitSizeY = 90;
 
@@ -73,8 +77,8 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 	if (x > this.exitPosX && x < this.exitPosX + this.exitSizeX &&
 		y > this.exitPosY && y < this.exitPosY + this.exitSizeY)
 	{
-			//this.onMenuItemClicked(this.MENU_EXIT);
-			console.log("MENU_EXIT")
+			this.onMenuItemClicked(2);
+			//console.log("MENU_EXIT")
 	}
 }
 
@@ -100,16 +104,17 @@ MainMenuScene.prototype.onMenuItemClicked = function(e)
 {
 	switch(e)
 	{
-		case MENU_PLAY:
-			SceneManager.getInstance().setGameScene();
-			return true;
+		case this.MENU_PLAY:
+			//SceneManager.getInstance().setGameScene();
+			break;
 
-		case MENU_MULTI:
-			return true;
+		case this.MENU_MULTI:
+			//SceneManager.getInstance().setMultiplayerScene();
+			break;
 
-		case MENU_EXIT:
-			window.location.href = "http://google.com";
-			return true;
+		case this.MENU_EXIT:
+			//SceneManager.getInstance().setInfoScene();
+			break;
 	}
 	return false;
 }
