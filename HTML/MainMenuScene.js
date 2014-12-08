@@ -106,6 +106,7 @@ MainMenuScene.prototype.onMenuItemClicked = function(e)
 	{
 		case this.MENU_PLAY:
 			//SceneManager.getInstance().setGameScene();
+			game.sceneManager.setGameScene();
 			break;
 
 		case this.MENU_MULTI:

@@ -1,4 +1,5 @@
 var game;
+var sceneManager;
 
 //gestures
 var SWIPE_MIN_DISTANCE = 5;
@@ -34,11 +35,11 @@ function Game()
 
 Game.prototype.Inisalise = function()
 {
-	this.mms = new MainMenuScene();
+	
 	this.world = new b2World(new b2Vec2(0, 0)/*gravity*/,true/*allow sleep*/);
 	this.playerOne = new Player(Scale, this.screenwidth, this.screenheight);
 	setupTouch();
-	configGestureDetection();
+	//configGestureDetection();
 }
 
 function setupTouch()
@@ -52,7 +53,7 @@ function setupTouch()
 	} 
 	else {
 		console.log("not touchable");		
-		document.addEventListener("click", function(e){game.mms.getClickPosiiton(e);} );
+		document.addEventListener("click", function(e){sceneManager.MenuScene.getClickPosiiton(e);} );
 	}
 }
 
@@ -79,6 +80,7 @@ window.requestAnimFrame = (function(){
 function main()
 {
 	game = new Game();
+	sceneManager = new SceneManager();
 	game.initCanvas();
 	game.Inisalise();
 	requestAnimFrame(update);
@@ -92,7 +94,7 @@ function update() {
    );
    game.draw();
    game.world.ClearForces();
-     
+   sceneManager.UpdateScene();
    requestAnimFrame(update);
 }; // update()
 
@@ -118,7 +120,7 @@ Game.prototype.draw = function()
 	game.ctx.font = "30px Arial";
 
 	game.playerOne.Draw();
-	game.mms.Draw();
+	sceneManager.Draw();
 	//this.ctx.strokeText("Player | AI Player",this.canvas.width/2 -100,50);
 	//this.ctx.strokeText("" + this.aiScore +" | " + this.playerScore,this.canvas.width/2 -30,90);
 
