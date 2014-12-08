@@ -38,7 +38,7 @@ Game.prototype.Inisalise = function()
 	this.world = new b2World(new b2Vec2(0, 0)/*gravity*/,true/*allow sleep*/);
 	this.playerOne = new Player(Scale, this.screenwidth, this.screenheight);
 	setupTouch();
-	configGestureDetection();
+	//configGestureDetection();
 }
 
 function setupTouch()
