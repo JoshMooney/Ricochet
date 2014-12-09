@@ -79,8 +79,8 @@ window.requestAnimFrame = (function(){
 function main()
 {
 	game = new Game();
-	sceneManager = new SceneManager();
 	resourceManager = new ResourceManager();
+	sceneManager = new SceneManager();
 	game.initCanvas();
 	game.Inisalise();
 	requestAnimFrame(update);

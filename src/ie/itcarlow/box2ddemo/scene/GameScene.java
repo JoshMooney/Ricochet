@@ -35,7 +35,6 @@ public class GameScene extends BaseScene
 		createPhysics();
 		addPlayer();
 		createTiles();
-		createListener();
 		//camera.setChaseEntity(playerSprite);	//We are not using this
 	}
 

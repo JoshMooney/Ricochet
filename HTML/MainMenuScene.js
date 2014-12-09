@@ -28,6 +28,7 @@ function MainMenuScene()
 	this.playSizeY = this.multiSizeY = this.exitSizeY = 90;
 
 	this.createMenu();
+	resourceManager.menuBE.play();
 	//console.log("MainMenuScene Initaliser called");
 }
 
@@ -54,6 +55,7 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 	if (x > this.playPosX && x < this.playPosX + this.playSizeX &&
 		y > this.playPosY && y < this.playPosY + this.playSizeY)
 	{
+			resourceManager.selectSE.play();
 			//this.onMenuItemClicked(this.MENU_PLAY);
 			console.log("MENU_PLAY")
 	}
@@ -61,6 +63,7 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 	if (x > this.multiPosX && x < this.multiPosX + this.multiSizeX &&
 		y > this.multiPosY && y < this.multiPosY + this.multiSizeY)
 	{
+			resourceManager.selectSE.play();
 			//this.onMenuItemClicked(this.MENU_MULTI);
 			console.log("MENU_Multi")
 	}
@@ -68,6 +71,7 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 	if (x > this.exitPosX && x < this.exitPosX + this.exitSizeX &&
 		y > this.exitPosY && y < this.exitPosY + this.exitSizeY)
 	{
+			resourceManager.selectSE.play();
 			this.onMenuItemClicked(2);
 			//console.log("MENU_EXIT")
 	}
