@@ -28,15 +28,6 @@ function MainMenuScene()
 	this.playSizeY = this.multiSizeY = this.exitSizeY = 90;
 
 	this.createMenu();
-
-	this.image = new Image();
-	this.image.src = "../assets/gfx/Menu/play.png"
-
-	this.image1 = new Image();
-	this.image1.src = "../assets/gfx/Menu/multiplayer.png"
-
-	this.image2 = new Image();
-	this.image2.src = "../assets/gfx/Menu/exit.png"
 	//console.log("MainMenuScene Initaliser called");
 }
 
@@ -84,7 +75,7 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 
 MainMenuScene.prototype.disposeScene = function()	
 {	
-	ResourceManager.getInstance().UnloadMenuResources();
+	resourceManager.UnloadMenuResources();
 }
 
 MainMenuScene.prototype.createMenu = function()
@@ -106,7 +97,7 @@ MainMenuScene.prototype.onMenuItemClicked = function(e)
 	{
 		case this.MENU_PLAY:
 			//SceneManager.getInstance().setGameScene();
-			game.sceneManager.setGameScene();
+			sceneManager.setGameScene();
 			break;
 
 		case this.MENU_MULTI:
@@ -123,7 +114,7 @@ MainMenuScene.prototype.onMenuItemClicked = function(e)
 MainMenuScene.prototype.Draw = function()
 {
 	//console.log("MainMenuDraw Called:")
-	game.ctx.drawImage(this.image, this.playPosX, this.playPosY, this.playSizeX, this.playSizeY);
-	game.ctx.drawImage(this.image1, this.multiPosX, this.multiPosY, this.multiSizeX, this.multiSizeY);
-	game.ctx.drawImage(this.image2, this.exitPosX, this.exitPosY, this.exitSizeX, this.exitSizeY);
+	game.ctx.drawImage(resourceManager.play_BUTTON, this.playPosX, this.playPosY, this.playSizeX, this.playSizeY);
+	game.ctx.drawImage(resourceManager.multi_BUTTON, this.multiPosX, this.multiPosY, this.multiSizeX, this.multiSizeY);
+	game.ctx.drawImage(resourceManager.exit_BUTTON, this.exitPosX, this.exitPosY, this.exitSizeX, this.exitSizeY);
 }

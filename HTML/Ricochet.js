@@ -1,5 +1,6 @@
 var game;
 var sceneManager;
+var resourceManager;
 
 //gestures
 var SWIPE_MIN_DISTANCE = 5;
@@ -30,12 +31,10 @@ function Game()
 {
 	this.screenwidth = window.innerWidth;
 	this.screenheight = window.innerHeight;
-
 }
 
 Game.prototype.Inisalise = function()
 {
-	
 	this.world = new b2World(new b2Vec2(0, 0)/*gravity*/,true/*allow sleep*/);
 	this.playerOne = new Player(Scale, this.screenwidth, this.screenheight);
 	setupTouch();
@@ -81,6 +80,7 @@ function main()
 {
 	game = new Game();
 	sceneManager = new SceneManager();
+	resourceManager = new ResourceManager();
 	game.initCanvas();
 	game.Inisalise();
 	requestAnimFrame(update);
@@ -120,7 +120,6 @@ Game.prototype.draw = function()
 	game.ctx.font = "30px Arial";
 
 	game.playerOne.Draw();
-	sceneManager.Draw();
 	//this.ctx.strokeText("Player | AI Player",this.canvas.width/2 -100,50);
 	//this.ctx.strokeText("" + this.aiScore +" | " + this.playerScore,this.canvas.width/2 -30,90);
 
@@ -142,7 +141,7 @@ Game.prototype.draw = function()
 		game.ctx.fillStyle	 = "white"; 
 		game.ctx.fillText("mouse : "+mouseX+", "+mouseY, mouseX, mouseY); 	
 	}
-
+	sceneManager.DrawScene();
 }
 
 
