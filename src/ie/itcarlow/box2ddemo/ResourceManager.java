@@ -1,5 +1,11 @@
 package ie.itcarlow.box2ddemo;
 
+import java.io.IOException;
+
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
@@ -13,8 +19,6 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
-import com.badlogic.gdx.math.Vector2;
-
 public class ResourceManager 
 {
 	private static final ResourceManager INSTANCE = new ResourceManager();
@@ -27,10 +31,14 @@ public class ResourceManager
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion play_button_region;
 	public ITextureRegion exit_button_region;
+	public Music menuBE;
+	public Sound menuClickedSE;
 	
 	private BuildableBitmapTextureAtlas tiledTextureAtlas;
 	public ITextureRegion wall_region;
 	public ITextureRegion floor_region;
+	public Music gameBE;
+	public Sound respawnSE, ricochetSE, shootSE, gameoverSE, gamewinSE;
 	
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
 	
@@ -56,7 +64,8 @@ public class ResourceManager
 		menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 		play_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play.png");
 		exit_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "exit.png");
-	
+		
+		LoadMenuAudio();
 		try{
 			menuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
 			menuTextureAtlas.load();
@@ -64,9 +73,11 @@ public class ResourceManager
 		catch (Exception e){
 			Debug.e(e);
 		}
+		menuBE.play();
 	}
 	public void UnloadMenuResources()
 	{
+		menuBE.pause();
 		menuTextureAtlas.unload();
 		menuTextureAtlas = null;
 	}
@@ -84,6 +95,7 @@ public class ResourceManager
         PlayerTwoAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65);  
         mPlayerTwoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerTwoAtlas, activity, "playerTwo.png");
 	
+        LoadGameAudio();
 		try{
 			gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
 			gameTextureAtlas.load();
@@ -91,6 +103,7 @@ public class ResourceManager
 		catch (Exception e){
 			Debug.e(e);
 		}
+		gameBE.play();
 	}	
     public void UnloadGameResources()
     {
@@ -126,6 +139,71 @@ public class ResourceManager
 	}	
 	public void LoadAudio()
 	{
+		
+	}
+	
+	public void LoadMenuAudio()
+	{
+		SoundFactory.setAssetBasePath("mfx/Menu/");
+		try 
+		{
+			menuClickedSE = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity, "select.wav");
+		} 
+		catch (final IOException e) 
+		{
+			Debug.e(e);
+		}
+		
+		MusicFactory.setAssetBasePath("mfx/Menu/");
+		try 
+		{
+			menuBE = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity, "background.ogg");
+			menuBE.setVolume(0.5f);
+			menuBE.setLooping(true);
+		} 
+		catch (final IOException e) 
+		{
+			Debug.e(e);
+		}
+	}
+	
+	public void LoadGameAudio()
+	{
+		MusicFactory.setAssetBasePath("mfx/Game/");
+		try 
+		{
+			gameBE = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity, "background.mp3");
+			gameBE.setVolume(0.5f);
+			gameBE.setLooping(true);
+		} 
+		catch (final IOException e) {	Debug.e(e);	}
+		
+		SoundFactory.setAssetBasePath("mfx/Game/");
+		try 
+		{
+			respawnSE = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity, "respawn.mp3");
+		} 
+		catch (final IOException e)	{	Debug.e(e);	}
+		try 
+		{
+			ricochetSE = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity, "ricochet.wav");
+		} 
+		catch (final IOException e)	{	Debug.e(e);	}
+		try 
+		{
+			shootSE = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity, "shoot.wav");
+		} 
+		catch (final IOException e)	{	Debug.e(e);	}
+		try 
+		{
+			gameoverSE = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity, "gameover.wav");
+		} 
+		catch (final IOException e)	{	Debug.e(e);	}
+		try 
+		{
+			gamewinSE = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity, "wingame.wav");
+		} 
+		catch (final IOException e)	{	Debug.e(e);	}
 		
 	}
 	

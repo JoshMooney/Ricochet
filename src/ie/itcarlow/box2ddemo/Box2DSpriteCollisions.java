@@ -1,10 +1,20 @@
 package ie.itcarlow.box2ddemo;
 
 import ie.itcarlow.box2ddemo.scene.SceneManager;
-import android.graphics.Camera;
-import android.transition.Scene;
+
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.options.EngineOptions;
+import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.WakeLockOptions;
+import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.input.touch.controller.MultiTouch;
+import org.andengine.ui.activity.BaseGameActivity;
+
 import android.view.KeyEvent;
 import android.widget.Toast;
+
+import com.badlogic.gdx.math.Vector2;
 
 public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHandler 
 {		
@@ -52,11 +62,8 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
   	}
 
     @Override
-    public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception 
-    {
-    	//final float centerX = (CAMERA_WIDTH - this.mPlayerOneTextureRegion.getWidth()) / 2;
-	   	//final float centerY = (CAMERA_HEIGHT - this.mPlayerOneTextureRegion.getHeight()) / 2;
-       //setUpBox2DWorld();
+	public void onPopulateScene(org.andengine.entity.scene.Scene pScene,
+			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 	   this.mEngine.registerUpdateHandler(this);
 	   pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
@@ -98,5 +105,4 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 		// TODO Auto-generated method stub
 	
 	}
-
 }

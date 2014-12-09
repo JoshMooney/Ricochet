@@ -29,7 +29,7 @@ public class GameScene extends BaseScene
 	@Override
 	public void createScene() 
 	{
-		configGestureDetection();
+		//configGestureDetection();
 		setBackground();
 		createHUD();
 		createPhysics();
@@ -126,7 +126,49 @@ public class GameScene extends BaseScene
 
 
     }
+	
+	private void createTiles()
+	{
+		int tileSize = 48;
 
+		for (int i = 0; i < 10; i++)
+		{
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(0, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 14, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
+		}
+		for (int i = 0; i < 15; i++)
+		{
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, 0).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, tileSize * 9).CreateBodyAndAttach(this, physicsWorld);
+		}
+	}
+	
+	public void setBodyPosition(final Sprite sprite, final Sprite sprite2, final float pX, final float pY) {
+		float speed = 50;
+    	final Body body = (Body) sprite.getUserData();
+        final float widthD2 = sprite.getWidth() / 2;
+        final float heightD2 = sprite.getHeight() / 2;
+        final float angle = body.getAngle(); // keeps the body angle       
+        final Vector2 v2 = Vector2Pool.obtain((pX + widthD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (pY + heightD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
+        body.setTransform(v2, angle);
+        Vector2Pool.recycle(v2);
+        body.applyLinearImpulse((sprite2.getX()-sprite.getX())/speed, (sprite2.getY()-sprite.getY())/speed, sprite2.getX(), sprite2.getY());
+    }
+	
+    public void setBodyPosition(final Sprite sprite, final float pX, final float pY) {
+    	
+    	//Body body = PhysicsFactory.createCircleBody(mPhysicsWorld, puck, BodyType.DynamicBody, PLAYER_FIX);
+    	//body.setLinearDamping(0.4f);
+    	//puck.setUserData(body);
+    	final Body body = (Body) sprite.getUserData();
+        final float widthD2 = sprite.getWidth() / 2;
+        final float heightD2 = sprite.getHeight() / 2;
+        final float angle = body.getAngle(); // keeps the body angle       
+        final Vector2 v2 = Vector2Pool.obtain((pX + widthD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (pY + heightD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
+        body.setTransform(v2, angle);
+        Vector2Pool.recycle(v2);
+    }
+/*
 	private void configGestureDetection() {
 		activity.runOnUiThread(new Runnable() {
 			
@@ -197,45 +239,8 @@ public class GameScene extends BaseScene
 	  setOnSceneTouchListener(surfaceGestureDetector);
 	 }
 
-	public void setBodyPosition(final Sprite sprite, final Sprite sprite2, final float pX, final float pY) {
-		float speed = 50;
-    	final Body body = (Body) sprite.getUserData();
-        final float widthD2 = sprite.getWidth() / 2;
-        final float heightD2 = sprite.getHeight() / 2;
-        final float angle = body.getAngle(); // keeps the body angle       
-        final Vector2 v2 = Vector2Pool.obtain((pX + widthD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (pY + heightD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-        body.setTransform(v2, angle);
-        Vector2Pool.recycle(v2);
-        body.applyLinearImpulse((sprite2.getX()-sprite.getX())/speed, (sprite2.getY()-sprite.getY())/speed, sprite2.getX(), sprite2.getY());
-    }
 	
-    public void setBodyPosition(final Sprite sprite, final float pX, final float pY) {
-    	
-    	//Body body = PhysicsFactory.createCircleBody(mPhysicsWorld, puck, BodyType.DynamicBody, PLAYER_FIX);
-    	//body.setLinearDamping(0.4f);
-    	//puck.setUserData(body);
-    	final Body body = (Body) sprite.getUserData();
-        final float widthD2 = sprite.getWidth() / 2;
-        final float heightD2 = sprite.getHeight() / 2;
-        final float angle = body.getAngle(); // keeps the body angle       
-        final Vector2 v2 = Vector2Pool.obtain((pX + widthD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (pY + heightD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-        body.setTransform(v2, angle);
-        Vector2Pool.recycle(v2);
-    }
 	
-	private void createTiles()
-	{
-		int tileSize = 48;
-
-		for (int i = 0; i < 10; i++)
-		{
-			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(0, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
-			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 14, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
-		}
-		for (int i = 0; i < 15; i++)
-		{
-			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, 0).CreateBodyAndAttach(this, physicsWorld);
-			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, tileSize * 9).CreateBodyAndAttach(this, physicsWorld);
-		}
-	}
+	
+	*/
 }
