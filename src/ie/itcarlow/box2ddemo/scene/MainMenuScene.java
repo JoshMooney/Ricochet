@@ -60,9 +60,11 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 		switch(item.getID())
 		{
 		case MENU_PLAY:
+			ResourceManager.getInstance().menuClickedSE.play();
 			SceneManager.getInstance().setGameScene();
 			return true;
 		case MENU_EXIT:
+			ResourceManager.getInstance().menuClickedSE.play();
 			System.exit(0);
 			return true;
 		}
