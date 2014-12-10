@@ -38,7 +38,6 @@ function Game()
 Game.prototype.Inisalise = function()
 {
 	this.world = new b2World(new b2Vec2(0, 0)/*gravity*/,true/*allow sleep*/);
-	this.playerOne = new Player(Scale, this.screenwidth, this.screenheight);
 	setupTouch();
 	//configGestureDetection();
 }
@@ -97,7 +96,6 @@ function update()
     );
     game.draw();
     game.world.ClearForces();
-    game.playerOne.Update();
     sceneManager.UpdateScene();  
     requestAnimFrame(update);
 } // update()
@@ -121,14 +119,6 @@ Game.prototype.draw = function()
 	/*Clear*/
 	game.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-	game.ctx.font = "30px Arial";
-
-	game.playerOne.Draw();
-
-	this.ctx.strokeText("" + this.testSwipe , this.canvas.width / 2 - 100, 50);
-	this.ctx.strokeText("Lives : ", 10, this.canvas.height - 20);
-	this.ctx.strokeText("Score : " + game.playerOne.GetScore(), 10, this.canvas.height - 50);
-
 	//this.ctx.strokeText("Player | AI Player",this.canvas.width/2 -100,50);
 
 	//touch
@@ -137,7 +127,7 @@ Game.prototype.draw = function()
 		{
 			var touch = touches[i]; 
 			game.ctx.beginPath(); 
-			game.ctx.fillStyle = "white";
+			game.ctx.fillStyle = "black";
 			game.ctx.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30); 
 			game.ctx.beginPath(); 
 			game.ctx.strokeStyle = "red";
@@ -146,7 +136,7 @@ Game.prototype.draw = function()
 			game.ctx.stroke();
 		}
 	} else {
-		game.ctx.fillStyle	 = "white"; 
+		game.ctx.fillStyle	 = "black"; 
 		game.ctx.fillText("mouse : "+mouseX+", "+mouseY, mouseX, mouseY); 	
 	}
 	sceneManager.DrawScene();

@@ -13,20 +13,12 @@ function Player(Scale, CANVAS_WIDTH, CANVAS_HEIGHT)//Base Class for Player and E
 	this.fixDef.shape = new b2CircleShape(35.5);
 	this.Body = game.world.CreateBody(this.bodyDef).CreateFixture(this.fixDef);
 
-	this.Sprite = new Image();
-	this.SpriteLives = new Image();
-	this.SpriteBackGround = new Image();
-	this.Sprite.src = "../assets/gfx/animatePlayer.png"
-	this.SpriteLives.src = "../assets/gfx/PlayerOneLives.png"
-	this.SpriteBackGround.src = "../assets/gfx/Menue.png"
 	this.ai = false;//can be used to juge if this is player or enemy
 	this.m_x = 20;
 	this.m_y = 200;
 	this.m_width = 20;
 	this.m_height = 200;
 	this.speed = 10;
-	this.lives = 3;
-	this.score = 0;
 	var coin = sprite({
     	context: game.ctx,
     	width: 25,
@@ -71,7 +63,6 @@ Player.prototype.Update = function()
 		this.animationPosX = 81;
 	else 
 		this.animationPosX = 0;
-
 }
 
 Player.prototype.AIMovement = function()
@@ -84,25 +75,8 @@ Player.prototype.Draw = function()
 	/*console.log("Draw called");*/
 	this.pos = this.Body.GetBody().GetPosition();
 
-	game.ctx.drawImage(this.Sprite, this.animationPosX, 0, 25, 26, this.pos.x, this.pos.y, 25, 26)
+	game.ctx.drawImage(resourceManager.playerSprite, this.animationPosX, 0, 25, 26, this.pos.x, this.pos.y, 25, 26)
 	//game.ctx.drawImage(this.Sprite, this.pos.x / 32.5, this.pos.y / 32.5, 25,26);
-	game.ctx.drawImage(this.SpriteBackGround, 0, game.canvas.height - 90, 228, 100);
-	switch(this.lives){
-		case 3 :
-			game.ctx.drawImage(this.SpriteLives, 100, game.canvas.height - 45, 32.5, 32.5);
-			game.ctx.drawImage(this.SpriteLives, 100 + 22.5 + 10, game.canvas.height - 45, 32.5, 32.5);
-			game.ctx.drawImage(this.SpriteLives, 100 + 55 + 10, game.canvas.height - 45, 32.5, 32.5);
-			break;
-		case 2 :
-			game.ctx.drawImage(this.SpriteLives, 100, game.canvas.height - 45, 32.5, 32.5);
-			game.ctx.drawImage(this.SpriteLives, 100 + 22.5 + 10, game.canvas.height - 45, 32.5, 32.5);
-			break;
-		case 1 :
-			game.ctx.drawImage(this.SpriteLives, 100, game.canvas.height - 45, 32.5, 32.5);
-			break;
-		default :
-			break;
-	}
 }
 
 Player.prototype.GetWidth = function()

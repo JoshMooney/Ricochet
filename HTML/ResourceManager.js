@@ -6,7 +6,16 @@ function ResourceManager()
 //Load & Unload Game Resources
 ResourceManager.prototype.LoadGameResources = function()
 {
+	this.playerSprite = new Image();
+	this.playerSprite.src = "../assets/gfx/animatePlayer.png"
 
+	this.SpriteLives = new Image();
+	this.SpriteLives.src = "../assets/gfx/PlayerOneLives.png"
+
+	this.SpriteBackGround = new Image();
+	this.SpriteBackGround.src = "../assets/gfx/Menue.png"
+
+	this.LoadGameAudio();
 }
 ResourceManager.prototype.UnloadGameResources = function()
 {

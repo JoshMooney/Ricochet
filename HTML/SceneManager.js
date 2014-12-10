@@ -1,8 +1,6 @@
 var currentScene
 
 var BaseScene;
-var MenuScene; 
-var GameScene;
 
 var SCENE_MENU = 0;
 var SCENE_GAME = 1;
@@ -22,8 +20,9 @@ SceneManager.prototype.setMenuScene = function()
 
 SceneManager.prototype.setGameScene = function()
 {
+	resourceManager.LoadGameResources();
 	this.GameScene = new GameScene();
-	CURR_SCENE = SCENE_MENU;
+	CURR_SCENE = SCENE_GAME;
 }
 
 SceneManager.prototype.UpdateScene = function()
@@ -31,11 +30,12 @@ SceneManager.prototype.UpdateScene = function()
 	switch(CURR_SCENE)
 	{
 		case SCENE_MENU:
+			//console.log(this.MenuScene);
 			//this.MenuScene.Update();
 			break;
 			
 		case SCENE_GAME:
-			//this.GameScene.Update()
+			this.GameScene.Update()
 			break;
 	}
 }

@@ -56,7 +56,7 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 		y > this.playPosY && y < this.playPosY + this.playSizeY)
 	{
 			resourceManager.selectSE.play();
-			//this.onMenuItemClicked(this.MENU_PLAY);
+			this.onMenuItemClicked(this.MENU_PLAY);
 			console.log("MENU_PLAY")
 	}
 
@@ -64,7 +64,7 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 		y > this.multiPosY && y < this.multiPosY + this.multiSizeY)
 	{
 			resourceManager.selectSE.play();
-			//this.onMenuItemClicked(this.MENU_MULTI);
+			this.onMenuItemClicked(this.MENU_MULTI);
 			console.log("MENU_Multi")
 	}
 
@@ -73,7 +73,7 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 	{
 			resourceManager.selectSE.play();
 			this.onMenuItemClicked(2);
-			//console.log("MENU_EXIT")
+			console.log("MENU_EXIT")
 	}
 }
 
@@ -100,16 +100,16 @@ MainMenuScene.prototype.onMenuItemClicked = function(e)
 	switch(e)
 	{
 		case this.MENU_PLAY:
-			//SceneManager.getInstance().setGameScene();
 			sceneManager.setGameScene();
+			resourceManager.menuBE.pause();
 			break;
 
 		case this.MENU_MULTI:
-			//SceneManager.getInstance().setMultiplayerScene();
+			//sceneManager.setMultiplayerScene();
 			break;
 
 		case this.MENU_EXIT:
-			//SceneManager.getInstance().setInfoScene();
+			//sceneManager.setInfoScene();
 			break;
 	}
 	return false;
