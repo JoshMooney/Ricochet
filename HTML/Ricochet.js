@@ -29,6 +29,7 @@ function Game()
 {
 	this.screenwidth = window.innerWidth;
 	this.screenheight = window.innerHeight;
+	this.testSwipe = "no swipe"; 
 
 }
 
@@ -85,15 +86,15 @@ function main()
 }
 
 function update() {
-   game.world.Step(
-         1 / 60   //frame-rate
-      ,  10       //velocity iterations
-      ,  10       //position iterations
-   );
-   game.draw();
-   game.world.ClearForces();
-     
-   requestAnimFrame(update);
+    game.world.Step(
+        1 / 60   //frame-rate
+        , 10       //velocity iterations
+        , 10       //position iterations
+    );
+    game.draw();
+    game.world.ClearForces();
+    game.playerOne.Update();  
+    requestAnimFrame(update);
 }; // update()
 
 Game.prototype.initCanvas = function()
@@ -119,7 +120,9 @@ Game.prototype.draw = function()
 
 	game.playerOne.Draw();
 	game.mms.Draw();
-	//this.ctx.strokeText("Player | AI Player",this.canvas.width/2 -100,50);
+	this.ctx.strokeText("" + this.testSwipe , this.canvas.width / 2 - 100, 50);
+	this.ctx.strokeText("Lives : ", 10, this.canvas.height - 20);
+	this.ctx.strokeText("Score : " + game.playerOne.GetScore(), 10, this.canvas.height - 50);
 	//this.ctx.strokeText("" + this.aiScore +" | " + this.playerScore,this.canvas.width/2 -30,90);
 
 	//touch
@@ -158,7 +161,7 @@ function onTouchMove(e) {
 	 // Prevent the browser from doing its default thing (scroll, zoom)
 	e.preventDefault();
 	touches = e.touches; 
-	onFling(e.touches[0].pageX, e.touches[0].pageY);
+	onFling(e.touches[0].pageX, e.touches[0].pageY,e.touches[1].pageX, e.touches[1].pageY);
 } 
  
 function onTouchEnd(e) { 
@@ -190,8 +193,6 @@ function setupGestureDetection(){
 			System.out.println("onSwipeUp");
 			return true;
 		}
-
-		@Override
 		function onSwipeRight() {
 			System.out.println("onSwipeRight");
 			return true;
@@ -241,23 +242,34 @@ function configGestureDetection() {
 }*/
 
 
-function onFling( e1X, e1Y,  e2X, e2Y,  velocityX,  velocityY) {
+function onFling( e1X, e1Y,  e2X, e2Y) {
     if(e1X - e2X > SWIPE_MIN_DISTANCE ) {
         //From Right to Left
-        return true;
+        onSwipeLeft();
     }  
     else if (e2X - e1X > SWIPE_MIN_DISTANCE ) {
         //From Left to Right
-        return true;
+        onSwipeRight();
     }
     if(e1Y - e2Y > SWIPE_MIN_DISTANCE ) {
         //From Bottom to Top
-        return true;
+        onSwipeUp();
     }  
     else if (e2Y - e1Y > SWIPE_MIN_DISTANCE ) {
         //From Top to Bottom
-        return true;
+       	onSwipeDown();
     }
-    return false;
 }
-        
+
+function onSwipeUp() {
+	game.testSwipe = "up";
+}
+function onSwipeRight() {
+	game.testSwipe = "Right";
+}
+function onSwipeLeft() {
+	game.testSwipe = "Left";
+}
+function onSwipeDown() {
+	game.testSwipe = "Down";
+}

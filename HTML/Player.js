@@ -14,37 +14,39 @@ function Player(Scale, CANVAS_WIDTH, CANVAS_HEIGHT)//Base Class for Player and E
 	this.Body = game.world.CreateBody(this.bodyDef).CreateFixture(this.fixDef);
 
 	this.Sprite = new Image();
-	this.Sprite.src = "../assets/gfx/PlayerOne.png"//fill in
+	this.SpriteLives = new Image();
+	this.SpriteBackGround = new Image();
+	this.Sprite.src = "../assets/gfx/animatePlayer.png"
+	this.SpriteLives.src = "../assets/gfx/PlayerOneLives.png"
+	this.SpriteBackGround.src = "../assets/gfx/Menue.png"
 	this.ai = false;//can be used to juge if this is player or enemy
 	this.m_x = 20;
 	this.m_y = 200;
 	this.m_width = 20;
 	this.m_height = 200;
 	this.speed = 10;
-	console.log("Initaliser called");
+	this.lives = 3;
+	this.score = 0;
+	var coin = sprite({
+    	context: game.ctx,
+    	width: 25,
+   		height: 26,
+    	image: this.Sprite
+	});
+	this.animationPosX = 0;
 }
 
-/*function Player(e)
-{
-	this.ai = e;
-	if(this.ai)
-	{
-		this.m_x = window.screen.availWidth - 60;
-		this.m_y = window.screen.availHeight - 300;
-		this.speed = 8;
-		console.log("AI Active");
-	}
-	else
-	{
-		this.m_x = 30;
-		this.m_y = 200;
-		this.speed = 20;
-	}
-	this.m_width = 30;
-	this.m_height = 250;
-	//this.speed = 10;
-	console.log("AI Initaliser called");
-}*/
+function sprite (options) {
+				
+    var that = {};
+					
+    that.context = options.context;
+    that.width = options.width;
+    that.height = options.height;
+    that.image = options.image;
+
+    return that;
+}
 
 Player.prototype.Move = function(e)
 {
@@ -61,6 +63,14 @@ Player.prototype.Move = function(e)
 
 Player.prototype.Update = function()
 {
+	if(this.animationPosX == 0)
+		this.animationPosX = 26;
+	else if(this.animationPosX == 26)
+		this.animationPosX = 53;
+	else if(this.animationPosX == 53)
+		this.animationPosX = 81;
+	else 
+		this.animationPosX = 0;
 
 }
 
@@ -74,7 +84,25 @@ Player.prototype.Draw = function()
 	/*console.log("Draw called");*/
 	this.pos = this.Body.GetBody().GetPosition();
 
-	game.ctx.drawImage(this.Sprite, this.pos.x / 32.5, this.pos.y / 32.5, 65,65);
+	game.ctx.drawImage(this.Sprite, this.animationPosX, 0, 25, 26, this.pos.x, this.pos.y, 25, 26)
+	//game.ctx.drawImage(this.Sprite, this.pos.x / 32.5, this.pos.y / 32.5, 25,26);
+	game.ctx.drawImage(this.SpriteBackGround, 0, game.canvas.height - 90, 228, 100);
+	switch(this.lives){
+		case 3 :
+			game.ctx.drawImage(this.SpriteLives, 100, game.canvas.height - 45, 32.5, 32.5);
+			game.ctx.drawImage(this.SpriteLives, 100 + 22.5 + 10, game.canvas.height - 45, 32.5, 32.5);
+			game.ctx.drawImage(this.SpriteLives, 100 + 55 + 10, game.canvas.height - 45, 32.5, 32.5);
+			break;
+		case 2 :
+			game.ctx.drawImage(this.SpriteLives, 100, game.canvas.height - 45, 32.5, 32.5);
+			game.ctx.drawImage(this.SpriteLives, 100 + 22.5 + 10, game.canvas.height - 45, 32.5, 32.5);
+			break;
+		case 1 :
+			game.ctx.drawImage(this.SpriteLives, 100, game.canvas.height - 45, 32.5, 32.5);
+			break;
+		default :
+			break;
+	}
 }
 
 Player.prototype.GetWidth = function()
@@ -105,4 +133,12 @@ Player.prototype.GetFixDef = function()
 Player.prototype.GetBodyDef = function()
 {
 	return this.bodyDef;
+}
+Player.prototype.GetLives = function()
+{
+	return this.lives;
+}
+Player.prototype.GetScore = function()
+{
+	return this.score;
 }
