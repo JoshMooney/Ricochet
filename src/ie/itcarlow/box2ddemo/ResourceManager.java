@@ -16,6 +16,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
@@ -41,6 +42,7 @@ public class ResourceManager
 	public Sound respawnSE, ricochetSE, shootSE, gameoverSE, gamewinSE;
 	
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
+	public ITextureRegion hudSprite;
 	
 	//PlayerOne
 	private BuildableBitmapTextureAtlas PlayerOneAtlas;
@@ -53,8 +55,6 @@ public class ResourceManager
 	public ITextureRegion mPlayerTwoTextureRegion;
 	public Sprite mPlayerTwo;
 		
-
-	
 	public TileManager tileManager;
 	public int tileSize = 50;
 	
@@ -85,8 +85,10 @@ public class ResourceManager
 	public void LoadGameResources()
 	{
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65, TextureOptions.BILINEAR);
+		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 200, 100, TextureOptions.BILINEAR);
 		
+		hudSprite = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "Menue.png");
+	
 		//PlayerOne
         PlayerOneAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65);  
         mPlayerOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "playerOne.png");

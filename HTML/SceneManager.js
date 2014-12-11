@@ -1,5 +1,3 @@
-var currentScene
-
 var BaseScene;
 
 var SCENE_MENU = 0;

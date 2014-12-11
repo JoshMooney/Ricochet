@@ -26,7 +26,6 @@ public class GameScene extends BaseScene
 	private HUD gameHUD;
 	private PhysicsWorld physicsWorld;
 	
-	@Override
 	public void createScene() 
 	{
 		//configGestureDetection();
@@ -42,14 +41,11 @@ public class GameScene extends BaseScene
 		getOnSceneTouchListener();
 	}
 	
-
-	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void disposeScene() 
 	{
 		ResourceManager.getInstance().UnloadGameResources();

@@ -46,7 +46,8 @@ MainMenuScene.prototype.getClickPosiiton = function(e)
   		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
   		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
 	} 
-	this.CheckButtonTouch(x,y);
+	if(CURR_SCENE == SCENE_MENU)
+		this.CheckButtonTouch(x,y);
 	//console.log(x + ", " + y)
 }
 
