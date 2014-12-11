@@ -49,6 +49,11 @@ public class ResourceManager
 	private BuildableBitmapTextureAtlas hudTextureAtlas;
 	public ITextureRegion hudSprite;
 	
+	
+	//Projectile
+	private BuildableBitmapTextureAtlas ProjectileAtlas;
+	public ITextureRegion mProjectileRegion;
+	
 	//PlayerOne
 	private BuildableBitmapTextureAtlas PlayerOneAtlas;
 	public ITextureRegion mPlayerOneTextureRegion;
@@ -120,11 +125,15 @@ public class ResourceManager
 		hudSprite = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "Menue.png");
 	
 		//PlayerOne
-        PlayerOneAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 100, 100);  
+        PlayerOneAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 50, 50);  
         mPlayerOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "playerOne.png");
         
+        //Projectile
+        ProjectileAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 25, 25);  
+        mProjectileRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "Projectile.png");
+        
         //PlayerTwo
-        PlayerTwoAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 100, 100);  
+        PlayerTwoAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 50, 50);  
         mPlayerTwoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerTwoAtlas, activity, "playerTwo.png");
 	
         LoadGameAudio();

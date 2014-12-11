@@ -3,7 +3,7 @@ var sceneManager;
 var resourceManager;
 
 //gestures
-var SWIPE_MIN_DISTANCE = 5;
+var SWIPE_MIN_DISTANCE = 10;
 var SWIPE_THRESHOLD_VELOCITY = 50;
 
 //touch input
@@ -119,7 +119,13 @@ Game.prototype.draw = function()
 	//Clear Canvas
 	game.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+<<<<<<< HEAD
+	this.ctx.strokeText("" + this.testSwipe, this.canvas.width/2 -100,50);
+
+	//touch
+=======
 	//Touch
+>>>>>>> c5db279dce97ab1f45f731817b9c9e2bdc4d6eb1
 	if(touchable) {
 		for(var i=0; i<touches.length; i++)
 		{
@@ -140,22 +146,56 @@ Game.prototype.draw = function()
 	sceneManager.DrawScene();
 }
 
+<<<<<<< HEAD
+
+function onTouchStart(e) 
+{
+	touches = e.touches;
+	if(touchable && touches.length >= 2) {
+		for(var i=0; i<touches.length; i++)
+		{
+			game.testSwipe = "*********************" + touches.length;
+			var touch = touches[i]; 
+			onFling(e.touches[i].clientX , e.touches[i].clientY,e.touches[i+1].clientX, e.touches[i+1].clientY);
+		}
+	}
+=======
 function onTouchStart(e) 
 { 
 	touches = e.touches; 
 	//alert("touch!");
 	draw();
+>>>>>>> c5db279dce97ab1f45f731817b9c9e2bdc4d6eb1
 }
 function onTouchMove(e) 
 {
 	// Prevent the browser from doing its default thing (scroll, zoom)
 	e.preventDefault();
 	touches = e.touches; 
-	onFling(e.touches[0].pageX, e.touches[0].pageY,e.touches[1].pageX, e.touches[1].pageY);
+	if(touchable && touches.length >= 2) {
+		for(var i=0; i<touches.length; i++)
+		{
+			game.testSwipe = "_______________" + touches.length;
+			var touch = touches[i]; 
+			onFling(e.touches[i].clientX , e.touches[i].clientY,e.touches[i+1].clientX, e.touches[i+1].clientY);
+		}
+	}
 } 
 function onTouchEnd(e) 
 { 
    	touches = e.touches; 
+   	//onFling(e.touches[0].clientX , e.touches[0].clientY,e.touches[1].clientX, e.touches[1].clientY);
+   	//touch
+	if(touchable && touches.length >= 2) {
+		for(var i=0; i<touches.length; i++)
+		{
+			game.testSwipe = "E N D" + touches.length;
+			var touch = touches[i]; 
+			onFling(e.touches[i].clientX , e.touches[i].clientY,e.touches[i+1].clientX, e.touches[i+1].clientY);
+		}
+	}
+   	game.testSwipe = "End";
+
 }
 
 function rgb(r, g, b) 
@@ -230,7 +270,9 @@ function configGestureDetection() {
 }*/
 
 
-function onFling( e1X, e1Y,  e2X, e2Y) {
+function onFling(e1X, e1Y,  e2X, e2Y) {
+
+
     if(e1X - e2X > SWIPE_MIN_DISTANCE ) {
         //From Right to Left
         onSwipeLeft();
@@ -246,6 +288,10 @@ function onFling( e1X, e1Y,  e2X, e2Y) {
     else if (e2Y - e1Y > SWIPE_MIN_DISTANCE ) {
         //From Top to Bottom
        	onSwipeDown();
+    }
+    else{
+    	//touched once
+    	sceneManager.MenuScene.getClickPosiiton(e);
     }
 }
 
