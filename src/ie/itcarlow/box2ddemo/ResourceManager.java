@@ -8,6 +8,7 @@ import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -16,6 +17,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
@@ -31,6 +34,7 @@ public class ResourceManager
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion play_button_region;
 	public ITextureRegion exit_button_region;
+	public ITextureRegion title_region;
 	public Music menuBE;
 	public Sound menuClickedSE;
 	
@@ -59,12 +63,35 @@ public class ResourceManager
 	public TileManager tileManager;
 	public int tileSize = 50;
 	
+	public BitmapTextureAtlas menuTitleAtlas;
+	public ITiledTextureRegion menuTitleRegion;
+	public AnimatedSprite menuTitle;
+	public int ROW = 16;
+	public int COL = 1;
+	
+	public BitmapTextureAtlas texBanana;
+	public ITiledTextureRegion regBanana;
+	public AnimatedSprite  sprBanana;
+	 
+	public static int   SPR_COLUMN  = 4;
+	public static int   SPR_ROWS  = 2;
+		
 	public void LoadMenuResources()
 	{
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Menu/"); 
 		menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 		play_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play.png");
 		exit_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "exit.png");
+		/*
+		menuTitleAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 200, 1200);  
+		menuTitleRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(menuTitleAtlas, activity, "AnimatedTitle.png", 0,0,COL,ROW);
+		menuTitleAtlas.load();
+		*/
+		
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); 
+		texBanana = new BitmapTextureAtlas(activity.getTextureManager(), 400, 2400, TextureOptions.BILINEAR);
+		regBanana = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texBanana, activity.getAssets(),"AnimatedTitle.png", 0, 0, COL, ROW);
+		texBanana.load();
 		
 		LoadMenuAudio();
 		try{

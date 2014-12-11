@@ -8,9 +8,11 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.input.touch.controller.MultiTouch;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import android.transition.Scene;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -21,6 +23,8 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	private static final int CAMERA_WIDTH = 720;
 	private static final int CAMERA_HEIGHT = 480;
 
+	public long[] frameduration =  {200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200};
+	
 	private Camera camera;
 	
 	//Assorted Variables
@@ -28,6 +32,7 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	Vector2 velocity, sprite1,sprite2;
 	float velX,velY,speed = 50;
 	boolean mCollided = false;
+	private Scene mScene;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() 
@@ -63,11 +68,12 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 
     @Override
 	public void onPopulateScene(org.andengine.entity.scene.Scene pScene,
-			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
+			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception 
+	{
 	   this.mEngine.registerUpdateHandler(this);
 	   pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
-
+    
 	public void onUpdate(float pSecondsElapsed) 
 	{
 		/*if(mCollided == true)
