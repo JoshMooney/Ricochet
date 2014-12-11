@@ -27,6 +27,17 @@ function MainMenuScene()
 	this.playSizeX = this.multiSizeX = this.exitSizeX = 300;
 	this.playSizeY = this.multiSizeY = this.exitSizeY = 90;
 
+	this.animatedImageSourceX = 0;
+	this.animatedImageSourceY = 0;
+	this.animatedImageWidth = 400;
+	this.animatedImageHeight = 150;
+	this.animatedImageClock = 0;
+	this.animatedImageClockLimit = 10;
+	this.animatedImageMaxHeight = 2400;
+
+	this.animatedImagePosX = (game.screenwidth / 2) - (this.animatedImageWidth/2);
+	this.animatedImagePosY = (game.screenheight / 9);
+
 	this.createMenu();
 	resourceManager.menuBE.play();
 	//console.log("MainMenuScene Initaliser called");
@@ -78,6 +89,24 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 	}
 }
 
+MainMenuScene.prototype.Update = function()
+{
+	this.Animate();
+}
+
+MainMenuScene.prototype.Animate = function()
+{
+	this.animatedImageClock ++;
+	if(this.animatedImageClock >= this.animatedImageClockLimit)
+	{
+		this.animatedImageClock = 0;
+		if(this.animatedImageSourceY + this.animatedImageHeight == this.animatedImageMaxHeight)
+			this.animatedImageSourceY = 0;
+		else
+			this.animatedImageSourceY += this.animatedImageHeight;
+	}
+}
+
 MainMenuScene.prototype.disposeScene = function()	
 {	
 	resourceManager.UnloadMenuResources();
@@ -86,13 +115,13 @@ MainMenuScene.prototype.disposeScene = function()
 MainMenuScene.prototype.createMenu = function()
 {
 	this.playPosX = (game.screenwidth / 2) - (this.playSizeX/2);
-	this.playPosY = (game.screenheight / 7);
+	this.playPosY = (game.screenheight / 9) * 3;
 
 	this.multiPosX = (game.screenwidth / 2) - (this.multiSizeX/2);
-	this.multiPosY = (game.screenheight / 7) * 3;
+	this.multiPosY = (game.screenheight / 9) * 5;
 
 	this.exitPosX = (game.screenwidth / 2) - (this.exitSizeX/2);
-	this.exitPosY = (game.screenheight / 7) * 5;
+	this.exitPosY = (game.screenheight / 9) * 7;
 	console.log(this.exitPosX + ", " + this.exitPosY);
 }
 
@@ -119,7 +148,17 @@ MainMenuScene.prototype.onMenuItemClicked = function(e)
 MainMenuScene.prototype.Draw = function()
 {
 	//console.log("MainMenuDraw Called:")
+	
 	game.ctx.drawImage(resourceManager.play_BUTTON, this.playPosX, this.playPosY, this.playSizeX, this.playSizeY);
 	game.ctx.drawImage(resourceManager.multi_BUTTON, this.multiPosX, this.multiPosY, this.multiSizeX, this.multiSizeY);
 	game.ctx.drawImage(resourceManager.exit_BUTTON, this.exitPosX, this.exitPosY, this.exitSizeX, this.exitSizeY);
+
+	game.ctx.drawImage(resourceManager.animatedTitle, 
+						this.animatedImageSourceX, this.animatedImageSourceY, 
+						this.animatedImageWidth, this.animatedImageHeight, 
+						this.animatedImagePosX, this.animatedImagePosY, 
+						this.animatedImageWidth, this.animatedImageHeight);
+
+	console.log(this.animatedImagePosX);
+	console.log(this.animatedImagePosY);
 }

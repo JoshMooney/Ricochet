@@ -30,6 +30,7 @@ public class GameScene extends BaseScene
 	private HUD gameHUD;
 	private PhysicsWorld physicsWorld;
 	Sprite PlayerOne;
+	Sprite PlayerTwo;
 	Sprite Projectile;
 	float x, y;
 	
@@ -98,7 +99,7 @@ public class GameScene extends BaseScene
 	private void addPlayer()
 	{
 		//PlayerOne
-		   PlayerOne = new Sprite(100, 100, ResourceManager.getInstance().mPlayerOneTextureRegion, ResourceManager.getInstance().vbom)
+		   PlayerOne = new Sprite(72, 216, ResourceManager.getInstance().mPlayerOneTextureRegion, ResourceManager.getInstance().vbom)
 		   {
 	           @Override
 	           public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
@@ -110,7 +111,7 @@ public class GameScene extends BaseScene
 	       };
 	       
 	       //PlayerTwo
-	       final Sprite mPlayerTwo = new Sprite(100, 300, ResourceManager.getInstance().mPlayerTwoTextureRegion, ResourceManager.getInstance().vbom)
+	       PlayerTwo = new Sprite(600, 216, ResourceManager.getInstance().mPlayerTwoTextureRegion, ResourceManager.getInstance().vbom)
 		   {
 	    	  @Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
@@ -122,16 +123,15 @@ public class GameScene extends BaseScene
 	    	  
 	       };
 	       
-	       
 	       //PlayerOne
 		   this.attachChild(PlayerOne);
 		   this.createPhysicsBodies(PlayerOne); 
 		   this.registerTouchArea(PlayerOne);
 		   
 		   //PlayerTwo
-		   this.attachChild(mPlayerTwo);
-		   this.registerTouchArea(mPlayerTwo);
-		   this.createPhysicsBodies(mPlayerTwo);
+		   this.attachChild(PlayerTwo);
+		   this.registerTouchArea(PlayerTwo);
+		   this.createPhysicsBodies(PlayerTwo);
 	}
 	
 	private void addProjectile(float x, float y)
@@ -148,13 +148,16 @@ public class GameScene extends BaseScene
 	{
     	// Create your Box2D bodies here.
     	final FixtureDef PLAYER_FIX = PhysicsFactory.createFixtureDef(1.5f,0.45f, 0.3f);
-    	PLAYER_FIX.restitution = 1;
+    	
+    	PLAYER_FIX.restitution = 0;
     	Body body = PhysicsFactory.createCircleBody(
  			   physicsWorld, 
  			   Player, 
  			   BodyType.DynamicBody, 
  			   PLAYER_FIX);
+    	
     	physicsWorld.registerPhysicsConnector(new PhysicsConnector(Player, body, true, true));
+    	body.setFixedRotation(true);
     	Player.setUserData(body);
     	 //body.applyLinearImpulse(velocity, body.getWorldCenter());
     }
@@ -163,16 +166,35 @@ public class GameScene extends BaseScene
 	{
 		int tileSize = 48;
 		int i; 
-		for (i = 0; i < 10; i++)
+		int Lenght = 10;
+		int Width = 15;
+		for (i = 0; i < Lenght; i++)
 		{
 			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(0, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
 			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 14, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
 		}
-		for (i = 0; i < 15; i++)
+		for (i = 0; i < Width; i++)
 		{
 			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, 0).CreateBodyAndAttach(this, physicsWorld);
 			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, tileSize * 9).CreateBodyAndAttach(this, physicsWorld);
 		}
+		
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 4).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 5).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
+		
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 4).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 5).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
+		
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 1).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 2).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 7).CreateBodyAndAttach(this, physicsWorld);
+		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 8).CreateBodyAndAttach(this, physicsWorld);
+		
+		
 	}
 	
 	/*public void setBodyPosition(final Sprite sprite, final float pX, final float pY) {

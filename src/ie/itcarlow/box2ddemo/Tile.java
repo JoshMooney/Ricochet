@@ -36,7 +36,7 @@ public class Tile extends Sprite
 	public void CreateBodyAndAttach(Scene scene, PhysicsWorld physicsworld)
 	{
 		final FixtureDef tileFixtureDef = PhysicsFactory.createFixtureDef(m_dense, m_elast, m_frict);
-		tileFixtureDef.restitution = 1;
+		tileFixtureDef.restitution = 0;
 		Body body = PhysicsFactory.createBoxBody(physicsworld, this, BodyType.StaticBody, tileFixtureDef);
 		scene.attachChild(this);
 		physicsworld.registerPhysicsConnector(new PhysicsConnector(this, body, true, true));

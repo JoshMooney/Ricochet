@@ -29,7 +29,7 @@ SceneManager.prototype.UpdateScene = function()
 	{
 		case SCENE_MENU:
 			//console.log(this.MenuScene);
-			//this.MenuScene.Update();
+			this.MenuScene.Update();
 			break;
 			
 		case SCENE_GAME:

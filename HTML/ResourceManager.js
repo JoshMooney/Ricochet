@@ -25,6 +25,9 @@ ResourceManager.prototype.UnloadGameResources = function()
 //Load & Unload Menu Resources
 ResourceManager.prototype.LoadMenuResources = function()
 {
+	this.animatedTitle = new Image();
+	this.animatedTitle.src = "../assets/gfx/AnimatedTitle.png"
+
 	this.play_BUTTON = new Image();
 	this.play_BUTTON.src = "../assets/gfx/Menu/play.png"
 

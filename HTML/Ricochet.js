@@ -119,13 +119,10 @@ Game.prototype.draw = function()
 	//Clear Canvas
 	game.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-<<<<<<< HEAD
+
 	this.ctx.strokeText("" + this.testSwipe, this.canvas.width/2 -100,50);
 
-	//touch
-=======
 	//Touch
->>>>>>> c5db279dce97ab1f45f731817b9c9e2bdc4d6eb1
 	if(touchable) {
 		for(var i=0; i<touches.length; i++)
 		{
@@ -146,7 +143,7 @@ Game.prototype.draw = function()
 	sceneManager.DrawScene();
 }
 
-<<<<<<< HEAD
+
 
 function onTouchStart(e) 
 {
@@ -159,13 +156,6 @@ function onTouchStart(e)
 			onFling(e.touches[i].clientX , e.touches[i].clientY,e.touches[i+1].clientX, e.touches[i+1].clientY);
 		}
 	}
-=======
-function onTouchStart(e) 
-{ 
-	touches = e.touches; 
-	//alert("touch!");
-	draw();
->>>>>>> c5db279dce97ab1f45f731817b9c9e2bdc4d6eb1
 }
 function onTouchMove(e) 
 {

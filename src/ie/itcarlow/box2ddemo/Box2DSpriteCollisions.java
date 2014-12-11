@@ -12,7 +12,6 @@ import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.input.touch.controller.MultiTouch;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import android.transition.Scene;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -32,7 +31,6 @@ public class Box2DSpriteCollisions extends BaseGameActivity implements IUpdateHa
 	Vector2 velocity, sprite1,sprite2;
 	float velX,velY,speed = 50;
 	boolean mCollided = false;
-	private Scene mScene;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() 
