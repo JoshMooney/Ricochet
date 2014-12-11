@@ -116,12 +116,16 @@ Game.prototype.initCanvas = function()
 
 Game.prototype.draw = function()
 {
-	/*Clear*/
+	//Clear Canvas
 	game.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+<<<<<<< HEAD
 	this.ctx.strokeText("" + this.testSwipe, this.canvas.width/2 -100,50);
 
 	//touch
+=======
+	//Touch
+>>>>>>> c5db279dce97ab1f45f731817b9c9e2bdc4d6eb1
 	if(touchable) {
 		for(var i=0; i<touches.length; i++)
 		{
@@ -142,6 +146,7 @@ Game.prototype.draw = function()
 	sceneManager.DrawScene();
 }
 
+<<<<<<< HEAD
 
 function onTouchStart(e) 
 {
@@ -154,12 +159,17 @@ function onTouchStart(e)
 			onFling(e.touches[i].clientX , e.touches[i].clientY,e.touches[i+1].clientX, e.touches[i+1].clientY);
 		}
 	}
+=======
+function onTouchStart(e) 
+{ 
+	touches = e.touches; 
+	//alert("touch!");
+	draw();
+>>>>>>> c5db279dce97ab1f45f731817b9c9e2bdc4d6eb1
 }
-
-
- 
-function onTouchMove(e) {
-	 // Prevent the browser from doing its default thing (scroll, zoom)
+function onTouchMove(e) 
+{
+	// Prevent the browser from doing its default thing (scroll, zoom)
 	e.preventDefault();
 	touches = e.touches; 
 	if(touchable && touches.length >= 2) {
@@ -171,9 +181,8 @@ function onTouchMove(e) {
 		}
 	}
 } 
- 
-function onTouchEnd(e) { 
-   
+function onTouchEnd(e) 
+{ 
    	touches = e.touches; 
    	//onFling(e.touches[0].clientX , e.touches[0].clientY,e.touches[1].clientX, e.touches[1].clientY);
    	//touch
@@ -186,6 +195,7 @@ function onTouchEnd(e) {
 		}
 	}
    	game.testSwipe = "End";
+
 }
 
 function rgb(r, g, b) 

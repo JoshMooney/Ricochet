@@ -16,7 +16,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
@@ -42,7 +41,14 @@ public class ResourceManager
 	public Sound respawnSE, ricochetSE, shootSE, gameoverSE, gamewinSE;
 	
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
+	
+	private BuildableBitmapTextureAtlas hudTextureAtlas;
 	public ITextureRegion hudSprite;
+	
+	
+	//Projectile
+	private BuildableBitmapTextureAtlas ProjectileAtlas;
+	public ITextureRegion mProjectileRegion;
 	
 	//PlayerOne
 	private BuildableBitmapTextureAtlas PlayerOneAtlas;
@@ -85,16 +91,22 @@ public class ResourceManager
 	public void LoadGameResources()
 	{
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 200, 100, TextureOptions.BILINEAR);
+		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
 		
+		//HUD Assets
+		hudTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
 		hudSprite = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "Menue.png");
 	
 		//PlayerOne
-        PlayerOneAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65);  
+        PlayerOneAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 50, 50);  
         mPlayerOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "playerOne.png");
         
+        //Projectile
+        ProjectileAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 25, 25);  
+        mProjectileRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "Projectile.png");
+        
         //PlayerTwo
-        PlayerTwoAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 65, 65);  
+        PlayerTwoAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 50, 50);  
         mPlayerTwoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerTwoAtlas, activity, "playerTwo.png");
 	
         LoadGameAudio();
