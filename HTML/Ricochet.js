@@ -116,12 +116,10 @@ Game.prototype.initCanvas = function()
 
 Game.prototype.draw = function()
 {
-	/*Clear*/
+	//Clear Canvas
 	game.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-	//this.ctx.strokeText("Player | AI Player",this.canvas.width/2 -100,50);
-
-	//touch
+	//Touch
 	if(touchable) {
 		for(var i=0; i<touches.length; i++)
 		{
@@ -142,28 +140,22 @@ Game.prototype.draw = function()
 	sceneManager.DrawScene();
 }
 
-
-function onTouchStart(e) {
- 
+function onTouchStart(e) 
+{ 
 	touches = e.touches; 
 	//alert("touch!");
 	draw();
-
 }
-
-
- 
-function onTouchMove(e) {
-	 // Prevent the browser from doing its default thing (scroll, zoom)
+function onTouchMove(e) 
+{
+	// Prevent the browser from doing its default thing (scroll, zoom)
 	e.preventDefault();
 	touches = e.touches; 
 	onFling(e.touches[0].pageX, e.touches[0].pageY,e.touches[1].pageX, e.touches[1].pageY);
 } 
- 
-function onTouchEnd(e) { 
-   
+function onTouchEnd(e) 
+{ 
    	touches = e.touches; 
-   
 }
 
 function rgb(r, g, b) 

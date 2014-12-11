@@ -33,18 +33,20 @@ public class GameScene extends BaseScene
 		createHUD();
 		createListener();
 		createPhysics();
-		addPlayer();
+		
 		createTiles();
+		addPlayer();
 		//camera.setChaseEntity(playerSprite);	//We are not using this
 	}
 
-	private void createListener() {
+	private void createListener() 
+	{
 		configGestureDetection();
 	}
 	
-	public void onBackPressed() {
+	public void onBackPressed() 
+	{
 		// TODO Auto-generated method stub
-		
 	}
 
 	public void disposeScene() 
@@ -72,7 +74,6 @@ public class GameScene extends BaseScene
 	
 	private void addPlayer()
 	{
-
 		//PlayerOne
 		   final Sprite PlayerOne = new Sprite(100, 100, ResourceManager.getInstance().mPlayerOneTextureRegion, ResourceManager.getInstance().vbom)
 		   {
@@ -110,32 +111,39 @@ public class GameScene extends BaseScene
 		   this.createPhysicsBodies(mPlayerTwo);
 	}
 	
-	private void createPhysicsBodies(final Sprite Playerone) {
+	private void createPhysicsBodies(final Sprite Player) 
+	{
     	// Create your Box2D bodies here.
     	final FixtureDef PLAYER_FIX = PhysicsFactory.createFixtureDef(1.5f,0.45f, 0.3f);
+    	PLAYER_FIX.restitution = 1;
     	Body body = PhysicsFactory.createCircleBody(
- 			   physicsWorld, Playerone, BodyType.DynamicBody, 
+ 			   physicsWorld, 
+ 			   Player, 
+ 			   BodyType.DynamicBody, 
  			   PLAYER_FIX);
-    	physicsWorld.registerPhysicsConnector(new PhysicsConnector(Playerone, body, true, true));
-    	 Playerone.setUserData(body);
+    	physicsWorld.registerPhysicsConnector(new PhysicsConnector(Player, body, true, true));
+    	Player.setUserData(body);
     	 //body.applyLinearImpulse(velocity, body.getWorldCenter());
-
-
     }
 	
 	private void createTiles()
 	{
 		int tileSize = 48;
-
-		for (int i = 0; i < 10; i++)
+		int i; 
+		for (i = 0; i < 10; i++)
 		{
-			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(0, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
-			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 14, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(0, tileSize * i).CreateBodyAndAttach(this, physicsWorld,1);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 14, tileSize * i).CreateBodyAndAttach(this, physicsWorld,1);
 		}
-		for (int i = 0; i < 15; i++)
+		for (i = 0; i < 15; i++)
 		{
-			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, 0).CreateBodyAndAttach(this, physicsWorld);
-			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, tileSize * 9).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, 0).CreateBodyAndAttach(this, physicsWorld,1);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, tileSize * 9).CreateBodyAndAttach(this, physicsWorld,1);
+		}
+		for (i = 1; i < 9; i++)
+		{
+			for(int j = 1; j < 14; j++)
+				ResourceManager.getInstance().tileManager.getTileByID(2).getInstance(tileSize * j, tileSize * i).CreateBodyAndAttach(this, physicsWorld,0);
 		}
 	}
 	
@@ -234,9 +242,5 @@ public class GameScene extends BaseScene
 
 	  setOnSceneTouchListener(surfaceGestureDetector);
 	 }
-
-	
-	
-	
 	
 }
