@@ -31,6 +31,7 @@ public class GameScene extends BaseScene
 		//configGestureDetection();
 		setBackground();
 		createHUD();
+		createListener();
 		createPhysics();
 		addPlayer();
 		createTiles();
@@ -38,7 +39,7 @@ public class GameScene extends BaseScene
 	}
 
 	private void createListener() {
-		getOnSceneTouchListener();
+		configGestureDetection();
 	}
 	
 	public void onBackPressed() {
@@ -163,7 +164,7 @@ public class GameScene extends BaseScene
         body.setTransform(v2, angle);
         Vector2Pool.recycle(v2);
     }
-/*
+
 	private void configGestureDetection() {
 		activity.runOnUiThread(new Runnable() {
 			
@@ -237,5 +238,5 @@ public class GameScene extends BaseScene
 	
 	
 	
-	*/
+	
 }

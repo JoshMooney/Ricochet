@@ -1,10 +1,11 @@
 
 function GameScene()
 {
-	this.createScene();
+
 	resourceManager.gameBE.play();
 	this.playerLifes = 3;
 	this.score = 0;
+	this.createScene();
 	console.log("GameScene Initaliser called");
 }
 
@@ -50,7 +51,7 @@ GameScene.prototype.createPhysics = function(e)
 
 GameScene.prototype.addPlayer = function(e)
 {
-	this.playerOne = new Player(game.Scale, game.screenwidth, game.screenheight);
+	this.playerOne = new Player(Scale, game.screenwidth, game.screenheight);
 }
 
 GameScene.prototype.createTiles = function(e)
