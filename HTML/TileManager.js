@@ -1,9 +1,11 @@
 var tiles = new Array();
+
 var tileIndex = 0;
 
 function TileManager()
 {
-	
+	this.tileWidth = 0;
+	this.tileHeight = 0;
 }
 
 TileManager.prototype.getTileByID = function(id)
@@ -16,7 +18,8 @@ TileManager.prototype.getTileByID = function(id)
 
 TileManager.prototype.createTile = function(x, y)
 {
-	tiles[tileIndex] = new Tile("Wall", tileIndex, x, y, resourceManager.tile_wall);
+	console.log(this.tileHeight);
+	tiles[tileIndex] = new Tile("Wall", tileIndex, x, y, resourceManager.tile_wall, this.tileWidth, this.tileHeight);
 	tileIndex++;
 	//console.log(tiles[1]);
 }
