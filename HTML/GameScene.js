@@ -15,7 +15,7 @@ GameScene.prototype.createScene = function()
 	//createHUD();
 	//createPhysics();
 	this.addPlayer();
-	//createTiles();
+	this.createTiles();
 }
 
 GameScene.prototype.getClickPosiiton = function(e)
@@ -54,8 +54,24 @@ GameScene.prototype.addPlayer = function(e)
 	this.playerOne = new Player(Scale, game.screenwidth, game.screenheight);
 }
 
-GameScene.prototype.createTiles = function(e)
+GameScene.prototype.createTiles = function()
 {
+	var tileSize = 48;
+	var i; 
+	var Lenght = 10;
+	var Width = 15;
+	for (i = 0; i < Lenght; i++)
+	{
+		tileManager.createTile(0,tileSize * i);
+		tileManager.createTile(14 * tileSize, tileSize * i);
+	}
+	for (i = 0; i < Width; i++)
+	{
+		tileManager.createTile(tileSize * i,0);
+		tileManager.createTile(i * tileSize, tileSize * 9);
+	}
+	
+	
 
 }
 
@@ -73,6 +89,9 @@ GameScene.prototype.Draw = function()
 	game.ctx.drawImage(resourceManager.SpriteBackGround, 0, game.canvas.height - 90, 228, 100);
 	game.ctx.strokeText("Score : " + this.score, 10, game.canvas.height - 50);
 	game.ctx.strokeText("Lives : ", 10, game.canvas.height - 20);
+
+	//Draw tiles
+	tileManager.draw();
 
 	//Lives On HUD
 	switch(this.playerLifes)

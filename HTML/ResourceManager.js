@@ -46,7 +46,11 @@ ResourceManager.prototype.UnloadMenuResources = function()
 //Tile Resources
 ResourceManager.prototype.LoadTileResources = function()
 {
-	//Create a new Instance of Tilemanager
+    this.wall = new Image();
+    this.wall.src = "../assets/gfx/Map/Wall.png"
+    this.floor = new Image();
+    this.floor.src = "../assets/gfx/Map/Floor.png"
+    
 }
 ResourceManager.prototype.UnloadTileResources = function()
 {
