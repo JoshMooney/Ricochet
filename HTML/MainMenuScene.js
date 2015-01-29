@@ -122,7 +122,7 @@ MainMenuScene.prototype.createMenu = function()
 
 	this.exitPosX = (game.screenwidth / 2) - (this.exitSizeX/2);
 	this.exitPosY = (game.screenheight / 9) * 7;
-	console.log(this.exitPosX + ", " + this.exitPosY);
+	//console.log(this.exitPosX + ", " + this.exitPosY);
 }
 
 MainMenuScene.prototype.onMenuItemClicked = function(e)
@@ -159,6 +159,6 @@ MainMenuScene.prototype.Draw = function()
 						this.animatedImagePosX, this.animatedImagePosY, 
 						this.animatedImageWidth, this.animatedImageHeight);
 
-	console.log(this.animatedImagePosX);
-	console.log(this.animatedImagePosY);
+	//console.log(this.animatedImagePosX);
+	//.log(this.animatedImagePosY);
 }
