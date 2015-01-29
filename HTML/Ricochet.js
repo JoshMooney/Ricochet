@@ -1,6 +1,7 @@
 var game;
 var sceneManager;
 var resourceManager;
+var tileManager;
 
 //gestures
 var SWIPE_MIN_DISTANCE = 10;
@@ -81,6 +82,7 @@ function main()
 {
 	game = new Game();
 	resourceManager = new ResourceManager();
+	tileManager = new TileManager();
 	sceneManager = new SceneManager();
 	game.initCanvas();
 	game.Inisalise();
