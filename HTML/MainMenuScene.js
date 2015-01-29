@@ -159,6 +159,5 @@ MainMenuScene.prototype.Draw = function()
 						this.animatedImagePosX, this.animatedImagePosY, 
 						this.animatedImageWidth, this.animatedImageHeight);
 
-	//console.log(this.animatedImagePosX);
-	//.log(this.animatedImagePosY);
+
 }

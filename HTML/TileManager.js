@@ -1,4 +1,5 @@
 var tiles = new Array();
+var tileIndex = 0;
 
 function TileManager()
 {
@@ -15,12 +16,15 @@ TileManager.prototype.getTileByID = function(id)
 
 TileManager.prototype.createTile = function(x, y)
 {
-	tiles.push(new Tile("Wall", tiles.lenght, x, y, ResourceManager.wall));
+	tiles[tileIndex] = new Tile("Wall", tileIndex, x, y, resourceManager.tile_wall);
+	tileIndex++;
+	//console.log(tiles[1]);
 }
 
 TileManager.prototype.draw = function()
 {
-	for(i = 0; i < tiles.lenght; i++)
+	console.log(tiles.length);
+	for(i = 0; i < tiles.length; i++)
 	{
 		tiles[i].draw();
 	}

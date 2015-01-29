@@ -137,6 +137,7 @@ Game.prototype.draw = function()
 			game.ctx.lineWidth = "6";
 			game.ctx.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true); 
 			game.ctx.stroke();
+			sceneManager.MenuScene.getClickPosiiton(touch);
 		}
 	} else {
 		game.ctx.fillStyle	 = "black"; 
