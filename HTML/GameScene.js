@@ -1,3 +1,4 @@
+var playerOne;
 
 function GameScene()
 {
@@ -14,7 +15,7 @@ GameScene.prototype.createScene = function()
 	//configGestureDetection();
 	//createHUD();
 	//createPhysics();
-	this.addPlayer();
+	this.addPlayers();
 	this.createTiles("Level 1");
 }
 
@@ -49,9 +50,10 @@ GameScene.prototype.createPhysics = function(e)
 
 }
 
-GameScene.prototype.addPlayer = function(e)
+GameScene.prototype.addPlayers = function(e)
 {
-	this.playerOne = new Player(Scale, game.screenwidth, game.screenheight);
+	playerOne = new AnimatedPlayer(100,100, Scale, game.screenwidth, game.screenheight);
+	this.OtherPlayer = new OtherPlayer(500,500);
 }
 
 GameScene.prototype.calculateTileSizes = function()
@@ -107,13 +109,15 @@ GameScene.prototype.createTiles = function(e)
 
 GameScene.prototype.Update = function()
 {
-	this.playerOne.Update();
+	playerOne.Update();
+	document.addEventListener("keydown", function(e){playerOne.Move(e);} );
 }
 
 GameScene.prototype.Draw = function()
 {
 	game.ctx.font = "30px Arial";
-	this.playerOne.Draw();
+	playerOne.Draw();
+	this.OtherPlayer.Draw();
 	
 	//HUD Background
 	game.ctx.drawImage(resourceManager.SpriteBackGround, 0, game.canvas.height - 90, 228, 100);
