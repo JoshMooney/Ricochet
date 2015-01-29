@@ -1,4 +1,4 @@
-	this.tileSize = 48;
+	var tileSize = 64;
 	
 	function Tile(name, id, x, y, texture)
 	{
@@ -26,6 +26,6 @@
 
 	Tile.prototype.draw = function()
 	{
-		game.ctx.drawImage(this.m_texture, this.tileSize, this.tileSize, this.x, this.y);
+		game.ctx.drawImage(this.m_texture, this.m_x, this.m_y, tileSize, tileSize);
 	}
 

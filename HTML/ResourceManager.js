@@ -46,10 +46,10 @@ ResourceManager.prototype.UnloadMenuResources = function()
 //Tile Resources
 ResourceManager.prototype.LoadTileResources = function()
 {
-    this.wall = new Image();
-    this.wall.src = "../assets/gfx/Map/Wall.png"
-    this.floor = new Image();
-    this.floor.src = "../assets/gfx/Map/Floor.png"
+    this.tile_wall = new Image();
+    this.tile_wall.src = "../assets/gfx/Map/Wall.png"
+    this.tile_floor = new Image();
+    this.tile_floor.src = "../assets/gfx/Map/Floor.png"
     
 }
 ResourceManager.prototype.UnloadTileResources = function()

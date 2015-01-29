@@ -56,8 +56,11 @@ GameScene.prototype.addPlayer = function(e)
 
 GameScene.prototype.createTiles = function()
 {
-	var tileSize = 48;
+	resourceManager.LoadTileResources();
+	var tileSize = 64;
 	var i; 
+	//tileManager.createTile(100,100);
+	
 	var Lenght = 10;
 	var Width = 15;
 	for (i = 0; i < Lenght; i++)
@@ -70,9 +73,6 @@ GameScene.prototype.createTiles = function()
 		tileManager.createTile(tileSize * i,0);
 		tileManager.createTile(i * tileSize, tileSize * 9);
 	}
-	
-	
-
 }
 
 GameScene.prototype.Update = function()
