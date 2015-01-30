@@ -16,7 +16,7 @@ GameScene.prototype.createScene = function()
 	//createHUD();
 	//createPhysics();
 	this.addPlayers();
-	this.createTiles();
+	this.createTiles("Level 1");
 }
 
 GameScene.prototype.getClickPosiiton = function(e)
@@ -56,24 +56,54 @@ GameScene.prototype.addPlayers = function(e)
 	this.OtherPlayer = new OtherPlayer(500,500);
 }
 
-GameScene.prototype.createTiles = function()
+GameScene.prototype.calculateTileSizes = function()
+{
+	if(game.screenwidth > 200)
+		tileManager.tileWidth = game.screenwidth / 22;
+	else
+		tileManager.tileWidth = 16
+	if(game.screenheight > 200)
+		tileManager.tileHeight = game.screenheight / 12;
+	else
+		tileManager.tileHeight = 16
+}
+
+GameScene.prototype.createTiles = function(e)
 {
 	resourceManager.LoadTileResources();
-	var tileSize = 64;
-	var i; 
-	//tileManager.createTile(100,100);
+	this.calculateTileSizes();
+	if(e == "Level 1")
+	{
+
+		var i; 
+		//tileManager.createTile(100,100);
 	
-	var Lenght = 10;
-	var Width = 15;
-	for (i = 0; i < Lenght; i++)
-	{
-		tileManager.createTile(0,tileSize * i);
-		tileManager.createTile(14 * tileSize, tileSize * i);
-	}
-	for (i = 0; i < Width; i++)
-	{
-		tileManager.createTile(tileSize * i,0);
-		tileManager.createTile(i * tileSize, tileSize * 9);
+		var Lenght = 10;
+		var Width = 15;
+		for (i = 0; i < Lenght; i++)
+		{
+			tileManager.createTile(0, tileManager.tileHeight * i);
+			tileManager.createTile(14 * tileManager.tileWidth, tileManager.tileHeight * i);
+		}
+		for (i = 0; i < Width; i++)
+		{
+			tileManager.createTile(tileManager.tileWidth * i,0);
+			tileManager.createTile(i * tileManager.tileWidth, tileManager.tileHeight * 9);
+		}
+		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 3);
+		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 4);
+		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 5);
+		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 6);
+
+		tileManager.createTile(tileManager.tileWidth * 11, tileManager.tileHeight * 3);
+		tileManager.createTile(tileManager.tileWidth * 11, tileManager.tileHeight * 4);
+		tileManager.createTile(tileManager.tileWidth * 11, tileManager.tileHeight * 5);
+		tileManager.createTile(tileManager.tileWidth * 11, tileManager.tileHeight * 6);
+
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 1);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 2);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 7);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 8);
 	}
 }
 
