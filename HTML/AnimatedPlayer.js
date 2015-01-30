@@ -57,7 +57,7 @@ AnimatedPlayer.prototype.Move = function(e)
 		this.pos.y = this.m_y;
 		this.Body.GetBody().SetPosition(this.pos);
 	}
-	console.log("Move called" + this.pos.x " ," + this.pos.y "");
+	console.log("Move called" + this.pos.x + " ," + this.pos.y + "");
 }
 
 AnimatedPlayer.prototype.Update = function()
