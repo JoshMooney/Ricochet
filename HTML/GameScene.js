@@ -16,6 +16,7 @@ GameScene.prototype.createScene = function()
 	//createHUD();
 	//createPhysics();
 	this.addPlayers();
+	console.log("addPlayers() called");
 	this.createTiles("Level 1");
 }
 
@@ -52,8 +53,9 @@ GameScene.prototype.createPhysics = function(e)
 
 GameScene.prototype.addPlayers = function(e)
 {
-	playerOne = new AnimatedPlayer(100,100, Scale, game.screenwidth, game.screenheight);
-	this.OtherPlayer = new OtherPlayer(500,500);
+	console.log("addPlayers()");
+	playerOne = new AnimatedPlayer(game.screenwidth/3,game.screenheight/2, Scale, game.screenwidth, game.screenheight);
+	this.OtherPlayer = new OtherPlayer(game.screenwidth/3,game.screenheight/2);
 }
 
 GameScene.prototype.calculateTileSizes = function()

@@ -18,7 +18,7 @@ TileManager.prototype.getTileByID = function(id)
 
 TileManager.prototype.createTile = function(x, y)
 {
-	console.log(this.tileHeight);
+	//console.log(this.tileHeight);
 	tiles[tileIndex] = new Tile("Wall", tileIndex, x, y, resourceManager.tile_wall, this.tileWidth, this.tileHeight);
 	tileIndex++;
 	//console.log(tiles[1]);
@@ -26,7 +26,7 @@ TileManager.prototype.createTile = function(x, y)
 
 TileManager.prototype.draw = function()
 {
-	console.log(tiles.length);
+	//console.log(tiles.length);
 	for(i = 0; i < tiles.length; i++)
 	{
 		tiles[i].draw();

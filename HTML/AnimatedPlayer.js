@@ -26,6 +26,7 @@ function AnimatedPlayer(x, y, Scale, CANVAS_WIDTH, CANVAS_HEIGHT)//Base Class fo
     	image: this.Sprite
 	});
 	this.animationPosX = 0;
+	console.log("AnimatedPlayers()");
 }
 
 function sprite (options) {
@@ -45,19 +46,21 @@ AnimatedPlayer.prototype.Move = function(e)
 	/*console.log(this);*/
 	if(this.ai == false)
 	{
-		if(e.keyCode == 104) // Up Key
+		this.m_x = this.pos.x;
+		this.m_y = this.pos.y;
+		if(e.keyCode == 38) // Up Key
 			this.m_y -= this.speed;
-		if(e.keyCode == 98) // Down Key
+		if(e.keyCode == 40) // Down Key
 			this.m_y += this.speed;
-		if(e.keyCode == 100) // Left Key
+		if(e.keyCode == 37) // Left Key
 			this.m_x -= this.speed;
-		if(e.keyCode == 102) // Right Key
+		if(e.keyCode == 39) // Right Key
 			this.m_x += this.speed;
 		this.pos.x = this.m_x;
 		this.pos.y = this.m_y;
 		this.Body.GetBody().SetPosition(this.pos);
 	}
-	console.log("Move called" + this.pos.x + " ," + this.pos.y + "");
+	console.log("Move called x" + this.pos.x + " , y " + this.pos.y + "");
 }
 
 AnimatedPlayer.prototype.Update = function()
@@ -70,6 +73,7 @@ AnimatedPlayer.prototype.Update = function()
 		this.animationPosX = 81;
 	else 
 		this.animationPosX = 0;
+
 }
 
 
