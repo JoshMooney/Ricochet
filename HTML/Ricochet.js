@@ -2,6 +2,8 @@ var game;
 var sceneManager;
 var resourceManager;
 var tileManager;
+var touchStart;
+var touchEnd;
 
 //gestures
 var SWIPE_MIN_DISTANCE = 10;
@@ -33,7 +35,7 @@ function Game()
 	this.screenwidth = window.innerWidth;
 	this.screenheight = window.innerHeight;
 
-	this.testSwipe = "no swipe"; 
+	this.testSwipe = "default"; 
 }
 
 Game.prototype.Inisalise = function()
@@ -53,7 +55,8 @@ function setupTouch()
 		window.onresize = resetCanvas;  
 	} 
 	else {
-		console.log("not touchable");		
+		console.log("not touchable");
+		document.addEventListener("keyup", function(e){sceneManager.GameScene.playerOne.Move(e);} );	
 		document.addEventListener("click", function(e){sceneManager.MenuScene.getClickPosiiton(e);} );
 	}
 }
@@ -122,7 +125,7 @@ Game.prototype.draw = function()
 	game.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
 
-	this.ctx.strokeText("" + this.testSwipe, this.canvas.width/2 -100,50);
+	this.ctx.strokeText("" + this.testSwipe, this.canvas.width/2,this.canvas.height/4 * 3);
 
 	//Touch
 	if(touchable) {
@@ -134,7 +137,7 @@ Game.prototype.draw = function()
 			game.ctx.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30); 
 			game.ctx.beginPath(); 
 			game.ctx.strokeStyle = "red";
-			game.ctx.lineWidth = "6";
+			game.ctx.lineWidth = "1";
 			game.ctx.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true); 
 			game.ctx.stroke();
 			sceneManager.MenuScene.getClickPosiiton(touch);
@@ -150,19 +153,13 @@ Game.prototype.draw = function()
 
 function onTouchStart(e) 
 {
+	touchStart = e.touches[0];
 	touches = e.touches;
-	if(touchable && touches.length >= 2) {
-		for(var i=0; i<touches.length; i++)
-		{
-			game.testSwipe = "*********************" + touches.length;
-			var touch = touches[i]; 
-			onFling(e.touches[i].clientX , e.touches[i].clientY,e.touches[i+1].clientX, e.touches[i+1].clientY);
-		}
-	}
+	game.testSwipe = "Record start";
 }
 function onTouchMove(e) 
 {
-	// Prevent the browser from doing its default thing (scroll, zoom)
+	/*// Prevent the browser from doing its default thing (scroll, zoom)
 	e.preventDefault();
 	touches = e.touches; 
 	if(touchable && touches.length >= 2) {
@@ -172,21 +169,14 @@ function onTouchMove(e)
 			var touch = touches[i]; 
 			onFling(e.touches[i].clientX , e.touches[i].clientY,e.touches[i+1].clientX, e.touches[i+1].clientY);
 		}
-	}
+	}*/
 } 
 function onTouchEnd(e) 
 { 
+   	touchEnd = e.touches[1];
    	touches = e.touches; 
-   	//onFling(e.touches[0].clientX , e.touches[0].clientY,e.touches[1].clientX, e.touches[1].clientY);
-   	//touch
-	if(touchable && touches.length >= 2) {
-		for(var i=0; i<touches.length; i++)
-		{
-			game.testSwipe = "E N D" + touches.length;
-			var touch = touches[i]; 
-			onFling(e.touches[i].clientX , e.touches[i].clientY,e.touches[i+1].clientX, e.touches[i+1].clientY);
-		}
-	}
+   	onFling(touchStart.clientX, touchStart.clientY, touchEnd.clientX, touchEnd.clientY);
+   
    	game.testSwipe = "End";
 
 }

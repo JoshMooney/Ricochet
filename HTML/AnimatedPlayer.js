@@ -29,8 +29,6 @@ function AnimatedPlayer(x, y, w, h)//Base Class for Player and Enemy to inherate
     	image: this.Sprite
 	});
 	this.animationPosX = 0;
-
-	console.log("Player Created");
 }
 
 function sprite (options) 
@@ -63,7 +61,6 @@ AnimatedPlayer.prototype.Move = function(e)
 		this.pos.y = this.m_y;
 		this.Body.GetBody().SetPosition(this.pos);
 	}
-	//console.log("Move called" + this.pos.x + " ," + this.pos.y + "");
 }
 
 AnimatedPlayer.prototype.Update = function()

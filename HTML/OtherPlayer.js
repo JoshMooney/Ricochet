@@ -13,6 +13,7 @@ function OtherPlayer(x, y)
 	this.m_width = 20;
 	this.m_height = 200;
 	this.speed = 50;
+	console.log("otherPlayers()");
 }
 
 OtherPlayer.prototype.Move = function(e)
