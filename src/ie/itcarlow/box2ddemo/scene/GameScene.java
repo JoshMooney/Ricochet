@@ -17,6 +17,7 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.detector.SurfaceGestureDetector;
 import org.andengine.util.color.Color;
 
+import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -32,7 +33,7 @@ public class GameScene extends BaseScene
 	Sprite PlayerOne;
 	Sprite PlayerTwo;
 	Sprite Projectile;
-	float x, y;
+	float destinationX, destinationY;
 	
 	public void createScene() 
 	{
@@ -223,7 +224,25 @@ public class GameScene extends BaseScene
         body.applyLinearImpulse((pX-sprite.getX())/speed, (pY-sprite.getY())/speed, pX, pY);
     }
 	
+	public void MoveToPosition(final Sprite sprite, final float pX, final float pY) {
+		float speed = 50;	
+        double angle = calcAngleBetweenPoints(new Vector2(sprite.getX(), sprite.getY()), new Vector2(pX, pY));
+        double distance = speed;
+        Vector2 velocityPoint = getVelocity(angle, distance);
+        sprite.setPosition(sprite.getX() + velocityPoint.x, sprite.getY() + velocityPoint.y);
+    }
     
+	
+	public static final double calcAngleBetweenPoints(Vector2 p1, Vector2 p2)
+    {
+        return Math.toDegrees( Math.atan2( p2.y-p1.y, p2.x-p1.x ) );
+    }
+
+    public static final Vector2 getVelocity(double angle, double speed){
+        double x = Math.cos(Math.toRadians(angle))*speed;
+        double y = Math.sin(Math.toRadians(angle))*speed;
+        return (new Vector2((float)x, (float)y));
+    }
 
 	private void configGestureDetection() {
 		activity.runOnUiThread(new Runnable() {
@@ -280,7 +299,7 @@ public class GameScene extends BaseScene
 			@Override
 			 protected boolean onSingleTap() {
 			 System.out.println("onSingleTap");
-			 setBodyPosition(PlayerOne,x,y);
+			 MoveToPosition(PlayerOne,destinationX,destinationY);
 			 return true;
 			}
 		
@@ -299,9 +318,9 @@ public class GameScene extends BaseScene
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {    
 				if(pSceneTouchEvent.getAction() == MotionEvent.ACTION_DOWN)
 		        {
-					System.out.println("Move");
-					x = pSceneTouchEvent.getX();
-					y = pSceneTouchEvent.getY();
+					System.out.println("Move destination set");
+					destinationX = pSceneTouchEvent.getX();
+					destinationY = pSceneTouchEvent.getY();
 		        }
 				return super.onSceneTouchEvent(pScene, pSceneTouchEvent);
 			}

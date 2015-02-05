@@ -121,16 +121,17 @@ public class ResourceManager
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
 		
 		//HUD Assets
-		hudTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
-		hudSprite = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "Menue.png");
+		hudTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 228, 100, TextureOptions.BILINEAR);
+		hudSprite = BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudTextureAtlas, activity, "Menue.png");
 	
 		//PlayerOne
         PlayerOneAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 50, 50);  
         mPlayerOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "playerOne.png");
         
+        
         //Projectile
         ProjectileAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 25, 25);  
-        mProjectileRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "Projectile.png");
+        mProjectileRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(ProjectileAtlas, activity, "Projectile.png");
         
         //PlayerTwo
         PlayerTwoAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 50, 50);  
@@ -140,6 +141,10 @@ public class ResourceManager
 		try{
 			gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
 			gameTextureAtlas.load();
+			hudTextureAtlas.load();
+			PlayerOneAtlas.load();	
+			ProjectileAtlas.load();
+			PlayerTwoAtlas.load();
 		}
 		catch (Exception e){
 			Debug.e(e);
