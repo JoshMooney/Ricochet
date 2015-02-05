@@ -1,6 +1,6 @@
 var MENU_PLAY = 0;
 var MENU_MULTI = 1;
-var MENU_EXIT = 2;
+var MENU_DEV = 2;
 
 //Button varibles
 var playPosX;
@@ -13,19 +13,19 @@ var multiPosY;
 var multiSizeX;
 var multiSizeY;
 
-var exitPosX;
-var exitPosY;
-var exitSizeX;
-var exitSizeY;
+var devPosX;
+var devPosY;
+var devSizeX;
+var devSizeY;
 
 function MainMenuScene()
 {
 	this.MENU_PLAY = 0;
 	this.MENU_MULTI = 1;
-	this.MENU_EXIT = 2;
+	this.MENU_DEV = 2;
 
-	this.playSizeX = this.multiSizeX = this.exitSizeX = 300;
-	this.playSizeY = this.multiSizeY = this.exitSizeY = 90;
+	this.playSizeX = this.multiSizeX = this.devSizeX = 300;
+	this.playSizeY = this.multiSizeY = this.devSizeY = 90;
 
 	this.animatedImageSourceX = 0;
 	this.animatedImageSourceY = 0;
@@ -80,12 +80,12 @@ MainMenuScene.prototype.CheckButtonTouch = function(x, y)
 			console.log("MENU_Multi")
 	}
 
-	if (x > this.exitPosX && x < this.exitPosX + this.exitSizeX &&
-		y > this.exitPosY && y < this.exitPosY + this.exitSizeY)
+	if (x > this.devPosX && x < this.devPosX + this.devSizeX &&
+		y > this.devPosY && y < this.devPosY + this.devSizeY)
 	{
 			resourceManager.selectSE.play();
-			this.onMenuItemClicked(2);
-			console.log("MENU_EXIT")
+			this.onMenuItemClicked(this.MENU_DEV);
+			console.log("MENU_DEV")
 	}
 }
 
@@ -120,8 +120,8 @@ MainMenuScene.prototype.createMenu = function()
 	this.multiPosX = (game.screenwidth / 2) - (this.multiSizeX/2);
 	this.multiPosY = (game.screenheight / 9) * 5;
 
-	this.exitPosX = (game.screenwidth / 2) - (this.exitSizeX/2);
-	this.exitPosY = (game.screenheight / 9) * 7;
+	this.devPosX = (game.screenwidth / 2) - (this.devSizeX/2);
+	this.devPosY = (game.screenheight / 9) * 7;
 	//console.log(this.exitPosX + ", " + this.exitPosY);
 }
 
@@ -138,7 +138,7 @@ MainMenuScene.prototype.onMenuItemClicked = function(e)
 			//sceneManager.setMultiplayerScene();
 			break;
 
-		case this.MENU_EXIT:
+		case this.MENU_DEV:
 			//sceneManager.setInfoScene();
 			break;
 	}
@@ -151,7 +151,7 @@ MainMenuScene.prototype.Draw = function()
 	
 	game.ctx.drawImage(resourceManager.play_BUTTON, this.playPosX, this.playPosY, this.playSizeX, this.playSizeY);
 	game.ctx.drawImage(resourceManager.multi_BUTTON, this.multiPosX, this.multiPosY, this.multiSizeX, this.multiSizeY);
-	game.ctx.drawImage(resourceManager.exit_BUTTON, this.exitPosX, this.exitPosY, this.exitSizeX, this.exitSizeY);
+	game.ctx.drawImage(resourceManager.dev_BUTTON, this.devPosX, this.devPosY, this.devSizeX, this.devSizeY);
 
 	game.ctx.drawImage(resourceManager.animatedTitle, 
 						this.animatedImageSourceX, this.animatedImageSourceY, 

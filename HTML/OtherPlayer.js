@@ -21,9 +21,6 @@ OtherPlayer.prototype.Move = function(e)
 	//A*
 }
 
-
-
-
 OtherPlayer.prototype.Update = function()
 {
 	

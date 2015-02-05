@@ -7,7 +7,10 @@ function ResourceManager()
 ResourceManager.prototype.LoadGameResources = function()
 {
 	this.playerSprite = new Image();
-	this.playerSprite.src = "../assets/gfx/animatePlayer.png"
+	this.playerSprite.src = "../assets/gfx/playerOne.png"
+
+	this.player2Sprite = new Image();
+	this.player2Sprite.src = "../assets/gfx/playerTwo.png"
 
 	this.SpriteLives = new Image();
 	this.SpriteLives.src = "../assets/gfx/PlayerOneLives.png"
@@ -34,8 +37,8 @@ ResourceManager.prototype.LoadMenuResources = function()
 	this.multi_BUTTON = new Image();
 	this.multi_BUTTON.src = "../assets/gfx/Menu/multiplayer.png"
 
-	this.exit_BUTTON = new Image();
-	this.exit_BUTTON.src = "../assets/gfx/Menu/exit.png"
+	this.dev_BUTTON = new Image();
+	this.dev_BUTTON.src = "../assets/gfx/Menu/dev.png"
 	this.LoadMenuAudio();
 }
 ResourceManager.prototype.UnloadMenuResources = function()

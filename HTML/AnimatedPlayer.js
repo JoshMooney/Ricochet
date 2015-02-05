@@ -1,4 +1,4 @@
-function AnimatedPlayer(x, y, Scale, CANVAS_WIDTH, CANVAS_HEIGHT)//Base Class for Player and Enemy to inherate from
+function AnimatedPlayer(x, y, w, h)//Base Class for Player and Enemy to inherate from
 {
 	//Box2D Variables
 	this.fixDef = new b2FixtureDef;
@@ -7,18 +7,21 @@ function AnimatedPlayer(x, y, Scale, CANVAS_WIDTH, CANVAS_HEIGHT)//Base Class fo
 	this.fixDef.restitution = 0.2;
 	this.bodyDef = new b2BodyDef;
 	this.bodyDef.type = b2Body.b2_dynamicBody;
+
 	// positions the center of the object (not upper left!)
-	this.bodyDef.position.x = CANVAS_WIDTH / 2 / Scale;
-	this.bodyDef.position.y = CANVAS_HEIGHT / Scale;
+	this.bodyDef.position.x = x + w/2;
+	this.bodyDef.position.y = y = h/2;
 	this.fixDef.shape = new b2CircleShape(35.5);
 	this.Body = game.world.CreateBody(this.bodyDef).CreateFixture(this.fixDef);
 
 	this.ai = false;//can be used to juge if this is player or enemy
+
 	this.m_x = x;
 	this.m_y = y;
-	this.m_width = 20;
-	this.m_height = 200;
-	this.speed = 10;
+	this.m_width = w;
+	this.m_height = h;
+
+	this.speed = .01;
 	var coin = sprite({
     	context: game.ctx,
     	width: 25,
@@ -26,10 +29,10 @@ function AnimatedPlayer(x, y, Scale, CANVAS_WIDTH, CANVAS_HEIGHT)//Base Class fo
     	image: this.Sprite
 	});
 	this.animationPosX = 0;
-	console.log("AnimatedPlayers()");
 }
 
-function sprite (options) {
+function sprite (options) 
+{
 				
     var that = {};
 					
@@ -46,8 +49,6 @@ AnimatedPlayer.prototype.Move = function(e)
 	/*console.log(this);*/
 	if(this.ai == false)
 	{
-		this.m_x = this.pos.x;
-		this.m_y = this.pos.y;
 		if(e.keyCode == 38) // Up Key
 			this.m_y -= this.speed;
 		if(e.keyCode == 40) // Down Key
@@ -60,11 +61,11 @@ AnimatedPlayer.prototype.Move = function(e)
 		this.pos.y = this.m_y;
 		this.Body.GetBody().SetPosition(this.pos);
 	}
-	console.log("Move called x" + this.pos.x + " , y " + this.pos.y + "");
 }
 
 AnimatedPlayer.prototype.Update = function()
 {
+	/*
 	if(this.animationPosX == 0)
 		this.animationPosX = 26;
 	else if(this.animationPosX == 26)
@@ -73,7 +74,7 @@ AnimatedPlayer.prototype.Update = function()
 		this.animationPosX = 81;
 	else 
 		this.animationPosX = 0;
-
+	*/
 }
 
 
@@ -81,8 +82,8 @@ AnimatedPlayer.prototype.Draw = function()
 {
 	/*console.log("Draw called");*/
 	this.pos = this.Body.GetBody().GetPosition();
-
-	game.ctx.drawImage(resourceManager.playerSprite, this.animationPosX, 0, 25, 26, this.pos.x, this.pos.y, 25, 26)
+	console.log("x: " + this.m_x + "Y - " + this.m_y + "w: " + this.m_width + "h - " + this.m_height + "Text- " + resourceManager.playerSprite);
+	game.ctx.drawImage(resourceManager.playerSprite, this.m_x, this.m_y, this.m_width, this.m_height)
 	//game.ctx.drawImage(this.Sprite, this.pos.x / 32.5, this.pos.y / 32.5, 25,26);
 }
 
