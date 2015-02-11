@@ -2,12 +2,44 @@ var playerOne;
 
 var LEVEL_NUM = 1;
 
+//Button varibles
+var UpButtonPosX;
+var UpButtonPosY;
+var UpButtonSizeX;
+var UpButtonSizeY;
+var DownButtonPosX;
+var DownButtonPosY;
+var DownButtonSizeX;
+var DownButtonSizeY;
+var LeftButtonPosX;
+var LeftButtonPosY;
+var LeftButtonSizeX;
+var LeftButtonSizeY;
+var RightButtonPosX;
+var RightButtonPosY;
+var RightButtonSizeX;
+var RightButtonSizeY;
+
 function GameScene()
 {
 	resourceManager.gameBE.play();
 	this.playerLifes = 3;
 	this.score = 0;
 	this.createScene();
+	//buttons set size and location proportional to screen size
+	this.UpButtonSizeY = this.UpButtonSizeX = 90;
+	this.UpButtonPosX = tileManager.tileWidth * 18;
+	this.UpButtonPosY = tileManager.tileHeight * 3;
+	this.DownButtonSizeY = this.DownButtonSizeX = 90;
+	this.DownButtonPosX = tileManager.tileWidth * 18;
+	this.DownButtonPosY = tileManager.tileHeight * 5;
+	this.LeftButtonSizeY = this.LeftButtonSizeX = 90;
+	this.LeftButtonPosX = tileManager.tileWidth * 17;
+	this.LeftButtonPosY = tileManager.tileHeight * 4;
+	this.RightButtonSizeY = this.RightButtonSizeX = 90;
+	this.RightButtonPosX = tileManager.tileWidth * 19;
+	this.RightButtonPosY = tileManager.tileHeight * 4;
+
 }
 
 GameScene.prototype.createScene = function()	
@@ -21,6 +53,8 @@ GameScene.prototype.createScene = function()
 		//createPhysics();
 		this.addPlayers();
 		this.createTiles("Level 2");
+		this.createButtons();
+		document.addEventListener("keydown", function(e){playerOne.Move(e);} );
 	}
 }
 
@@ -36,9 +70,36 @@ GameScene.prototype.getClickPosiiton = function(e)
   		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
   		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
 	} 
-	//this.CheckButtonTouch(x,y);
+	this.CheckButtonTouch(x,y);
 	//console.log(x + ", " + y)
 }
+
+GameScene.prototype.CheckButtonTouch = function(x, y)
+{
+	if (x > this.UpButtonPosX && x < this.UpButtonPosX + this.UpButtonSizeX &&
+		y > this.UpButtonPosY && y < this.UpButtonPosY + this.UpButtonSizeY)
+	{
+			console.log("Up pressed")
+	}
+
+	if (x > this.DownButtonPosX && x < this.DownButtonPosX + this.DownButtonSizeX &&
+		y > this.DownButtonPosY && y < this.DownButtonPosY + this.DownButtonSizeY)
+	{
+			console.log("Down pressed")
+	}
+
+	if (x > this.LeftButtonPosX && x < this.LeftButtonPosX + this.LeftButtonSizeX &&
+		y > this.LeftButtonPosY && y < this.LeftButtonPosY + this.LeftButtonSizeY)
+	{
+			console.log("Left pressed")
+	}
+	if (x > this.RightButtonPosX && x < this.RightButtonPosX + this.RightButtonSizeX &&
+		y > this.RightButtonPosY && y < this.RightButtonPosY + this.RightButtonSizeY)
+	{
+			console.log("Right pressed")
+	}
+}
+
 
 GameScene.prototype.disposeScene = function()	
 {	
@@ -46,6 +107,11 @@ GameScene.prototype.disposeScene = function()
 }
 
 GameScene.prototype.createHUD = function(e)
+{
+
+}
+
+GameScene.prototype.createButtons = function()
 {
 
 }
@@ -155,7 +221,7 @@ GameScene.prototype.createTiles = function(e)
 GameScene.prototype.Update = function()
 {
 	playerOne.Update();
-	document.addEventListener("keydown", function(e){playerOne.Move(e);} );
+	
 }
 
 GameScene.prototype.Draw = function()
@@ -190,4 +256,11 @@ GameScene.prototype.Draw = function()
 		default :
 			break;
 	}
+
+	//buttons draw
+	game.ctx.drawImage(resourceManager.Up_BUTTON, this.UpButtonPosX, this.UpButtonPosY, this.UpButtonSizeX, this.UpButtonSizeY);
+	game.ctx.drawImage(resourceManager.Down_BUTTON, this.DownButtonPosX, this.DownButtonPosY, this.DownButtonSizeX, this.DownButtonSizeY);
+	game.ctx.drawImage(resourceManager.Left_BUTTON, this.LeftButtonPosX, this.LeftButtonPosY, this.LeftButtonSizeX, this.LeftButtonSizeY);
+	game.ctx.drawImage(resourceManager.Right_BUTTON, this.RightButtonPosX, this.RightButtonPosY, this.RightButtonSizeX, this.RightButtonSizeY);
+
 }

@@ -18,6 +18,19 @@ ResourceManager.prototype.LoadGameResources = function()
 	this.SpriteBackGround = new Image();
 	this.SpriteBackGround.src = "../assets/gfx/Menue.png"
 
+	//buttons load
+	this.Up_BUTTON = new Image();
+	this.Up_BUTTON.src = "../assets/gfx/UpButton.png"
+
+	this.Down_BUTTON = new Image();
+	this.Down_BUTTON.src = "../assets/gfx/DownButton.png"
+
+	this.Left_BUTTON = new Image();
+	this.Left_BUTTON.src = "../assets/gfx/LeftButton.png"
+
+	this.Right_BUTTON = new Image();
+	this.Right_BUTTON.src = "../assets/gfx/RightButton.png"
+
 	this.LoadGameAudio();
 }
 ResourceManager.prototype.UnloadGameResources = function()

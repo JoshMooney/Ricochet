@@ -225,11 +225,12 @@ public class GameScene extends BaseScene
     }
 	
 	public void MoveToPosition(final Sprite sprite, final float pX, final float pY) {
-		float speed = 50;	
+		float speed = 2;	
         double angle = calcAngleBetweenPoints(new Vector2(sprite.getX(), sprite.getY()), new Vector2(pX, pY));
         double distance = speed;
         Vector2 velocityPoint = getVelocity(angle, distance);
         sprite.setPosition(sprite.getX() + velocityPoint.x, sprite.getY() + velocityPoint.y);
+        System.out.println("Pos = " + sprite.getX() + velocityPoint.x + " , " + sprite.getY() + velocityPoint.y);
     }
     
 	
@@ -299,7 +300,8 @@ public class GameScene extends BaseScene
 			@Override
 			 protected boolean onSingleTap() {
 			 System.out.println("onSingleTap");
-			 MoveToPosition(PlayerOne,destinationX,destinationY);
+			 //while(PlayerOne)
+			 setBodyPosition(PlayerOne,destinationX,destinationY);
 			 return true;
 			}
 		
