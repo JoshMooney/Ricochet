@@ -141,9 +141,17 @@ public class ResourceManager
 		try{
 			gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
 			gameTextureAtlas.load();
+			
+			hudTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
 			hudTextureAtlas.load();
+			
+			PlayerOneAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
 			PlayerOneAtlas.load();	
+			
+			ProjectileAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
 			ProjectileAtlas.load();
+			
+			PlayerTwoAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,0));
 			PlayerTwoAtlas.load();
 		}
 		catch (Exception e){

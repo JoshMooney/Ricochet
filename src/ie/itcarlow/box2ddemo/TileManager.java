@@ -21,4 +21,9 @@ public class TileManager
 				return t;
 		return null;
 	}
+
+	public void ClearMap()
+	{
+		tiles = new ArrayList<Tile>();
+	}
 }

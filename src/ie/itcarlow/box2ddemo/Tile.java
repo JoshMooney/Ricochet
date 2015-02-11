@@ -42,7 +42,6 @@ public class Tile extends Sprite
 		physicsworld.registerPhysicsConnector(new PhysicsConnector(this, body, true, true));
 	}
 	
-	
 	public String getName()
 	{
 		return m_name;

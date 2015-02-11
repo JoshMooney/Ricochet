@@ -35,6 +35,10 @@ public class GameScene extends BaseScene
 	Sprite Projectile;
 	float destinationX, destinationY;
 	
+	float p1x,p1y,p2x,p2y;
+	
+	public int LEVEL_NUM = 3;
+	
 	public void createScene() 
 	{
 		//configGestureDetection();
@@ -48,6 +52,15 @@ public class GameScene extends BaseScene
 		//camera.setChaseEntity(playerSprite);	//We are not using this
 	}
 
+	public void setUpNextLevel()
+	{
+		LEVEL_NUM++;
+		getPlayerPositions();
+		//Move Players to the new player Level Positions
+		//Give both players Lives OR whatever we intend to do
+		ResourceManager.getInstance().tileManager.ClearMap();
+		createTiles();
+	}
 
 	private void createListener() 
 	{
@@ -59,16 +72,12 @@ public class GameScene extends BaseScene
         // your stuff here
         return false;
     }
-	
-
 
     public boolean onTouch(View v, MotionEvent event) {
        setBodyPosition(PlayerOne, event.getX() - 65 / 2, event.getY() - 65 / 2);
        return true;
     }
 
-
-	
 	public void onBackPressed() 
 	{
 		// TODO Auto-generated method stub
@@ -97,10 +106,56 @@ public class GameScene extends BaseScene
 		registerUpdateHandler(physicsWorld);
 	}
 	
+	private void getPlayerPositions()
+	{
+		float tileSize = ResourceManager.getInstance().wall_region.getWidth();
+		if(LEVEL_NUM == 1)
+		{
+			p1x = 1.0f * tileSize;
+			p1y = 4.5f * tileSize;
+			
+			p2x = 13.0f * tileSize;
+			p2y = 4.5f * tileSize;
+		}
+		else if (LEVEL_NUM == 2)
+		{
+			p1x = 1.0f * tileSize;
+			p1y = 4.5f * tileSize;
+			
+			p2x = 13.0f * tileSize;
+			p2y = 4.5f * tileSize;
+		}
+		else if (LEVEL_NUM == 3)
+		{
+			p1x = 1.5f * tileSize;
+			p1y = 1.5f * tileSize;
+					
+			p2x = 11.5f * tileSize;
+			p2y = 7.5f * tileSize;
+		}
+		else if (LEVEL_NUM == 4)
+		{
+			p1x = 1.5f * tileSize;
+			p1y = 1.5f * tileSize;
+					
+			p2x = 11.5f * tileSize;
+			p2y = 7.5f * tileSize;
+		}
+		else
+		{
+			p1x = 1.0f * tileSize;
+			p1y = 4.5f * tileSize;
+			
+			p2x = 13.0f * tileSize;
+			p2y = 4.5f * tileSize;
+		}
+	}
+	
 	private void addPlayer()
 	{
+		getPlayerPositions();
 		//PlayerOne
-		   PlayerOne = new Sprite(72, 216, ResourceManager.getInstance().mPlayerOneTextureRegion, ResourceManager.getInstance().vbom)
+		   PlayerOne = new Sprite(p1x, p1y, ResourceManager.getInstance().mPlayerOneTextureRegion, ResourceManager.getInstance().vbom)
 		   {
 	           @Override
 	           public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
@@ -112,7 +167,7 @@ public class GameScene extends BaseScene
 	       };
 	       
 	       //PlayerTwo
-	       PlayerTwo = new Sprite(600, 216, ResourceManager.getInstance().mPlayerTwoTextureRegion, ResourceManager.getInstance().vbom)
+	       PlayerTwo = new Sprite(p2x, p2y, ResourceManager.getInstance().mPlayerTwoTextureRegion, ResourceManager.getInstance().vbom)
 		   {
 	    	  @Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
@@ -169,6 +224,7 @@ public class GameScene extends BaseScene
 		int i; 
 		int Lenght = 10;
 		int Width = 15;
+		
 		for (i = 0; i < Lenght; i++)
 		{
 			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(0, tileSize * i).CreateBodyAndAttach(this, physicsWorld);
@@ -179,22 +235,62 @@ public class GameScene extends BaseScene
 			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, 0).CreateBodyAndAttach(this, physicsWorld);
 			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * i, tileSize * 9).CreateBodyAndAttach(this, physicsWorld);
 		}
-		
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 4).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 5).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
-		
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 4).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 5).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
-		
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 1).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 2).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 7).CreateBodyAndAttach(this, physicsWorld);
-		ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 8).CreateBodyAndAttach(this, physicsWorld);
-		
+
+		if(LEVEL_NUM == 1)
+		{
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 4).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 5).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
+			
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 4).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 5).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
+			
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 1).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 2).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 7).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 8).CreateBodyAndAttach(this, physicsWorld);
+		}
+		if(LEVEL_NUM == 2)
+		{		
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 1).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 2).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 4, tileSize * 2).CreateBodyAndAttach(this, physicsWorld);
+			
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 8).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 7).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 4, tileSize * 7).CreateBodyAndAttach(this, physicsWorld);
+			
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 1).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 2).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 10, tileSize * 2).CreateBodyAndAttach(this, physicsWorld);
+			
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 8).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 7).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 10, tileSize * 7).CreateBodyAndAttach(this, physicsWorld);
+			
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 4).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 5).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
+		}
+		if(LEVEL_NUM == 3)
+		{		
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 1).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 2).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 3, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
+			
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 8).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 7).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 11, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
+			
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 3).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 4).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 5).CreateBodyAndAttach(this, physicsWorld);
+			ResourceManager.getInstance().tileManager.getTileByID(1).getInstance(tileSize * 7, tileSize * 6).CreateBodyAndAttach(this, physicsWorld);
+		}
 		
 	}
 	
@@ -233,7 +329,6 @@ public class GameScene extends BaseScene
         System.out.println("Pos = " + sprite.getX() + velocityPoint.x + " , " + sprite.getY() + velocityPoint.y);
     }
     
-	
 	public static final double calcAngleBetweenPoints(Vector2 p1, Vector2 p2)
     {
         return Math.toDegrees( Math.atan2( p2.y-p1.y, p2.x-p1.x ) );
