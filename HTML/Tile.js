@@ -9,16 +9,6 @@
 		this.t_height = h;
 	}
 	
-
-	Tile.prototype.Contains = function(e)
-	{
-		if(this.m_x + this.t_width > e.m_x && this.m_x < e.m_x + e.m_width &&
-			this.m_y + this.t_height > e.m_y && this.m_y < e.m_y + e.m_height)
-			return true;
-		return false;
-	}
-
-	
 	Tile.prototype.getName = function()
 	{
 		return this.m_name;
@@ -32,6 +22,14 @@
 	Tile.prototype.gettexture = function()
 	{
 		return this.m_texture;
+	}
+	
+	Tile.prototype.Contains = function(e)
+	{
+		if(this.m_x + this.t_width > e.m_x && this.m_x < e.m_x + e.m_width &&
+			this.m_y + this.t_height > e.m_y && this.m_y < e.m_y + e.m_height)
+			return true;
+		return false;
 	}
 
 	Tile.prototype.draw = function()

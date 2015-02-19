@@ -1,5 +1,15 @@
 function AnimatedPlayer(x, y, w, h)//Base Class for Player and Enemy to inherate from
 {
+	this.playerLifes = 3;
+	this.m_x = x;
+	this.m_y = y;
+	
+	this.m_previousX = this.m_x;
+	this.m_previousY = this.m_y;
+	
+	this.m_width = w;
+	this.m_height = h;
+	
 	//Box2D Variables
 	this.fixDef = new b2FixtureDef;
 	this.fixDef.density = 1.0;
@@ -16,12 +26,7 @@ function AnimatedPlayer(x, y, w, h)//Base Class for Player and Enemy to inherate
 
 	this.ai = false;//can be used to juge if this is player or enemy
 
-	this.m_x = x;
-	this.m_y = y;
-	this.m_width = w;
-	this.m_height = h;
-
-	this.speed = .01;
+	this.speed = 4;
 	var coin = sprite({
     	context: game.ctx,
     	width: 25,
@@ -46,9 +51,11 @@ function sprite (options)
 
 AnimatedPlayer.prototype.Move = function(e)
 {
-	/*console.log(this);*/
 	if(this.ai == false)
 	{
+		this.m_previousX = this.m_x;
+		this.m_previousY = this.m_y;
+	
 		if(e.keyCode == 38) // Up Key
 			this.m_y -= this.speed;
 		if(e.keyCode == 40) // Down Key
@@ -58,11 +65,13 @@ AnimatedPlayer.prototype.Move = function(e)
 		if(e.keyCode == 39) // Right Key
 			this.m_x += this.speed;
 	}
+	
+	if(tileManager.CheckCollision(this))
+		this.PreviousStep();
 }
 
 AnimatedPlayer.prototype.Update = function()
 {
-	//console.log("Player Update")
 	/*
 	if(this.animationPosX == 0)
 		this.animationPosX = 26;
@@ -75,13 +84,53 @@ AnimatedPlayer.prototype.Update = function()
 	*/
 }
 
+AnimatedPlayer.prototype.PreviousStep = function()
+{
+	this.m_x = this.m_previousX;
+	this.m_y = this.m_previousY;
+}
 
 AnimatedPlayer.prototype.Draw = function()
 {
-	/*console.log("Draw called");*/
-	this.pos = this.Body.GetBody().GetPosition();
-	//console.log("x: " + this.m_x + "Y - " + this.m_y + "w: " + this.m_width + "h - " + this.m_height + "Text- " + resourceManager.playerSprite);
+	//this.pos = this.Body.GetBody().GetPosition();
+	//console.log("x - " + this.m_x + " y - " + this.m_y);
 	game.ctx.drawImage(resourceManager.playerSprite, this.m_x, this.m_y, this.m_width, this.m_height)
-	//game.ctx.drawImage(this.Sprite, this.pos.x / 32.5, this.pos.y / 32.5, 25,26);
 }
 
+AnimatedPlayer.prototype.GetWidth = function()
+{
+	return this.m_width;
+}
+
+AnimatedPlayer.prototype.GetHeight = function()
+{
+	return this.m_height;
+}
+AnimatedPlayer.prototype.GetX = function()
+{
+	return this.m_x;
+}
+AnimatedPlayer.prototype.GetY = function()
+{
+	return this.m_y;
+}
+AnimatedPlayer.prototype.Speed = function()
+{
+	return this.speed;
+}
+AnimatedPlayer.prototype.GetFixDef = function()
+{
+	return this.fixDef;
+}
+AnimatedPlayer.prototype.GetBodyDef = function()
+{
+	return this.bodyDef;
+}
+AnimatedPlayer.prototype.GetLives = function()
+{
+	return this.lives;
+}
+AnimatedPlayer.prototype.GetScore = function()
+{
+	return this.score;
+}

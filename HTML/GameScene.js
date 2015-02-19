@@ -1,7 +1,9 @@
 var playerOne;
-var bullets = new Array();
-var bulletIndex = -1;
-var LEVEL_NUM = 1;
+
+var LEVEL_NUM = 4;
+
+var p1_x, p1_y
+var p2_x, p2_y
 
 //Button varibles
 var UpButtonPosX;
@@ -23,10 +25,11 @@ var RightButtonSizeY;
 
 function GameScene()
 {
-	resourceManager.gameBE.play();
-	this.playerLifes = 3;
+	document.addEventListener("keydown", function(e){playerOne.Move(e);} );
+	//resourceManager.gameBE.play();
 	this.score = 0;
 	this.createScene();
+	
 	//buttons set size and location proportional to screen size
 	this.UpButtonSizeY = this.UpButtonSizeX = 90;
 	this.UpButtonPosX = tileManager.tileWidth * 18;
@@ -47,15 +50,79 @@ GameScene.prototype.createScene = function()
 {	
 	this.calculateTileSizes();
 
+	//configGestureDetection();
+	//createHUD();
+	//createPhysics();
+	this.GetStartingPosition();
+	this.addPlayers();
+	this.createTiles();
+	this.createButtons();
+}
+
+GameScene.prototype.setUpNextLevel = function()
+{
+	LEVEL_NUM++;
+	this.GetStartingPosition();
+	this.addPlayers();
+	//Give both players Lives OR whatever we intend to do
+	tileManager.ClearMap();
+	this.createTiles();
+}
+
+GameScene.prototype.GetStartingPosition = function()
+{
+	var width = tileManager.tileWidth;
+	var height = tileManager.tileHeight;
+	
 	if(LEVEL_NUM == 1)
 	{
-		//configGestureDetection();
-		//createHUD();
-		//createPhysics();
-		this.addPlayers();
-		this.createTiles("Level 2");
-		this.createButtons();
-		document.addEventListener("keydown", function(e){playerOne.Move(e);} );
+		//Player 1 Starting Location
+		p1_x = 1.0 * width;
+		p1_y = 4.5 * height;
+		
+		//Player 2 Starting Location
+		p2_x = 13.0 * width; 
+		p2_y = 4.5 * height;
+	}
+	else if(LEVEL_NUM == 2)
+	{
+		//Player 1 Starting Location
+		p1_x = 1.0 * width;
+		p1_y = 4.5 * height;
+		
+		//Player 2 Starting Location
+		p2_x = 13.0 * width; 
+		p2_y = 4.5 * height;
+	}
+	else if(LEVEL_NUM == 3)
+	{
+		//Player 1 Starting Location
+		p1_x = 1.5 * width;
+		p1_y = 1.5 * height;
+		
+		//Player 2 Starting Location
+		p2_x = 11.5 * width;
+		p2_y = 7.5 * height;
+	}
+	else if(LEVEL_NUM == 4)
+	{
+		//Player 1 Starting Location
+		p1_x = 1.5 * width;
+		p1_y = 1.5 * height;
+		
+		//Player 2 Starting Location
+		p2_x = 11.5 * width;
+		p2_y = 7.5 * height;
+	}
+	else
+	{
+		//Player 1 Starting Location
+		p1_x = 1.0 * width;
+		p1_y = 4.5 * height;
+		
+		//Player 2 Starting Location
+		p2_x = 13.0 * width;
+		p2_y = 4.5 * height;
 	}
 }
 
@@ -80,31 +147,28 @@ GameScene.prototype.CheckButtonTouch = function(x, y)
 	if (x > this.UpButtonPosX && x < this.UpButtonPosX + this.UpButtonSizeX &&
 		y > this.UpButtonPosY && y < this.UpButtonPosY + this.UpButtonSizeY)
 	{
-		bulletIndex++;
-		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,0);
+			console.log("Up pressed")
 	}
 
 	if (x > this.DownButtonPosX && x < this.DownButtonPosX + this.DownButtonSizeX &&
 		y > this.DownButtonPosY && y < this.DownButtonPosY + this.DownButtonSizeY)
 	{
-		bulletIndex++;
-		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,1);
+			console.log("Down pressed")
 	}
 
 	if (x > this.LeftButtonPosX && x < this.LeftButtonPosX + this.LeftButtonSizeX &&
 		y > this.LeftButtonPosY && y < this.LeftButtonPosY + this.LeftButtonSizeY)
 	{
-		bulletIndex++;
-		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,2);
+		console.log(LEVEL_NUM);
+			console.log("Left pressed")
 	}
 	if (x > this.RightButtonPosX && x < this.RightButtonPosX + this.RightButtonSizeX &&
 		y > this.RightButtonPosY && y < this.RightButtonPosY + this.RightButtonSizeY)
 	{
-		bulletIndex++;
-		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,3);
+		sceneManager.ChangeScene("Transition");
+		console.log("Right pressed")
 	}
 }
-
 
 GameScene.prototype.disposeScene = function()	
 {	
@@ -128,11 +192,12 @@ GameScene.prototype.createPhysics = function(e)
 
 GameScene.prototype.addPlayers = function(e)
 {
-	if(LEVEL_NUM == 1)
-	{
-		playerOne = new AnimatedPlayer(130,1500, tileManager.tileWidth, tileManager.tileHeight);
-		this.OtherPlayer = new OtherPlayer(150,100);
-	}
+	//console.log("p1_x - " + p1_x);
+	//console.log("p1_y - " + p1_y);
+	playerOne = new AnimatedPlayer(p1_x, p1_y, tileManager.tileWidth, tileManager.tileHeight);
+	//console.log("playerOne.m_x - " + playerOne.m_x);
+	//console.log("playerOne.m_y - " + playerOne.m_y);	
+	this.OtherPlayer = new OtherPlayer(p2_x,p2_y);
 }
 
 GameScene.prototype.calculateTileSizes = function()
@@ -147,27 +212,28 @@ GameScene.prototype.calculateTileSizes = function()
 		tileManager.tileHeight = 16
 }
 
-GameScene.prototype.createTiles = function(e)
+GameScene.prototype.createTiles = function()
 {
 	resourceManager.LoadTileResources();
-	if(e == "Level 1")
-	{
-
-		var i; 
-		//tileManager.createTile(100,100);
 	
-		var Lenght = 10;
-		var Width = 15;
-		for (i = 0; i < Lenght; i++)
-		{
-			tileManager.createTile(0, tileManager.tileHeight * i);
-			tileManager.createTile(14 * tileManager.tileWidth, tileManager.tileHeight * i);
-		}
-		for (i = 0; i < Width; i++)
-		{
-			tileManager.createTile(tileManager.tileWidth * i,0);
-			tileManager.createTile(i * tileManager.tileWidth, tileManager.tileHeight * 9);
-		}
+	var i; 
+	//tileManager.createTile(100,100);
+	
+	var Lenght = 10;
+	var Width = 15;
+	for (i = 0; i < Lenght; i++)
+	{
+		tileManager.createTile(0, tileManager.tileHeight * i);
+		tileManager.createTile(14 * tileManager.tileWidth, tileManager.tileHeight * i);
+	}
+	for (i = 0; i < Width; i++)
+	{
+		tileManager.createTile(tileManager.tileWidth * i,0);
+		tileManager.createTile(i * tileManager.tileWidth, tileManager.tileHeight * 9);
+	}
+	
+	if(LEVEL_NUM == 1)
+	{
 		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 3);
 		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 4);
 		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 5);
@@ -183,23 +249,8 @@ GameScene.prototype.createTiles = function(e)
 		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 7);
 		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 8);
 	}
-	if(e == "Level 2")
+	if(LEVEL_NUM == 2)
 	{
-		var i; 
-	
-		var Lenght = 10;
-		var Width = 15;
-		for (i = 0; i < Lenght; i++)
-		{
-			tileManager.createTile(0, tileManager.tileHeight * i);
-			tileManager.createTile(14 * tileManager.tileWidth, tileManager.tileHeight * i);
-		}
-		for (i = 0; i < Width; i++)
-		{
-			tileManager.createTile(tileManager.tileWidth * i,0);
-			tileManager.createTile(i * tileManager.tileWidth, tileManager.tileHeight * 9);
-		}
-
 		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 1);
 		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 2);
 		tileManager.createTile(tileManager.tileWidth * 4, tileManager.tileHeight * 2);
@@ -221,34 +272,82 @@ GameScene.prototype.createTiles = function(e)
 		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 5);
 		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 6);
 	}
+	if(LEVEL_NUM == 3)
+	{
+		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 1);
+		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 2);
+		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 3);
+		
+		tileManager.createTile(tileManager.tileWidth * 11, tileManager.tileHeight * 8);
+		tileManager.createTile(tileManager.tileWidth * 11, tileManager.tileHeight * 7);
+		tileManager.createTile(tileManager.tileWidth * 11, tileManager.tileHeight * 6);
+		
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 3);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 4);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 5);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 6);
+	}
+	if(LEVEL_NUM == 4)
+	{
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 1);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 2);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 3);
+		
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 6);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 7);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 8);
+		
+		tileManager.createTile(tileManager.tileWidth * 1, tileManager.tileHeight * 4);
+		tileManager.createTile(tileManager.tileWidth * 2, tileManager.tileHeight * 4);
+		tileManager.createTile(tileManager.tileWidth * 3, tileManager.tileHeight * 4);
+		
+		tileManager.createTile(tileManager.tileWidth * 11, tileManager.tileHeight * 5);
+		tileManager.createTile(tileManager.tileWidth * 12, tileManager.tileHeight * 5);
+		tileManager.createTile(tileManager.tileWidth * 13, tileManager.tileHeight * 5);
+	}
+	if(LEVEL_NUM == 5)
+	{
+		tileManager.createTile(tileManager.tileWidth * 4, tileManager.tileHeight * 1);
+		tileManager.createTile(tileManager.tileWidth * 4, tileManager.tileHeight * 2);
+		
+		tileManager.createTile(tileManager.tileWidth * 4, tileManager.tileHeight * 8);
+		tileManager.createTile(tileManager.tileWidth * 4, tileManager.tileHeight * 7);
+		
+		tileManager.createTile(tileManager.tileWidth * 10, tileManager.tileHeight * 1);
+		tileManager.createTile(tileManager.tileWidth * 10, tileManager.tileHeight * 2);
+		
+		tileManager.createTile(tileManager.tileWidth * 10, tileManager.tileHeight * 8);
+		tileManager.createTile(tileManager.tileWidth * 10, tileManager.tileHeight * 7);
+		
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 3);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 4);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 5);
+		tileManager.createTile(tileManager.tileWidth * 7, tileManager.tileHeight * 6);
+	}
 }
 
 GameScene.prototype.Update = function()
 {
-	var j;
 	playerOne.Update();
-	for(j = 0; j < bullets.length; j++)
+	if(this.CheckLives())
 	{
-		bullets[j].Update();
-		if(bullets[j].remove)
-		{
-			bullets.splice(j,1);
-			bulletIndex--;
-		}
+		return true;
 	}
-	
+	return false;
+}
+
+GameScene.prototype.CheckLives = function()
+{
+	if(playerOne.playerLifes == 0 || this.OtherPlayer.playerLifes == 0)
+		return true;
+	return false;
 }
 
 GameScene.prototype.Draw = function()
 {
-	var index;
 	game.ctx.font = "30px Arial";
 	playerOne.Draw();
 	this.OtherPlayer.Draw();
-	for(index = 0; index < bullets.length; index++)
-	{
-		bullets[index].Draw();
-	}
 	
 	//HUD Background
 	game.ctx.drawImage(resourceManager.SpriteBackGround, 0, game.canvas.height - 90, 228, 100);
