@@ -98,15 +98,15 @@ AnimatedPlayer.prototype.Draw = function()
 }
 
 AnimatedPlayer.prototype.GetWidth = function()
-
 {
 	this.m_x = this.m_previousX;
 	this.m_y = this.m_previousY;
 }
 
-AnimatedPlayer.prototype.Draw = function()
+AnimatedPlayer.prototype.Contains = function(e)
 {
-	//this.pos = this.Body.GetBody().GetPosition();
-	//console.log("x - " + this.m_x + " y - " + this.m_y);
-	game.ctx.drawImage(resourceManager.playerSprite, this.m_x, this.m_y, this.m_width, this.m_height)
+	if(this.m_x + this.m_width > e.m_x && this.m_x < e.m_x + e.m_width &&
+		this.m_y + this.m_height > e.m_y && this.m_y < e.m_y + e.m_height)
+		return true;
+	return false;
 }

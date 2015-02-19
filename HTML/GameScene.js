@@ -1,4 +1,4 @@
-var playerOne;
+var playerOne, otherPlayer;
 var bullets = new Array();
 var bulletIndex = -1;
 var LEVEL_NUM = 4;
@@ -201,7 +201,7 @@ GameScene.prototype.addPlayers = function(e)
 	playerOne = new AnimatedPlayer(p1_x, p1_y, tileManager.tileWidth, tileManager.tileHeight);
 	//console.log("playerOne.m_x - " + playerOne.m_x);
 	//console.log("playerOne.m_y - " + playerOne.m_y);	
-	this.OtherPlayer = new OtherPlayer(p2_x,p2_y);
+	otherPlayer = new OtherPlayer(p2_x,p2_y, tileManager.tileWidth, tileManager.tileHeight);
 }
 
 GameScene.prototype.calculateTileSizes = function()
@@ -353,7 +353,7 @@ GameScene.prototype.Update = function()
 
 GameScene.prototype.CheckLives = function()
 {
-	if(playerOne.playerLifes == 0 || this.OtherPlayer.playerLifes == 0)
+	if(playerOne.playerLifes == 0 || otherPlayer.playerLifes == 0)
 		return true;
 	return false;
 }
@@ -362,7 +362,7 @@ GameScene.prototype.Draw = function()
 {
 	game.ctx.font = "30px Arial";
 	playerOne.Draw();
-	this.OtherPlayer.Draw();
+	otherPlayer.Draw();
 	for(index = 0; index < bullets.length; index++)
 	{
 		bullets[index].Draw();
