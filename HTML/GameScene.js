@@ -1,4 +1,5 @@
 var playerOne;
+
 var bullets = new Array();
 var bulletIndex = -1;
 var LEVEL_NUM = 4;

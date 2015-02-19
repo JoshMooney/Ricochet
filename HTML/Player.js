@@ -26,6 +26,8 @@ function Player(Scale, CANVAS_WIDTH, CANVAS_HEIGHT)//Base Class for Player and E
     	image: this.Sprite
 	});
 	this.animationPosX = 0;
+	
+	this.request = "join"
 }
 
 function sprite (options) {
@@ -70,13 +72,21 @@ Player.prototype.AIMovement = function()
 
 }
 
-Player.prototype.Draw = function()
+Player.prototype.Draw = function(id)
 {
 	/*console.log("Draw called");*/
 	this.pos = this.Body.GetBody().GetPosition();
-
-	game.ctx.drawImage(resourceManager.playerSprite, this.animationPosX, 0, 25, 26, this.pos.x, this.pos.y, 25, 26)
+	if(id == 0)
+		game.ctx.drawImage(resourceManager.player1Sprite, this.animationPosX, 0, 25, 26, this.pos.x, this.pos.y, 25, 26)
+	else
+		game.ctx.drawImage(resourceManager.player2Sprite, this.animationPosX, 0, 25, 26, this.pos.x, this.pos.y, 25, 26)
 	//game.ctx.drawImage(this.Sprite, this.pos.x / 32.5, this.pos.y / 32.5, 25,26);
+}
+
+Player.prototype.MoveToPosition(x, y)
+{
+	this.m_x = x;
+	this.m_y = y;
 }
 
 Player.prototype.GetWidth = function()

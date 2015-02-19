@@ -1,5 +1,6 @@
 function AnimatedPlayer(x, y, w, h)//Base Class for Player and Enemy to inherate from
 {
+	this.request = "join"
 	this.playerLifes = 3;
 	this.m_x = x;
 	this.m_y = y;
@@ -90,13 +91,6 @@ AnimatedPlayer.prototype.PreviousStep = function()
 	this.m_y = this.m_previousY;
 }
 
-AnimatedPlayer.prototype.Draw = function()
-{
-	//this.pos = this.Body.GetBody().GetPosition();
-	//console.log("x - " + this.m_x + " y - " + this.m_y);
-	game.ctx.drawImage(resourceManager.playerSprite, this.m_x, this.m_y, this.m_width, this.m_height)
-}
-
 AnimatedPlayer.prototype.GetWidth = function()
 
 {
@@ -106,7 +100,8 @@ AnimatedPlayer.prototype.GetWidth = function()
 
 AnimatedPlayer.prototype.Draw = function()
 {
-	//this.pos = this.Body.GetBody().GetPosition();
-	//console.log("x - " + this.m_x + " y - " + this.m_y);
-	game.ctx.drawImage(resourceManager.playerSprite, this.m_x, this.m_y, this.m_width, this.m_height)
+	if(sceneManager.GameScene.ID == 0)
+		game.ctx.drawImage(resourceManager.player1Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
+		if(sceneManager.GameScene.ID == 1)
+		game.ctx.drawImage(resourceManager.player2Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
 }
