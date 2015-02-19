@@ -50,20 +50,20 @@ function sprite (options)
     return that;
 }
 
-AnimatedPlayer.prototype.Move = function(e)
+AnimatedPlayer.prototype.Move = function(direction)
 {
 	if(this.ai == false)
 	{
 		this.m_previousX = this.m_x;
 		this.m_previousY = this.m_y;
 	
-		if(e.keyCode == 38) // Up Key
+		if(direction == 0) // Up Key
 			this.m_y -= this.speed;
-		if(e.keyCode == 40) // Down Key
+		if(direction == 1) // Down Key
 			this.m_y += this.speed;
-		if(e.keyCode == 37) // Left Key
+		if(direction == 2) // Left Key
 			this.m_x -= this.speed;
-		if(e.keyCode == 39) // Right Key
+		if(direction == 3) // Right Key
 			this.m_x += this.speed;
 	}
 	
@@ -92,16 +92,27 @@ AnimatedPlayer.prototype.PreviousStep = function()
 }
 
 AnimatedPlayer.prototype.GetWidth = function()
-
 {
 	this.m_x = this.m_previousX;
 	this.m_y = this.m_previousY;
 }
 
-AnimatedPlayer.prototype.Draw = function()
+AnimatedPlayer.prototype.Draw = function(e)
 {
-	if(sceneManager.GameScene.ID == 0)
+if(sceneManager.GameScene.ID == 0)
 		game.ctx.drawImage(resourceManager.player1Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
-		if(sceneManager.GameScene.ID == 1)
+if(sceneManager.GameScene.ID == 1)
 		game.ctx.drawImage(resourceManager.player2Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
 }
+
+AnimatedPlayer.prototype.Contains = function(e)
+{
+	if(this.m_x + this.m_width > e.m_x && this.m_x < e.m_x + e.m_width &&
+		this.m_y + this.m_height > e.m_y && this.m_y < e.m_y + e.m_height)
+	{
+		this.playerLifes--;
+		return true;
+	}
+	return false;
+}
+
