@@ -73,19 +73,6 @@ ResourceManager.prototype.UnloadTileResources = function()
 
 }
 
-//Transition Resources
-ResourceManager.prototype.LoadTransitionResources = function()
-{
-	this.trans_NextLevel = new Image();
-    this.trans_NextLevel.src = "../assets/transitions/nextlevel.png"
-	this.trans_GameOver = new Image();
-    this.trans_GameOver.src = "../assets/transitions/gameover.png"
-}
-ResourceManager.prototype.UnloadTransitionResources = function()
-{
-	
-}
-
 //Load Audio
 ResourceManager.prototype.LoadMenuAudio = function()
 {

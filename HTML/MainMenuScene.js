@@ -39,7 +39,7 @@ function MainMenuScene()
 	this.animatedImagePosY = (game.screenheight / 9);
 
 	this.createMenu();
-	//resourceManager.menuBE.play();
+	resourceManager.menuBE.play();
 	//console.log("MainMenuScene Initaliser called");
 }
 

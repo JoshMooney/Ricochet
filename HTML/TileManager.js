@@ -22,7 +22,7 @@ TileManager.prototype.createTile = function(x, y)
 	tileIndex++;
 }
 
-TileManager.prototype.CheckCollision = function(player)
+TileManager.prototype.CheckCollision = function(player, bullet)
 {
 	var collide;
 	for(i = 0; i < tiles.length; i++)
@@ -34,12 +34,6 @@ TileManager.prototype.CheckCollision = function(player)
 		}
 	}
 	return false;
-}
-
-TileManager.prototype.ClearMap = function()
-{
-	tileIndex = 0
-	tiles.splice(0, tiles.length);
 }
 
 TileManager.prototype.draw = function()
