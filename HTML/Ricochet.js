@@ -56,7 +56,8 @@ function setupTouch()
 	} 
 	else {
 		console.log("not touchable");
-		//document.addEventListener("keyup", function(e){sceneManager.GameScene.playerOne.Move(e);} );	
+		//document.addEventListener("keyup", function(e){sceneManager.GameScene.playerOne.Move(e);} );
+		document.addEventListener("click", function(e){TransitionScene.getClickPosiiton(e);} );		
 		document.addEventListener("click", function(e){sceneManager.MenuScene.getClickPosiiton(e);} );
 		document.addEventListener("click", function(e){sceneManager.GameScene.getClickPosiiton(e);} );
 	}
