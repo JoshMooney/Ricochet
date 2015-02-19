@@ -15,22 +15,22 @@ function Bullet(x, y, Direction)
 	switch(this.direction) {
 	    case 0:
 	        this.m_x = x + playerOne.m_width/2 - this.m_width/2;
-			this.m_y = y - 2 - this.m_height;
+			this.m_y = y - 5 - this.m_height;
 	        break;
 	    case 1:
 	        this.m_x = x + playerOne.m_width/2 - this.m_width/2;
-			this.m_y = y + playerOne.m_height + 1;
+			this.m_y = y + playerOne.m_height + 5;
 	        break;
 	    case 2:
-	        this.m_x = x - 1 - this.m_width;
+	        this.m_x = x - 5 - this.m_width;
 			this.m_y = y + playerOne.m_height/2 - this.m_height/2;
 	        break;
 	    default:
-	        this.m_x = x + playerOne.m_width + 1;
+	        this.m_x = x + playerOne.m_width + 5;
 			this.m_y = y + playerOne.m_height/2 - this.m_height/2;
 			break;
 	}
-	this.speed = 10;
+	this.speed = 20;
 	this.remove = false;
 	console.log("x: " + this.m_x + "Y: " + this.m_y);
 }

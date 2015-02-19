@@ -59,6 +59,9 @@ OtherPlayer.prototype.Contains = function(e)
 {
 	if(this.m_x + this.m_width > e.m_x && this.m_x < e.m_x + e.m_width &&
 		this.m_y + this.m_height > e.m_y && this.m_y < e.m_y + e.m_height)
+	{
+		this.playerLifes--;
 		return true;
+	}
 	return false;
 }
