@@ -96,3 +96,17 @@ AnimatedPlayer.prototype.Draw = function()
 	//console.log("x - " + this.m_x + " y - " + this.m_y);
 	game.ctx.drawImage(resourceManager.playerSprite, this.m_x, this.m_y, this.m_width, this.m_height)
 }
+
+AnimatedPlayer.prototype.GetWidth = function()
+
+{
+	this.m_x = this.m_previousX;
+	this.m_y = this.m_previousY;
+}
+
+AnimatedPlayer.prototype.Draw = function()
+{
+	//this.pos = this.Body.GetBody().GetPosition();
+	//console.log("x - " + this.m_x + " y - " + this.m_y);
+	game.ctx.drawImage(resourceManager.playerSprite, this.m_x, this.m_y, this.m_width, this.m_height)
+}

@@ -170,6 +170,7 @@ GameScene.prototype.CheckButtonTouch = function(x, y)
 	{
 		bulletIndex++;
 		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,3);
+		//sceneManager.ChangeScene("Transition");
 	}
 }
 
@@ -342,6 +343,7 @@ GameScene.prototype.Update = function()
 			bulletIndex--;
 		}
 	}
+
 	if(this.CheckLives())
 	{
 		return true;
