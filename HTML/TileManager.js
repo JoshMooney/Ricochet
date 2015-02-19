@@ -22,6 +22,26 @@ TileManager.prototype.createTile = function(x, y)
 	tileIndex++;
 }
 
+TileManager.prototype.CheckCollision = function(player)
+{
+	var collide;
+	for(i = 0; i < tiles.length; i++)
+	{
+		collide = tiles[i].Contains(player)
+		if(collide)	
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+TileManager.prototype.ClearMap = function()
+{
+	tileIndex = 0
+	tiles.splice(0, tiles.length);
+}
+
 TileManager.prototype.draw = function()
 {
 	for(i = 0; i < tiles.length; i++)

@@ -1,5 +1,14 @@
 function OtherPlayer(x, y)
 {
+	this.playerLifes = 3;
+	
+	//vairbles
+	this.m_x = x;
+	this.m_y = y;
+	this.m_width = 20;
+	this.m_height = 200;
+	this.speed = 50;
+	
 	//Box2D Variables
 	this.fixDef = new b2FixtureDef;
 	this.fixDef.density = 1.0;
@@ -7,13 +16,6 @@ function OtherPlayer(x, y)
 	this.fixDef.restitution = 0.2;
 	this.bodyDef = new b2BodyDef;
 	this.bodyDef.type = b2Body.b2_dynamicBody;
-	//vairbles
-	this.m_x = x;
-	this.m_y = y;
-	this.m_width = 20;
-	this.m_height = 200;
-	this.speed = 50;
-	console.log("otherPlayers()");
 }
 
 OtherPlayer.prototype.Move = function(e)
