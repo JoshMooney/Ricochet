@@ -135,7 +135,8 @@ MainMenuScene.prototype.onMenuItemClicked = function(e)
 			break;
 
 		case this.MENU_MULTI:
-			//sceneManager.setMultiplayerScene();
+			sceneManager.setMultiplayerScene();
+			resourceManager.menuBE.pause();
 			break;
 
 		case this.MENU_DEV:

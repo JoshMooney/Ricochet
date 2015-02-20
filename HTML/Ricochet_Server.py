@@ -14,13 +14,29 @@ def CheckJoin(self):
 			msg=json.dumps(msg)
 			self.write_message(msg)
 		else:
-			msg["data"]="STARTING_GAME";
+			msg["data"]="ALL_PLAYERS_READY";
 			msg["ID"] = 1
+			#sendIDToAllButPlayer(self, msg)
+			self.write_message(msg)
+			msg["data"]="STARTING_GAME";
 			sendToAll(msg)
 	else:
 		msg["type"]="Join UnsuccessFul - Session Full"
 		self.write_message(msg)
 
+def sendToAll(msg):
+	for key in userIP:
+		userIP[key].write_message(msg)		
+		
+def sendIDToAllButPlayer(self, msg):
+	for key in userIP:
+		if key != self.request.remote_ip:
+			msg["type"] = "Message"
+			msg["IP"] = self.request.remote_ip
+			msg=json.dumps(msg)
+			userIP[key].write_message(msg)
+			print("Message Sent To: " + self.request.remote_ip)
+	
 def sendBulletToOtherPlayer(self, R):
 	for key in userIP:
 		if key != self.request.remote_ip:
@@ -30,7 +46,7 @@ def sendBulletToOtherPlayer(self, R):
 			#Populates the message
 			msg["type"] = "Bullet"
 			msg["Pos"] = {"X":R["Pos"]["X"], "Y":R["Pos"]["Y"]}
-			msg["Direction"] = 0;
+			msg["Dir"] = 0;
 			msg["IP"] = self.request.remote_ip
 			
 			#Dumps the message and send it

@@ -1,5 +1,6 @@
-function AnimatedPlayer(x, y, w, h)//Base Class for Player and Enemy to inherate from
+function MultiplayerPlayer(x, y, w, h)//Base Class for Player and Enemy to inherate from
 {
+	this.request = "join"
 	this.playerLifes = 3;
 	this.m_x = x;
 	this.m_y = y;
@@ -49,7 +50,7 @@ function sprite (options)
     return that;
 }
 
-AnimatedPlayer.prototype.Move = function(direction)
+MultiplayerPlayer.prototype.Move = function(direction)
 {
 	if(this.ai == false)
 	{
@@ -70,7 +71,7 @@ AnimatedPlayer.prototype.Move = function(direction)
 		this.PreviousStep();
 }
 
-AnimatedPlayer.prototype.Update = function()
+MultiplayerPlayer.prototype.Update = function()
 {
 	/*
 	if(this.animationPosX == 0)
@@ -84,24 +85,34 @@ AnimatedPlayer.prototype.Update = function()
 	*/
 }
 
-AnimatedPlayer.prototype.PreviousStep = function()
+MultiplayerPlayer.prototype.PreviousStep = function()
 {
 	this.m_x = this.m_previousX;
 	this.m_y = this.m_previousY;
 }
 
-AnimatedPlayer.prototype.GetWidth = function()
+MultiplayerPlayer.prototype.GetWidth = function()
 {
 	this.m_x = this.m_previousX;
 	this.m_y = this.m_previousY;
 }
 
-AnimatedPlayer.prototype.Draw = function(e)
+MultiplayerPlayer.prototype.Draw = function(e)
 {
-	game.ctx.drawImage(resourceManager.player1Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
+	if(sceneManager.CURR_SCENE == sceneManager.SCENE_MULTI)
+	{
+		if(sceneManager.GameScene.ID == 0)
+			game.ctx.drawImage(resourceManager.player1Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
+		if(sceneManager.GameScene.ID == 1)
+			game.ctx.drawImage(resourceManager.player2Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
+	}
+	else if(sceneManager.CURR_SCENE == sceneManager.SCENE_GAME)
+	{
+		game.ctx.drawImage(resourceManager.player1Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
+	}
 }
 
-AnimatedPlayer.prototype.Contains = function(e)
+MultiplayerPlayer.prototype.Contains = function(e)
 {
 	if(this.m_x + this.m_width > e.m_x && this.m_x < e.m_x + e.m_width &&
 		this.m_y + this.m_height > e.m_y && this.m_y < e.m_y + e.m_height)

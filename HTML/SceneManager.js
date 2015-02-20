@@ -5,13 +5,23 @@ var TransitionScene;
 var SCENE_MENU = 0;
 var SCENE_GAME = 1;
 var SCENE_TRANS = 2;
+var SCENE_MULTI = 3;
 
 var CURR_SCENE;
 
 function SceneManager()
 {
 	document.addEventListener("clickdown", function(e){this.ReturnToMenu();} );
+
 	this.setMenuScene();
+}
+
+SceneManager.prototype.getClickPosiiton = function(e)
+{
+	if(CURR_SCENE == SCENE_GAME)
+		this.GameScene.getClickPosiiton(e);
+	else
+		this.MultiScene.Move(e);
 }
 
 SceneManager.prototype.setMenuScene = function()
@@ -23,10 +33,19 @@ SceneManager.prototype.setMenuScene = function()
 
 SceneManager.prototype.setGameScene = function()
 {
+	//document.removeEventListener("click", function(e){sceneManager.MenuScene.getClickPosiiton(e);} );
 	resourceManager.LoadGameResources();
 	this.GameScene = new GameScene();
 	this.setTransitionScene();
 	CURR_SCENE = SCENE_GAME;
+}
+
+SceneManager.prototype.setMultiplayerScene = function()
+{
+	resourceManager.LoadGameResources();
+	this.MultiScene = new MultiplayerScene();
+	this.setTransitionScene();
+	CURR_SCENE = SCENE_MULTI;
 }
 
 SceneManager.prototype.setTransitionScene = function()
@@ -56,6 +75,13 @@ SceneManager.prototype.UpdateScene = function()
 			}
 			break;
 			
+		case SCENE_MULTI:
+			if(this.MultiScene.Update())
+			{
+				CURR_SCENE = SCENE_TRANS;
+			}
+			break;
+			
 		case SCENE_TRANS:
 			if(TransitionScene.Update())
 			{
@@ -69,6 +95,8 @@ SceneManager.prototype.ChangeScene = function(e)
 {
 	if(e == "Game")
 		CURR_SCENE = SCENE_GAME;
+	else if(e == "Multi")
+		CURR_SCENE = SCENE_MULTI;
 	else if(e == "Menu")
 	{
 		this.GameScene.LEVEL_NUM = 0;
@@ -92,6 +120,10 @@ SceneManager.prototype.DrawScene = function()
 			
 		case SCENE_GAME:
 			this.GameScene.Draw();
+			break;
+			
+		case SCENE_MULTI:
+			this.MultiScene.Draw();
 			break;
 			
 		case SCENE_TRANS:

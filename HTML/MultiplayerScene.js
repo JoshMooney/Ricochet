@@ -10,7 +10,7 @@ var playerTwo;
 
 var bullets = new Array();
 var bulletIndex = -1;
-var LEVEL_NUM = 4;
+var LEVEL_NUM = 1;
 
 var p1_x, p1_y
 var p2_x, p2_y
@@ -33,27 +33,109 @@ var RightButtonPosY;
 var RightButtonSizeX;
 var RightButtonSizeY;
 
-//Websocket Shtuff
-ws.onopen = function()
+var UpButton2PosX;
+var UpButton2PosY;
+var UpButton2SizeX;
+var UpButton2SizeY;
+var DownButton2PosX;
+var DownButton2PosY;
+var DownButton2SizeX;
+var DownButton2SizeY;
+var LeftButton2PosX;
+var LeftButton2PosY;
+var LeftButton2SizeX;
+var LeftButton2SizeY;
+var RightButton2PosX;
+var RightButton2PosY;
+var RightButton2SizeX;
+var RightButton2SizeY;
+
+//Multiplayer Shtuff
+function MultiplayerScene()
 {
+	
+	state = "NULL";
+	
 	var msg = { }
 	msg.request = 'join'
 	
 	var message = JSON.stringify(msg);
 	ws.send(message);
+	
+	//document.addEventListener("keydown", function(e){this.Move(e);} );
+	
+	//resourceManager.gameBE.play();
+	this.score = 0;
+	this.createScene();
+	
+	//buttons set size and location proportional to screen size
+	this.UpButtonSizeY = this.UpButtonSizeX = 90;
+	this.UpButtonPosX = tileManager.tileWidth * 18;
+	this.UpButtonPosY = tileManager.tileHeight * 3;
+	this.DownButtonSizeY = this.DownButtonSizeX = 90;
+	this.DownButtonPosX = tileManager.tileWidth * 18;
+	this.DownButtonPosY = tileManager.tileHeight * 5;
+	this.LeftButtonSizeY = this.LeftButtonSizeX = 90;
+	this.LeftButtonPosX = tileManager.tileWidth * 17;
+	this.LeftButtonPosY = tileManager.tileHeight * 4;
+	this.RightButtonSizeY = this.RightButtonSizeX = 90;
+	this.RightButtonPosX = tileManager.tileWidth * 19;
+	this.RightButtonPosY = tileManager.tileHeight * 4;
+	
+	this.UpButton2SizeY = this.UpButton2SizeX = 90;
+	this.UpButton2PosX = tileManager.tileWidth * 18;
+	this.UpButton2PosY = tileManager.tileHeight * 6;
+	this.DownButton2SizeY = this.DownButton2SizeX = 90;
+	this.DownButton2PosX = tileManager.tileWidth * 18;
+	this.DownButton2PosY = tileManager.tileHeight * 8;
+	this.LeftButton2SizeY = this.LeftButton2SizeX = 90;
+	this.LeftButton2PosX = tileManager.tileWidth * 17;
+	this.LeftButton2PosY = tileManager.tileHeight * 7;
+	this.RightButton2SizeY = this.RightButton2SizeX = 90;
+	this.RightButton2PosX = tileManager.tileWidth * 19;
+	this.RightButton2PosY = tileManager.tileHeight * 7;
+
 }
 
-ws.onmessage= function(event)
+//Websocket Shtuff
+//ws.onopen = function()
+//{
+//	var msg = { }
+//	msg.request = 'join'
+	
+//	var message = JSON.stringify(msg);
+//	ws.send(message);
+//}
+
+ws.onmessage = function(event)
 {
 	var msg;
 	msg = JSON.parse(event.data);
+	console.log(msg["type"]);
+	
+	if(msg["type"] == "Message")
+	{
+		console.log("Your Player ID: " + ID);
+		console.log("Other Player ID: " + msg["ID"]);
+	}
 	if(msg["type"] == "Joined")
 	{
-		state = msg["data"];
-		ID = msg["ID"];
+		if(msg["data"] == "WAITING_FOR_PLAYERS" || msg["data"] == "ALL_PLAYERS_READY" )
+		{
+			state = msg["data"];
+			ID = msg["ID"];
+			console.log(ID);
+		}
+		
+		if(msg["data"] == "STARTING_GAME")
+		{
+			console.log(msg["data"]);
+			state = msg["data"];
+		}
 	}
-	if(msg["type"] == "Join UnsuccessFul - Session Full")
+	else if(msg["type"] == "Join UnsuccessFul - Session Full")
 	{
+		state = msg["type"];
 		console.log(msg["type"]);
 	}
 	if(msg["type"] == "Movement")
@@ -74,31 +156,6 @@ ws.onmessage= function(event)
 	}
 }
 
-//Multiplayer Shtuff
-function MultiplayerScene()
-{
-	state = "NULL";
-
-	document.addEventListener("keydown", function(e){this.Move(e);} );
-	//resourceManager.gameBE.play();
-	this.score = 0;
-	this.createScene();
-	
-	//buttons set size and location proportional to screen size
-	this.UpButtonSizeY = this.UpButtonSizeX = 90;
-	this.UpButtonPosX = tileManager.tileWidth * 18;
-	this.UpButtonPosY = tileManager.tileHeight * 3;
-	this.DownButtonSizeY = this.DownButtonSizeX = 90;
-	this.DownButtonPosX = tileManager.tileWidth * 18;
-	this.DownButtonPosY = tileManager.tileHeight * 5;
-	this.LeftButtonSizeY = this.LeftButtonSizeX = 90;
-	this.LeftButtonPosX = tileManager.tileWidth * 17;
-	this.LeftButtonPosY = tileManager.tileHeight * 4;
-	this.RightButtonSizeY = this.RightButtonSizeX = 90;
-	this.RightButtonPosX = tileManager.tileWidth * 19;
-	this.RightButtonPosY = tileManager.tileHeight * 4;
-}
-
 MultiplayerScene.prototype.Move = function(e)
 {
 	if(state == "STARTING_GAME")
@@ -106,7 +163,7 @@ MultiplayerScene.prototype.Move = function(e)
 		if(ID == 0)
 		{
 			playerOne.Move(e);
-			console.log("You Moved");
+			//console.log("You Moved");
 			var msg = {		}
 			msg.request = "Movement";
 			msg.Pos = {"X": playerOne.m_x, "Y": playerOne.m_y};
@@ -117,7 +174,7 @@ MultiplayerScene.prototype.Move = function(e)
 		if(ID == 1)
 		{
 			playerTwo.Move(e);
-			console.log("You Moved");
+			//console.log("You Moved");
 			var msg = {		}
 			msg.request = "Movement";
 			msg.Pos = {"X": playerTwo.m_x, "Y": playerTwo.m_y};
@@ -381,6 +438,42 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 			console.log("Please Wait on Other Players");
 		}
 	}
+
+	//move buttons
+	if (x > this.UpButton2PosX && x < this.UpButton2PosX + this.UpButton2SizeX &&
+		y > this.UpButton2PosY && y < this.UpButton2PosY + this.UpButton2SizeY)
+	{
+		if(ID == 0)
+			playerOne.Move(0);
+		else
+			playerTwo.Move(0);
+	}
+
+	if (x > this.DownButton2PosX && x < this.DownButton2PosX + this.DownButton2SizeX &&
+		y > this.DownButton2PosY && y < this.DownButton2PosY + this.DownButton2SizeY)
+	{
+		if(ID == 0)
+			playerOne.Move(1);
+		else
+			playerTwo.Move(1);
+	}
+
+	if (x > this.LeftButton2PosX && x < this.LeftButton2PosX + this.LeftButton2SizeX &&
+		y > this.LeftButton2PosY && y < this.LeftButton2PosY + this.LeftButton2SizeY)
+	{
+		if(ID == 0)
+			playerOne.Move(2);
+		else
+			playerTwo.Move(2);
+	}
+	if (x > this.RightButton2PosX && x < this.RightButton2PosX + this.RightButton2SizeX &&
+		y > this.RightButton2PosY && y < this.RightButton2PosY + this.RightButton2SizeY)
+	{
+		if(ID == 0)
+			playerOne.Move(3);
+		else
+			playerTwo.Move(3);
+	}
 }
 
 MultiplayerScene.prototype.disposeScene = function()	
@@ -552,7 +645,7 @@ MultiplayerScene.prototype.Update = function()
 
 	if(this.CheckLives())
 	{
-		return true;
+		sceneManager.ChangeScene("Transition");
 	}
 	return false;
 }
@@ -579,14 +672,15 @@ MultiplayerScene.prototype.Draw = function()
 	game.ctx.strokeText("Score : " + this.score, 10, game.canvas.height - 50);
 	game.ctx.strokeText("Lives : ", 10, game.canvas.height - 20);
 
-	game.ctx.strokeText("State : " + state, 100, game.canvas.height - 50);
+	game.ctx.font = "18px Arial";
+	game.ctx.strokeText("State : " + state, 180, game.canvas.height - 20);
 	
 	//Draw tiles
 	tileManager.draw();
 
 	if(ID == 0)
 	{
-		switch(this.playerLifes)
+		switch(playerOne.playerLifes)
 		{
 			case 3 :
 				game.ctx.drawImage(resourceManager.SpriteLives, 100, game.canvas.height - 45, 32.5, 32.5);
@@ -607,7 +701,7 @@ MultiplayerScene.prototype.Draw = function()
 	
 	if(ID == 1)
 	{
-		switch(this.playerLifes)
+		switch(playerOne.playerLifes)
 		{
 			case 3 :
 				game.ctx.drawImage(resourceManager.player2Sprite, 100, game.canvas.height - 45, 32.5, 32.5);
@@ -632,4 +726,8 @@ MultiplayerScene.prototype.Draw = function()
 	game.ctx.drawImage(resourceManager.Left_BUTTON, this.LeftButtonPosX, this.LeftButtonPosY, this.LeftButtonSizeX, this.LeftButtonSizeY);
 	game.ctx.drawImage(resourceManager.Right_BUTTON, this.RightButtonPosX, this.RightButtonPosY, this.RightButtonSizeX, this.RightButtonSizeY);
 
+	game.ctx.drawImage(resourceManager.Up_BUTTON, this.UpButton2PosX, this.UpButton2PosY, this.UpButton2SizeX, this.UpButton2SizeY);
+	game.ctx.drawImage(resourceManager.Down_BUTTON, this.DownButton2PosX, this.DownButton2PosY, this.DownButton2SizeX, this.DownButton2SizeY);
+	game.ctx.drawImage(resourceManager.Left_BUTTON, this.LeftButton2PosX, this.LeftButton2PosY, this.LeftButton2SizeX, this.LeftButton2SizeY);
+	game.ctx.drawImage(resourceManager.Right_BUTTON, this.RightButton2PosX, this.RightButton2PosY, this.RightButton2SizeX, this.RightButton2SizeY);
 }

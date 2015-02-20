@@ -23,6 +23,7 @@ var RightButtonPosX;
 var RightButtonPosY;
 var RightButtonSizeX;
 var RightButtonSizeY;
+
 var UpButton2PosX;
 var UpButton2PosY;
 var UpButton2SizeX;
@@ -42,7 +43,7 @@ var RightButton2SizeY;
 
 function GameScene()
 {
-	document.addEventListener("keydown", function(e){playerOne.Move(e);} );
+	//document.addEventListener("keydown", function(e){playerOne.Move(e);} );
 	//resourceManager.gameBE.play();
 	this.score = 0;
 	this.createScene();
