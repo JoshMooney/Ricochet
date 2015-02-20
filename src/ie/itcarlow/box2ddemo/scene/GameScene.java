@@ -32,10 +32,12 @@ public class GameScene extends BaseScene
 	private PhysicsWorld physicsWorld;
 	Sprite PlayerOne;
 	Sprite PlayerTwo;
+	Sprite Up,Down,Left,Right;
 	Sprite Projectile;
 	float destinationX, destinationY;
 	
 	float p1x,p1y,p2x,p2y;
+	float upx,downx,leftx,rightx,upy,downy,lefty,righty;
 	
 	public int LEVEL_NUM = 3;
 	
@@ -109,6 +111,15 @@ public class GameScene extends BaseScene
 	private void getPlayerPositions()
 	{
 		float tileSize = ResourceManager.getInstance().wall_region.getWidth();
+		upx = 11.0f * tileSize;
+		upy = 4.5f * tileSize;
+		downx = 11.0f * tileSize;
+		downy = 6.5f * tileSize;
+		leftx = 10.0f * tileSize;
+		lefty = 3.0f * tileSize;
+		rightx = 12.0f * tileSize;
+		righty = 3.0f * tileSize;
+		
 		if(LEVEL_NUM == 1)
 		{
 			p1x = 1.0f * tileSize;
@@ -161,7 +172,7 @@ public class GameScene extends BaseScene
 	           public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
 	                                        final float pTouchAreaLocalX,
 	                                        final float pTouchAreaLocalY) {
-	               setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	               //setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
 	               return true;
 	           }
 	       };
@@ -173,7 +184,55 @@ public class GameScene extends BaseScene
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
 	                  final float pTouchAreaLocalX,
 	                  final float pTouchAreaLocalY){
-	    		  setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  //setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  return true; 
+	    	  }
+	    	  
+	       };
+	     //Up button
+	       Up = new Sprite(upx , upy, ResourceManager.getInstance().UpTextureRegion, ResourceManager.getInstance().vbom)
+		   {
+	    	  @Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+	                  final float pTouchAreaLocalX,
+	                  final float pTouchAreaLocalY){
+	    		  //setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  return true; 
+	    	  }
+	    	  
+	       };
+	     //down button
+	       Down = new Sprite(downx, downy, ResourceManager.getInstance().DownTextureRegion, ResourceManager.getInstance().vbom)
+		   {
+	    	  @Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+	                  final float pTouchAreaLocalX,
+	                  final float pTouchAreaLocalY){
+	    		  //setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  return true; 
+	    	  }
+	    	  
+	       };
+	     //left button
+	       Left = new Sprite(leftx, lefty, ResourceManager.getInstance().LeftTextureRegion, ResourceManager.getInstance().vbom)
+		   {
+	    	  @Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+	                  final float pTouchAreaLocalX,
+	                  final float pTouchAreaLocalY){
+	    		  //setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	    		  return true; 
+	    	  }
+	    	  
+	       };
+	     //right button
+	       Right = new Sprite(rightx, righty, ResourceManager.getInstance().RightTextureRegion, ResourceManager.getInstance().vbom)
+		   {
+	    	  @Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+	                  final float pTouchAreaLocalX,
+	                  final float pTouchAreaLocalY){
+	    		  //setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
 	    		  return true; 
 	    	  }
 	    	  
@@ -188,6 +247,20 @@ public class GameScene extends BaseScene
 		   this.attachChild(PlayerTwo);
 		   this.registerTouchArea(PlayerTwo);
 		   this.createPhysicsBodies(PlayerTwo);
+		   
+		   //Button
+		   this.attachChild(Up);
+		   //this.createPhysicsBodies(Up); 
+		   this.registerTouchArea(Up);
+		   this.attachChild(Down);
+		   //this.createPhysicsBodies(Down); 
+		   this.registerTouchArea(Down);
+		   this.attachChild(Left);
+		  // this.createPhysicsBodies(Left); 
+		   this.registerTouchArea(Left);
+		   this.attachChild(Right);
+		   //this.createPhysicsBodies(Right); 
+		   this.registerTouchArea(Right);
 	}
 	
 	private void addProjectile(float x, float y)
