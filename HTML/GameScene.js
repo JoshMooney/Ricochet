@@ -49,29 +49,37 @@ function GameScene()
 	this.createScene();
 	
 	//buttons set size and location proportional to screen size
-	this.UpButtonSizeY = this.UpButtonSizeX = 90;
+	this.UpButtonSizeY = tileManager.tileWidth;
+	this.UpButtonSizeX = tileManager.tileHeight;
 	this.UpButtonPosX = tileManager.tileWidth * 18;
 	this.UpButtonPosY = tileManager.tileHeight * 2;
-	this.DownButtonSizeY = this.DownButtonSizeX = 90;
+	this.DownButtonSizeY = tileManager.tileWidth;
+	this.DownButtonSizeX = tileManager.tileHeight;
 	this.DownButtonPosX = tileManager.tileWidth * 18;
 	this.DownButtonPosY = tileManager.tileHeight * 4;
-	this.LeftButtonSizeY = this.LeftButtonSizeX = 90;
+	this.LeftButtonSizeY = tileManager.tileWidth;
+	this.LeftButtonSizeX = tileManager.tileHeight;
 	this.LeftButtonPosX = tileManager.tileWidth * 17;
 	this.LeftButtonPosY = tileManager.tileHeight * 3;
-	this.RightButtonSizeY = this.RightButtonSizeX = 90;
+	this.RightButtonSizeY = tileManager.tileWidth;
+	this.RightButtonSizeX = tileManager.tileHeight;
 	this.RightButtonPosX = tileManager.tileWidth * 19;
 	this.RightButtonPosY = tileManager.tileHeight * 3;
 
-	this.UpButton2SizeY = this.UpButton2SizeX = 90;
+	this.UpButton2SizeY = tileManager.tileWidth;
+	this.UpButton2SizeX = tileManager.tileHeight;
 	this.UpButton2PosX = tileManager.tileWidth * 18;
 	this.UpButton2PosY = tileManager.tileHeight * 6;
-	this.DownButton2SizeY = this.DownButton2SizeX = 90;
+	this.DownButton2SizeY = tileManager.tileWidth;
+	this.DownButton2SizeX = tileManager.tileHeight;
 	this.DownButton2PosX = tileManager.tileWidth * 18;
 	this.DownButton2PosY = tileManager.tileHeight * 8;
-	this.LeftButton2SizeY = this.LeftButton2SizeX = 90;
+	this.LeftButton2SizeY = tileManager.tileWidth;
+	this.LeftButton2SizeX = tileManager.tileHeight;
 	this.LeftButton2PosX = tileManager.tileWidth * 17;
 	this.LeftButton2PosY = tileManager.tileHeight * 7;
-	this.RightButton2SizeY = this.RightButton2SizeX = 90;
+	this.RightButton2SizeY = tileManager.tileWidth;
+	this.RightButton2SizeX = tileManager.tileHeight;
 	this.RightButton2PosX = tileManager.tileWidth * 19;
 	this.RightButton2PosY = tileManager.tileHeight * 7;
 
