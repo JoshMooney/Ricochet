@@ -1,6 +1,6 @@
 var playerOne;
 
-var LEVEL_NUM = 4;
+var LEVEL_NUM = 1;
 
 var p1_x, p1_y
 var p2_x, p2_y
