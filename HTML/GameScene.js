@@ -1,4 +1,9 @@
-var playerOne;
+
+//var playerOne;
+
+var playerOne, otherPlayer;
+var bullets = new Array();
+var bulletIndex = -1;
 
 var LEVEL_NUM = 1;
 
@@ -22,6 +27,22 @@ var RightButtonPosX;
 var RightButtonPosY;
 var RightButtonSizeX;
 var RightButtonSizeY;
+var UpButton2PosX;
+var UpButton2PosY;
+var UpButton2SizeX;
+var UpButton2SizeY;
+var DownButton2PosX;
+var DownButton2PosY;
+var DownButton2SizeX;
+var DownButton2SizeY;
+var LeftButton2PosX;
+var LeftButton2PosY;
+var LeftButton2SizeX;
+var LeftButton2SizeY;
+var RightButton2PosX;
+var RightButton2PosY;
+var RightButton2SizeX;
+var RightButton2SizeY;
 
 function GameScene()
 {
@@ -31,18 +52,39 @@ function GameScene()
 	this.createScene();
 	
 	//buttons set size and location proportional to screen size
-	this.UpButtonSizeY = this.UpButtonSizeX = 90;
+	this.UpButtonSizeY = tileManager.tileWidth;
+	this.UpButtonSizeX = tileManager.tileHeight;
 	this.UpButtonPosX = tileManager.tileWidth * 18;
-	this.UpButtonPosY = tileManager.tileHeight * 3;
-	this.DownButtonSizeY = this.DownButtonSizeX = 90;
+	this.UpButtonPosY = tileManager.tileHeight * 2;
+	this.DownButtonSizeY = tileManager.tileWidth;
+	this.DownButtonSizeX = tileManager.tileHeight;
 	this.DownButtonPosX = tileManager.tileWidth * 18;
-	this.DownButtonPosY = tileManager.tileHeight * 5;
-	this.LeftButtonSizeY = this.LeftButtonSizeX = 90;
+	this.DownButtonPosY = tileManager.tileHeight * 4;
+	this.LeftButtonSizeY = tileManager.tileWidth;
+	this.LeftButtonSizeX = tileManager.tileHeight;
 	this.LeftButtonPosX = tileManager.tileWidth * 17;
-	this.LeftButtonPosY = tileManager.tileHeight * 4;
-	this.RightButtonSizeY = this.RightButtonSizeX = 90;
+	this.LeftButtonPosY = tileManager.tileHeight * 3;
+	this.RightButtonSizeY = tileManager.tileWidth;
+	this.RightButtonSizeX = tileManager.tileHeight;
 	this.RightButtonPosX = tileManager.tileWidth * 19;
-	this.RightButtonPosY = tileManager.tileHeight * 4;
+	this.RightButtonPosY = tileManager.tileHeight * 3;
+
+	this.UpButton2SizeY = tileManager.tileWidth;
+	this.UpButton2SizeX = tileManager.tileHeight;
+	this.UpButton2PosX = tileManager.tileWidth * 18;
+	this.UpButton2PosY = tileManager.tileHeight * 6;
+	this.DownButton2SizeY = tileManager.tileWidth;
+	this.DownButton2SizeX = tileManager.tileHeight;
+	this.DownButton2PosX = tileManager.tileWidth * 18;
+	this.DownButton2PosY = tileManager.tileHeight * 8;
+	this.LeftButton2SizeY = tileManager.tileWidth;
+	this.LeftButton2SizeX = tileManager.tileHeight;
+	this.LeftButton2PosX = tileManager.tileWidth * 17;
+	this.LeftButton2PosY = tileManager.tileHeight * 7;
+	this.RightButton2SizeY = tileManager.tileWidth;
+	this.RightButton2SizeX = tileManager.tileHeight;
+	this.RightButton2PosX = tileManager.tileWidth * 19;
+	this.RightButton2PosY = tileManager.tileHeight * 7;
 
 }
 
@@ -144,29 +186,55 @@ GameScene.prototype.getClickPosiiton = function(e)
 
 GameScene.prototype.CheckButtonTouch = function(x, y)
 {
+	//shoot buttons
 	if (x > this.UpButtonPosX && x < this.UpButtonPosX + this.UpButtonSizeX &&
 		y > this.UpButtonPosY && y < this.UpButtonPosY + this.UpButtonSizeY)
 	{
-			console.log("Up pressed")
+		bulletIndex++;
+		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,0);
 	}
 
 	if (x > this.DownButtonPosX && x < this.DownButtonPosX + this.DownButtonSizeX &&
 		y > this.DownButtonPosY && y < this.DownButtonPosY + this.DownButtonSizeY)
 	{
-			console.log("Down pressed")
+		bulletIndex++;
+		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,1);
 	}
 
 	if (x > this.LeftButtonPosX && x < this.LeftButtonPosX + this.LeftButtonSizeX &&
 		y > this.LeftButtonPosY && y < this.LeftButtonPosY + this.LeftButtonSizeY)
 	{
-		console.log(LEVEL_NUM);
-			console.log("Left pressed")
+		bulletIndex++;
+		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,2);
 	}
 	if (x > this.RightButtonPosX && x < this.RightButtonPosX + this.RightButtonSizeX &&
 		y > this.RightButtonPosY && y < this.RightButtonPosY + this.RightButtonSizeY)
 	{
-		sceneManager.ChangeScene("Transition");
-		console.log("Right pressed")
+		bulletIndex++;
+		bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,3);
+	}
+	//move buttons
+	if (x > this.UpButton2PosX && x < this.UpButton2PosX + this.UpButton2SizeX &&
+		y > this.UpButton2PosY && y < this.UpButton2PosY + this.UpButton2SizeY)
+	{
+		playerOne.Move(0);
+	}
+
+	if (x > this.DownButton2PosX && x < this.DownButton2PosX + this.DownButton2SizeX &&
+		y > this.DownButton2PosY && y < this.DownButton2PosY + this.DownButton2SizeY)
+	{
+		playerOne.Move(1);
+	}
+
+	if (x > this.LeftButton2PosX && x < this.LeftButton2PosX + this.LeftButton2SizeX &&
+		y > this.LeftButton2PosY && y < this.LeftButton2PosY + this.LeftButton2SizeY)
+	{
+		playerOne.Move(2);
+	}
+	if (x > this.RightButton2PosX && x < this.RightButton2PosX + this.RightButton2SizeX &&
+		y > this.RightButton2PosY && y < this.RightButton2PosY + this.RightButton2SizeY)
+	{
+		playerOne.Move(3);
 	}
 }
 
@@ -197,7 +265,7 @@ GameScene.prototype.addPlayers = function(e)
 	playerOne = new AnimatedPlayer(p1_x, p1_y, tileManager.tileWidth, tileManager.tileHeight);
 	//console.log("playerOne.m_x - " + playerOne.m_x);
 	//console.log("playerOne.m_y - " + playerOne.m_y);	
-	this.OtherPlayer = new OtherPlayer(p2_x,p2_y);
+	otherPlayer = new OtherPlayer(p2_x,p2_y, tileManager.tileWidth, tileManager.tileHeight);
 }
 
 GameScene.prototype.calculateTileSizes = function()
@@ -328,17 +396,28 @@ GameScene.prototype.createTiles = function()
 
 GameScene.prototype.Update = function()
 {
+	var j;
 	playerOne.Update();
+	for(j = 0; j < bullets.length; j++)
+	{
+		bullets[j].Update();
+		if(bullets[j].remove)
+		{
+			bullets.splice(j,1);
+			bulletIndex--;
+		}
+	}
+
 	if(this.CheckLives())
 	{
-		return true;
+		sceneManager.ChangeScene("Transition");
 	}
 	return false;
 }
 
 GameScene.prototype.CheckLives = function()
 {
-	if(playerOne.playerLifes == 0 || this.OtherPlayer.playerLifes == 0)
+	if(playerOne.playerLifes == 0 || otherPlayer.playerLifes == 0)
 		return true;
 	return false;
 }
@@ -347,7 +426,11 @@ GameScene.prototype.Draw = function()
 {
 	game.ctx.font = "30px Arial";
 	playerOne.Draw();
-	this.OtherPlayer.Draw();
+	otherPlayer.Draw();
+	for(index = 0; index < bullets.length; index++)
+	{
+		bullets[index].Draw();
+	}
 	
 	//HUD Background
 	game.ctx.drawImage(resourceManager.SpriteBackGround, 0, game.canvas.height - 90, 228, 100);
@@ -358,7 +441,7 @@ GameScene.prototype.Draw = function()
 	tileManager.draw();
 
 	//Lives On HUD
-	switch(this.playerLifes)
+	switch(playerOne.playerLifes)
 	{
 		case 3 :
 			game.ctx.drawImage(resourceManager.SpriteLives, 100, game.canvas.height - 45, 32.5, 32.5);
@@ -381,5 +464,10 @@ GameScene.prototype.Draw = function()
 	game.ctx.drawImage(resourceManager.Down_BUTTON, this.DownButtonPosX, this.DownButtonPosY, this.DownButtonSizeX, this.DownButtonSizeY);
 	game.ctx.drawImage(resourceManager.Left_BUTTON, this.LeftButtonPosX, this.LeftButtonPosY, this.LeftButtonSizeX, this.LeftButtonSizeY);
 	game.ctx.drawImage(resourceManager.Right_BUTTON, this.RightButtonPosX, this.RightButtonPosY, this.RightButtonSizeX, this.RightButtonSizeY);
+
+	game.ctx.drawImage(resourceManager.Up_BUTTON, this.UpButton2PosX, this.UpButton2PosY, this.UpButton2SizeX, this.UpButton2SizeY);
+	game.ctx.drawImage(resourceManager.Down_BUTTON, this.DownButton2PosX, this.DownButton2PosY, this.DownButton2SizeX, this.DownButton2SizeY);
+	game.ctx.drawImage(resourceManager.Left_BUTTON, this.LeftButton2PosX, this.LeftButton2PosY, this.LeftButton2SizeX, this.LeftButton2SizeY);
+	game.ctx.drawImage(resourceManager.Right_BUTTON, this.RightButton2PosX, this.RightButton2PosY, this.RightButton2SizeX, this.RightButton2SizeY);
 
 }

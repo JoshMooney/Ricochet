@@ -57,6 +57,17 @@ public class ResourceManager
 	//PlayerOne
 	private BuildableBitmapTextureAtlas PlayerOneAtlas;
 	public ITextureRegion mPlayerOneTextureRegion;
+	
+	//Buttons
+	private BuildableBitmapTextureAtlas UpAtlas;
+	public ITextureRegion UpTextureRegion;
+	private BuildableBitmapTextureAtlas DownAtlas;
+	public ITextureRegion DownTextureRegion;
+	private BuildableBitmapTextureAtlas LeftAtlas;
+	public ITextureRegion LeftTextureRegion;
+	private BuildableBitmapTextureAtlas RightAtlas;
+	public ITextureRegion RightTextureRegion;
+	
 	//MoveTo Variable will be location for A* to move to
 	//private Vector2 MoveTo;
 		
@@ -128,6 +139,15 @@ public class ResourceManager
         PlayerOneAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 50, 50);  
         mPlayerOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(PlayerOneAtlas, activity, "playerOne.png");
         
+        //buttons
+        UpAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 32, 32);  
+        UpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(UpAtlas, activity, "UpTranButton.png");
+        DownAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 32, 32);  
+        DownTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(DownAtlas, activity, "DownTranButton.png");
+        LeftAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 32, 32);  
+        LeftTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(LeftAtlas, activity, "LefTranButton.png");
+        RightAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 32, 32);  
+        RightTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(RightAtlas, activity, "RightTranButton.png");
         
         //Projectile
         ProjectileAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 25, 25);  

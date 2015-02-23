@@ -8,21 +8,38 @@ function Bullet(x, y, Direction)
 	this.bodyDef = new b2BodyDef;
 	this.bodyDef.type = b2Body.b2_dynamicBody;
 	//vairbles
-	this.m_x = x;
-	this.m_y = y;
+	this.direction = Direction;
 	this.m_width = 10;
 	this.m_height = 10;
-	this.speed = 10;
-	this.direction = Direction;
+	//creates bullet on right side of player
+	switch(this.direction) {
+	    case 0:
+	        this.m_x = x + playerOne.m_width/2 - this.m_width/2;
+			this.m_y = y - 5 - this.m_height;
+	        break;
+	    case 1:
+	        this.m_x = x + playerOne.m_width/2 - this.m_width/2;
+			this.m_y = y + playerOne.m_height + 5;
+	        break;
+	    case 2:
+	        this.m_x = x - 5 - this.m_width;
+			this.m_y = y + playerOne.m_height/2 - this.m_height/2;
+	        break;
+	    default:
+	        this.m_x = x + playerOne.m_width + 5;
+			this.m_y = y + playerOne.m_height/2 - this.m_height/2;
+			break;
+	}
+	this.speed = 20;
 	this.remove = false;
-	console.log("x: " + this + "Y: " + this.m_y);
+	console.log("x: " + this.m_x + "Y: " + this.m_y);
 }
 
 Bullet.prototype.Update = function()
 {
 	//console.log("Bullet Update")
-	//direction 0=up, 1=down, 2=left and 3/defualt=right
-	if(tileManager.CheckCollision(this))
+	//direction 0=up, 1=down, 2=right and 3/defualt=left
+	if(tileManager.CheckCollision(this) || playerOne.Contains(this) || otherPlayer.Contains(this))
 		this.remove = true;
 	switch(this.direction) {
 	    case 0:
@@ -31,11 +48,11 @@ Bullet.prototype.Update = function()
 	    case 1:
 	        this.m_y += this.speed;
 	        break;
-	    case 3:
-	        this.m_x += this.speed;
+	    case 2:
+	        this.m_x -= this.speed;
 	        break;
 	    default:
-	        this.m_x -= this.speed;
+	        this.m_x += this.speed;
 	}
 	//console.log("x: " + this.m_x + "Y: " + this.m_y)
 }

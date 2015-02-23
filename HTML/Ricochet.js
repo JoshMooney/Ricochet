@@ -57,7 +57,7 @@ function setupTouch()
 	else {
 		console.log("not touchable");
 		//document.addEventListener("keyup", function(e){sceneManager.GameScene.playerOne.Move(e);} );
-		document.addEventListener("click", function(e){TransitionScene.getClickPosiiton(e);} );		
+		//document.addEventListener("click", function(e){TransitionScene.getClickPosiiton(e);} );		
 		document.addEventListener("click", function(e){sceneManager.MenuScene.getClickPosiiton(e);} );
 		document.addEventListener("click", function(e){sceneManager.GameScene.getClickPosiiton(e);} );
 	}
@@ -134,15 +134,16 @@ Game.prototype.draw = function()
 		for(var i=0; i<touches.length; i++)
 		{
 			var touch = touches[i]; 
-			game.ctx.beginPath(); 
-			game.ctx.fillStyle = "black";
-			game.ctx.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30); 
-			game.ctx.beginPath(); 
-			game.ctx.strokeStyle = "red";
-			game.ctx.lineWidth = "1";
-			game.ctx.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true); 
-			game.ctx.stroke();
+			//game.ctx.beginPath(); 
+			//game.ctx.fillStyle = "black";
+			//game.ctx.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30); 
+			//game.ctx.beginPath(); 
+			//game.ctx.strokeStyle = "red";
+			//game.ctx.lineWidth = "1";
+			//game.ctx.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true); 
+			//game.ctx.stroke();
 			sceneManager.MenuScene.getClickPosiiton(touch);
+			sceneManager.GameScene.getClickPosiiton(touch);
 		}
 	} else {
 		game.ctx.fillStyle	 = "black"; 
@@ -157,13 +158,14 @@ function onTouchStart(e)
 {
 	touchStart = e.touches[0];
 	touches = e.touches;
+	
 	game.testSwipe = "Record start";
 }
 function onTouchMove(e) 
 {
 	/*// Prevent the browser from doing its default thing (scroll, zoom)
 	e.preventDefault();
-	touches = e.touches; 
+	touches = e.touches; \
 	if(touchable && touches.length >= 2) {
 		for(var i=0; i<touches.length; i++)
 		{
