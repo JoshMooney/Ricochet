@@ -31,7 +31,7 @@ ResourceManager.prototype.LoadGameResources = function()
 	this.Right_BUTTON = new Image();
 	this.Right_BUTTON.src = "assets/gfx/RightButton.png"
 
-	console.log("Load Game Resources Complete")
+	//console.log("Load Game Resources Complete")
 	this.LoadGameAudio();
 }
 ResourceManager.prototype.UnloadGameResources = function()
@@ -54,7 +54,7 @@ ResourceManager.prototype.LoadMenuResources = function()
 	this.dev_BUTTON = new Image();
 	this.dev_BUTTON.src = "assets/gfx/Menu/dev.png"
 	
-	console.log("Load Menu Resources Complete")
+	//console.log("Load Menu Resources Complete")
 	this.LoadMenuAudio();
 }
 ResourceManager.prototype.UnloadMenuResources = function()
@@ -70,7 +70,7 @@ ResourceManager.prototype.LoadTileResources = function()
     this.tile_floor = new Image();
     this.tile_floor.src = "assets/gfx/Map/Floor.png"
     
-	console.log("Load Tile Resources Complete")
+	//console.log("Load Tile Resources Complete")
 }
 ResourceManager.prototype.UnloadTileResources = function()
 {
@@ -85,7 +85,7 @@ ResourceManager.prototype.LoadTransitionResources = function()
 	this.trans_GameOver = new Image();
     this.trans_GameOver.src = "assets/transitions/gameover.png"
 	
-	console.log("Load Transition Resources Complete")
+	//console.log("Load Transition Resources Complete")
 }
 ResourceManager.prototype.UnloadTransitionResources = function()
 {

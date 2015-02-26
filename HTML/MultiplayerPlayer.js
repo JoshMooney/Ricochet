@@ -27,7 +27,7 @@ function MultiplayerPlayer(x, y, w, h)//Base Class for Player and Enemy to inher
 
 	this.ai = false;//can be used to juge if this is player or enemy
 
-	this.speed = 8;
+	this.speed = 30;		//Debuging only change before commit
 	var coin = sprite({
     	context: game.ctx,
     	width: 25,
@@ -52,23 +52,25 @@ function sprite (options)
 
 MultiplayerPlayer.prototype.Move = function(direction)
 {
-	if(this.ai == false)
-	{
-		this.m_previousX = this.m_x;
-		this.m_previousY = this.m_y;
-	
-		if(direction == 0) // Up Key
-			this.m_y -= this.speed;
-		if(direction == 1) // Down Key
-			this.m_y += this.speed;
-		if(direction == 2) // Left Key
-			this.m_x -= this.speed;
-		if(direction == 3) // Right Key
-			this.m_x += this.speed;
-	}
-	
+	this.m_previousX = this.m_x;
+	this.m_previousY = this.m_y;
+	if(direction == 0) // Up Key
+		this.m_y -= this.speed;
+	if(direction == 1) // Down Key
+		this.m_y += this.speed;
+	if(direction == 2) // Left Key
+		this.m_x -= this.speed;
+	if(direction == 3) // Right Key
+		this.m_x += this.speed;
+		
 	if(tileManager.CheckCollision(this))
 		this.PreviousStep();
+}
+
+MultiplayerPlayer.prototype.MoveToPosition = function(x,y)
+{
+	this.m_x = x;
+	this.m_y = y;
 }
 
 MultiplayerPlayer.prototype.Update = function()
@@ -97,18 +99,14 @@ MultiplayerPlayer.prototype.GetWidth = function()
 	this.m_y = this.m_previousY;
 }
 
-MultiplayerPlayer.prototype.Draw = function(e)
+MultiplayerPlayer.prototype.Draw = function(ID)
 {
 	if(sceneManager.CURR_SCENE == sceneManager.SCENE_MULTI)
 	{
-		if(sceneManager.GameScene.ID == 0)
+		if(ID == 0)
 			game.ctx.drawImage(resourceManager.player1Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
-		if(sceneManager.GameScene.ID == 1)
+		if(ID == 1)
 			game.ctx.drawImage(resourceManager.player2Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
-	}
-	else if(sceneManager.CURR_SCENE == sceneManager.SCENE_GAME)
-	{
-		game.ctx.drawImage(resourceManager.player1Sprite, this.m_x, this.m_y, this.m_width, this.m_height)
 	}
 }
 

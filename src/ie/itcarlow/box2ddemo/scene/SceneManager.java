@@ -15,12 +15,15 @@ public class SceneManager
 	 private BaseScene currentScene;
 	 private Engine engine = ResourceManager.getInstance().engine;
 
+	 public boolean audio_toggle;
+	 
 	 public enum SceneType { 
 		 SCENE_MENU, SCENE_GAME
 	 }
 	 
 	 public void setMenuScene(OnCreateSceneCallback cb)
 	 {
+		 audio_toggle = SharedPreferencesManager.getInstance(ResourceManager.getInstance().activity).getMusic();
 		 ResourceManager.getInstance().LoadMenuResources();
 		 menuScene = new MainMenuScene();
 		 setScene(menuScene);

@@ -1,7 +1,7 @@
 var playerOne, otherPlayer;
 var bullets = new Array();
 var bulletIndex = -1;
-var LEVEL_NUM = 1;
+var LEVEL_NUM = 3;
 
 var p1_x, p1_y
 var p2_x, p2_y
@@ -44,7 +44,7 @@ var RightButton2SizeY;
 function GameScene()
 {
 	//document.addEventListener("keydown", function(e){playerOne.Move(e);} );
-	//resourceManager.gameBE.play();
+	resourceManager.gameBE.play();
 	this.score = 0;
 	this.createScene();
 	
@@ -101,6 +101,8 @@ GameScene.prototype.createScene = function()
 GameScene.prototype.setUpNextLevel = function()
 {
 	LEVEL_NUM++;
+	
+	bullets.splice(0,bullets.length);
 	this.GetStartingPosition();
 	this.addPlayers();
 	//Give both players Lives OR whatever we intend to do
@@ -140,7 +142,7 @@ GameScene.prototype.GetStartingPosition = function()
 		p1_y = 1.5 * height;
 		
 		//Player 2 Starting Location
-		p2_x = 11.5 * width;
+		p2_x = 12.5 * width;
 		p2_y = 7.5 * height;
 	}
 	else if(LEVEL_NUM == 4)
@@ -397,7 +399,7 @@ GameScene.prototype.Update = function()
 	playerOne.Update();
 	for(j = 0; j < bullets.length; j++)
 	{
-		bullets[j].Update();
+		bullets[j].Update(1);
 		if(bullets[j].remove)
 		{
 			bullets.splice(j,1);

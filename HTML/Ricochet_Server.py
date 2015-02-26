@@ -43,10 +43,13 @@ def sendBulletToOtherPlayer(self, R):
 			#Creates the dictionary
 			msg=dict()
 			
+			#sendIDToAllButPlayer(self, msg)
+			
 			#Populates the message
-			msg["type"] = "Bullet"
+			msg["type"] = "Spawn Bullet"
 			msg["Pos"] = {"X":R["Pos"]["X"], "Y":R["Pos"]["Y"]}
-			msg["Dir"] = 0;
+			msg["Dir"] = R["Dir"]
+			msg["ID"] = R["ID"]
 			msg["IP"] = self.request.remote_ip
 			
 			#Dumps the message and send it
@@ -63,14 +66,38 @@ def sendPositionToOtherPlayer(self, R):
 			#Populates the message
 			msg["type"] = "Movement"
 			msg["Pos"] = {"X":R["Pos"]["X"], "Y":R["Pos"]["Y"]}
-			msg["Life"] = 3;
+			msg["ID"] = R["ID"]
+			msg["Lifes"] = R["Lifes"]
 			msg["IP"] = self.request.remote_ip
+			
+			#Dumps the message and send it
+			message=json.dumps(msg)
+			userIP[key].write_message(message)
+
+def LevelComplete(self, R):
+	for key in userIP:
+			#Creates the dictionary
+			msg=dict()
+			
+			#Populates the message
+			msg["type"] = "Level_Complete"
 			
 			#Dumps the message and send it
 			msg=json.dumps(msg)
 			userIP[key].write_message(msg)
-			print("Message Sent To: " + self.request.remote_ip)
 
+def ContinueToNextLevel(self,R):
+	for key in userIP:
+			#Creates the dictionary
+			msg=dict()
+			
+			#Populates the message
+			msg["type"] = "Continue_Next_Level"
+			
+			#Dumps the message and send it
+			msg=json.dumps(msg)
+			userIP[key].write_message(msg)
+			
 #Extends the tornado websocket handler
 class WSHandler(tornado.websocket.WebSocketHandler):
 	def check_origin(self,origin):
@@ -90,6 +117,10 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 			sendPositionToOtherPlayer(self, R)
 		if R['request'] == "Spawn Bullet":
 			sendBulletToOtherPlayer(self, R)
+		if R['request'] == "Level_Complete":
+			LevelComplete(self, R)
+		if R['request'] == "Continue_Next_Level":
+			ContinueToNextLevel(self, R)
 
 app = tornado.web.Application([
 	(r'/test', WSHandler),

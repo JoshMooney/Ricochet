@@ -1,5 +1,7 @@
 package ie.itcarlow.box2ddemo;
 
+import ie.itcarlow.box2ddemo.scene.SceneManager;
+
 import java.io.IOException;
 
 import org.andengine.audio.music.Music;
@@ -34,6 +36,7 @@ public class ResourceManager
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion play_button_region;
 	public ITextureRegion exit_button_region;
+	public ITextureRegion audio_button_region;
 	public ITextureRegion title_region;
 	public Music menuBE;
 	public Sound menuClickedSE;
@@ -98,12 +101,8 @@ public class ResourceManager
 		menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 		play_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play.png");
 		exit_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "exit.png");
-		/*
-		menuTitleAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 200, 1200);  
-		menuTitleRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(menuTitleAtlas, activity, "AnimatedTitle.png", 0,0,COL,ROW);
-		menuTitleAtlas.load();
-		*/
-		
+		audio_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "AudioButton.png");
+	
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); 
 		texBanana = new BitmapTextureAtlas(activity.getTextureManager(), 400, 2400, TextureOptions.BILINEAR);
 		regBanana = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texBanana, activity.getAssets(),"AnimatedTitle.png", 0, 0, COL, ROW);
@@ -117,7 +116,8 @@ public class ResourceManager
 		catch (Exception e){
 			Debug.e(e);
 		}
-		menuBE.play();
+		if(SceneManager.getInstance().audio_toggle)
+			menuBE.play();
 	}
 	public void UnloadMenuResources()
 	{
@@ -177,7 +177,8 @@ public class ResourceManager
 		catch (Exception e){
 			Debug.e(e);
 		}
-		gameBE.play();
+		if(SceneManager.getInstance().audio_toggle)
+			gameBE.play();
 	}	
     public void UnloadGameResources()
     {

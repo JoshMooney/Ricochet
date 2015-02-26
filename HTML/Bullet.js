@@ -35,12 +35,16 @@ function Bullet(x, y, Direction)
 	console.log("x: " + this.m_x + "Y: " + this.m_y);
 }
 
-Bullet.prototype.Update = function()
+Bullet.prototype.Update = function(CURR_SCENE)
 {
 	//console.log("Bullet Update")
 	//direction 0=up, 1=down, 2=right and 3/defualt=left
-	if(tileManager.CheckCollision(this) || playerOne.Contains(this) || otherPlayer.Contains(this))
-		this.remove = true;
+	if(CURR_SCENE == 1)
+		if(tileManager.CheckCollision(this) || playerOne.Contains(this) || otherPlayer.Contains(this))
+			this.remove = true;
+	if(CURR_SCENE == 3)
+		if(tileManager.CheckCollision(this) || playerOne.Contains(this) || playerTwo.Contains(this))
+			this.remove = true;
 	switch(this.direction) {
 	    case 0:
 	        this.m_y -= this.speed;

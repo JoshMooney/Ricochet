@@ -1,16 +1,13 @@
+var playerOne, playerTwo;
+var bullets = new Array();
+var bulletIndex = -1;
+var LEVEL_NUM = 1;
+
 //Websockets
 var url = "ws://149.153.102.19:8080/test";
 var ws = new WebSocket(url);
 var state;
 var ID;
-
-//Players
-var playerOne;
-var playerTwo;
-
-var bullets = new Array();
-var bulletIndex = -1;
-var LEVEL_NUM = 1;
 
 var p1_x, p1_y
 var p2_x, p2_y
@@ -50,63 +47,6 @@ var RightButton2PosY;
 var RightButton2SizeX;
 var RightButton2SizeY;
 
-//Multiplayer Shtuff
-function MultiplayerScene()
-{
-	
-	state = "NULL";
-	
-	var msg = { }
-	msg.request = 'join'
-	
-	var message = JSON.stringify(msg);
-	ws.send(message);
-	
-	//document.addEventListener("keydown", function(e){this.Move(e);} );
-	
-	//resourceManager.gameBE.play();
-	this.score = 0;
-	this.createScene();
-	
-	//buttons set size and location proportional to screen size
-	this.UpButtonSizeY = this.UpButtonSizeX = 90;
-	this.UpButtonPosX = tileManager.tileWidth * 18;
-	this.UpButtonPosY = tileManager.tileHeight * 3;
-	this.DownButtonSizeY = this.DownButtonSizeX = 90;
-	this.DownButtonPosX = tileManager.tileWidth * 18;
-	this.DownButtonPosY = tileManager.tileHeight * 5;
-	this.LeftButtonSizeY = this.LeftButtonSizeX = 90;
-	this.LeftButtonPosX = tileManager.tileWidth * 17;
-	this.LeftButtonPosY = tileManager.tileHeight * 4;
-	this.RightButtonSizeY = this.RightButtonSizeX = 90;
-	this.RightButtonPosX = tileManager.tileWidth * 19;
-	this.RightButtonPosY = tileManager.tileHeight * 4;
-	
-	this.UpButton2SizeY = this.UpButton2SizeX = 90;
-	this.UpButton2PosX = tileManager.tileWidth * 18;
-	this.UpButton2PosY = tileManager.tileHeight * 6;
-	this.DownButton2SizeY = this.DownButton2SizeX = 90;
-	this.DownButton2PosX = tileManager.tileWidth * 18;
-	this.DownButton2PosY = tileManager.tileHeight * 8;
-	this.LeftButton2SizeY = this.LeftButton2SizeX = 90;
-	this.LeftButton2PosX = tileManager.tileWidth * 17;
-	this.LeftButton2PosY = tileManager.tileHeight * 7;
-	this.RightButton2SizeY = this.RightButton2SizeX = 90;
-	this.RightButton2PosX = tileManager.tileWidth * 19;
-	this.RightButton2PosY = tileManager.tileHeight * 7;
-
-}
-
-//Websocket Shtuff
-//ws.onopen = function()
-//{
-//	var msg = { }
-//	msg.request = 'join'
-	
-//	var message = JSON.stringify(msg);
-//	ws.send(message);
-//}
-
 ws.onmessage = function(event)
 {
 	var msg;
@@ -133,61 +73,96 @@ ws.onmessage = function(event)
 			state = msg["data"];
 		}
 	}
-	else if(msg["type"] == "Join UnsuccessFul - Session Full")
+	if(msg["type"] == "Join UnsuccessFul - Session Full")
 	{
 		state = msg["type"];
 		console.log(msg["type"]);
 	}
 	if(msg["type"] == "Movement")
 	{
-		if(ID != 0)
+		if(ID == 0)
 		{
+			playerTwo.playerLifes = msg["Lifes"];
 			playerTwo.MoveToPosition(msg["Pos"]["X"],msg["Pos"]["Y"])
 		}
-		if(ID != 1)
+		if(ID == 1)
 		{
+			playerOne.playerLifes = msg["Lifes"];
 			playerOne.MoveToPosition(msg["Pos"]["X"],msg["Pos"]["Y"])
 		}
 	}
 	if(msg["type"] == "Spawn Bullet")
 	{
+		console.log(msg["Pos"]["X"])
+		console.log(msg["Pos"]["Y"])
+		
+		console.log("Bullet Spawn");
 		bulletIndex++;
 		bullets[bulletIndex] = new Bullet(msg["Pos"]["X"],msg["Pos"]["Y"],msg["Dir"]);
 	}
+	if(msg["type"] == "Level_Complete")
+	{
+		bullets.splice(0,bullets.length);
+		console.log("Recieved Level_Complete command")
+		sceneManager.ChangeScene("Multi-Transition");
+	}
+	if(msg["type"] == "Continue_Next_Level")
+	{
+		sceneManager.ChangeScene("Multi");
+	}
 }
 
-MultiplayerScene.prototype.Move = function(e)
+function MultiplayerScene()
 {
-	if(state == "STARTING_GAME")
-	{
-		if(ID == 0)
-		{
-			playerOne.Move(e);
-			//console.log("You Moved");
-			var msg = {		}
-			msg.request = "Movement";
-			msg.Pos = {"X": playerOne.m_x, "Y": playerOne.m_y};
-			msg.lives = playerOne.playerLifes;
-			var message = JSON.stringify(msg);
-			ws.send(message);
-		}
-		if(ID == 1)
-		{
-			playerTwo.Move(e);
-			//console.log("You Moved");
-			var msg = {		}
-			msg.request = "Movement";
-			msg.Pos = {"X": playerTwo.m_x, "Y": playerTwo.m_y};
-			msg.lives = playerTwo.playerLifes;
-			var message = JSON.stringify(msg);
-			ws.send(message);
-		}
-	}
-	else
-	{
-		e.preventDefault();
-		console.log("Please Wait on Other Players");
-	}
+
+	state = "No connection to server";
+	
+	var msg = { }
+	msg.request = 'join'
+	
+	var message = JSON.stringify(msg);
+	ws.send(message);
+	
+	//document.addEventListener("keydown", function(e){playerOne.Move(e);} );
+	//resourceManager.gameBE.play();
+	this.score = 0;
+	this.createScene();
+	
+	//buttons set size and location proportional to screen size
+	this.UpButtonSizeY = tileManager.tileWidth;
+	this.UpButtonSizeX = tileManager.tileHeight;
+	this.UpButtonPosX = tileManager.tileWidth * 18;
+	this.UpButtonPosY = tileManager.tileHeight * 2;
+	this.DownButtonSizeY = tileManager.tileWidth;
+	this.DownButtonSizeX = tileManager.tileHeight;
+	this.DownButtonPosX = tileManager.tileWidth * 18;
+	this.DownButtonPosY = tileManager.tileHeight * 4;
+	this.LeftButtonSizeY = tileManager.tileWidth;
+	this.LeftButtonSizeX = tileManager.tileHeight;
+	this.LeftButtonPosX = tileManager.tileWidth * 17;
+	this.LeftButtonPosY = tileManager.tileHeight * 3;
+	this.RightButtonSizeY = tileManager.tileWidth;
+	this.RightButtonSizeX = tileManager.tileHeight;
+	this.RightButtonPosX = tileManager.tileWidth * 19;
+	this.RightButtonPosY = tileManager.tileHeight * 3;
+
+	this.UpButton2SizeY = tileManager.tileWidth;
+	this.UpButton2SizeX = tileManager.tileHeight;
+	this.UpButton2PosX = tileManager.tileWidth * 18;
+	this.UpButton2PosY = tileManager.tileHeight * 6;
+	this.DownButton2SizeY = tileManager.tileWidth;
+	this.DownButton2SizeX = tileManager.tileHeight;
+	this.DownButton2PosX = tileManager.tileWidth * 18;
+	this.DownButton2PosY = tileManager.tileHeight * 8;
+	this.LeftButton2SizeY = tileManager.tileWidth;
+	this.LeftButton2SizeX = tileManager.tileHeight;
+	this.LeftButton2PosX = tileManager.tileWidth * 17;
+	this.LeftButton2PosY = tileManager.tileHeight * 7;
+	this.RightButton2SizeY = tileManager.tileWidth;
+	this.RightButton2SizeX = tileManager.tileHeight;
+	this.RightButton2PosX = tileManager.tileWidth * 19;
+	this.RightButton2PosY = tileManager.tileHeight * 7;
+
 }
 
 MultiplayerScene.prototype.createScene = function()	
@@ -206,6 +181,9 @@ MultiplayerScene.prototype.createScene = function()
 MultiplayerScene.prototype.setUpNextLevel = function()
 {
 	LEVEL_NUM++;
+	
+	bulletIndex = -1;
+	bullets.splice(0,bullets.length);
 	this.GetStartingPosition();
 	this.addPlayers();
 	//Give both players Lives OR whatever we intend to do
@@ -245,7 +223,7 @@ MultiplayerScene.prototype.GetStartingPosition = function()
 		p1_y = 1.5 * height;
 		
 		//Player 2 Starting Location
-		p2_x = 11.5 * width;
+		p2_x = 12.5 * width;
 		p2_y = 7.5 * height;
 	}
 	else if(LEVEL_NUM == 4)
@@ -288,6 +266,7 @@ MultiplayerScene.prototype.getClickPosiiton = function(e)
 
 MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 {
+	//shoot buttons
 	if (x > this.UpButtonPosX && x < this.UpButtonPosX + this.UpButtonSizeX &&
 		y > this.UpButtonPosY && y < this.UpButtonPosY + this.UpButtonSizeY)
 	{
@@ -300,10 +279,13 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 				//Create the bullet
 				bulletIndex++;
 				bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,0);
+				
 				var msg = { };
 				msg.request = "Spawn Bullet";
 				msg.Pos = {"X":playerOne.m_x, "Y":playerOne.m_y};
+				msg.ID = ID;
 				msg.Dir = 0;
+				
 				var message = JSON.stringify(msg);
 				ws.send(message);
 			}
@@ -312,10 +294,13 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 				//Create the bullet
 				bulletIndex++;
 				bullets[bulletIndex] = new Bullet(playerTwo.m_x,playerTwo.m_y,0);
+				
 				var msg = { };
 				msg.request = "Spawn Bullet";
 				msg.Pos = {"X":playerTwo.m_x, "Y":playerTwo.m_y};
+				msg.ID = ID;
 				msg.Dir = 0;
+				
 				var message = JSON.stringify(msg);
 				ws.send(message);
 			}
@@ -337,11 +322,14 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 			{
 				//Create the bullet
 				bulletIndex++;
-				bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,0);
+				bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,1);
+				
 				var msg = { };
 				msg.request = "Spawn Bullet";
-				msg.Dir = 2;
+				msg.Dir = 1;
+				msg.ID = ID;
 				msg.Pos = {"X":playerOne.m_x, "Y":playerOne.m_y};
+				
 				var message = JSON.stringify(msg);
 				ws.send(message);
 			}
@@ -349,11 +337,14 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 			{
 				//Create the bullet
 				bulletIndex++;
-				bullets[bulletIndex] = new Bullet(playerTwo.m_x,playerTwo.m_y,0);
+				bullets[bulletIndex] = new Bullet(playerTwo.m_x,playerTwo.m_y,1);
+				
 				var msg = { };
 				msg.request = "Spawn Bullet";
-				msg.Dir = 2;
+				msg.Dir = 1;
+				msg.ID = ID;
 				msg.Pos = {"X":playerTwo.m_x, "Y":playerTwo.m_y};
+				
 				var message = JSON.stringify(msg);
 				ws.send(message);
 			}
@@ -375,11 +366,14 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 			{
 				//Create the bullet
 				bulletIndex++;
-				bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,0);
+				bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,2);
+				
 				var msg = { };
 				msg.request = "Spawn Bullet";
-				msg.Dir = 3;
+				msg.Dir = 2;
+				msg.ID = ID;
 				msg.Pos = {"X":playerOne.m_x, "Y":playerOne.m_y};
+				
 				var message = JSON.stringify(msg);
 				ws.send(message);
 			}
@@ -387,11 +381,14 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 			{
 				//Create the bullet
 				bulletIndex++;
-				bullets[bulletIndex] = new Bullet(playerTwo.m_x,playerTwo.m_y,0);
+				bullets[bulletIndex] = new Bullet(playerTwo.m_x,playerTwo.m_y,2);
+				
 				var msg = { };
 				msg.request = "Spawn Bullet";
-				msg.Dir = 3;
+				msg.Dir = 2;
+				msg.ID = ID;
 				msg.Pos = {"X":playerTwo.m_x, "Y":playerTwo.m_y};
+				
 				var message = JSON.stringify(msg);
 				ws.send(message);
 			}
@@ -412,11 +409,14 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 			{
 				//Create the bullet
 				bulletIndex++;
-				bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,0);
+				bullets[bulletIndex] = new Bullet(playerOne.m_x,playerOne.m_y,3);
+				
 				var msg = { };
 				msg.request = "Spawn Bullet";
 				msg.Dir = 3;
+				msg.ID = ID;
 				msg.Pos = {"X":playerOne.m_x, "Y":playerOne.m_y};
+				
 				var message = JSON.stringify(msg);
 				ws.send(message);
 			}
@@ -424,11 +424,53 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 			{
 				//Create the bullet
 				bulletIndex++;
-				bullets[bulletIndex] = new Bullet(playerTwo.m_x,playerTwo.m_y,0);
+				bullets[bulletIndex] = new Bullet(playerTwo.m_x,playerTwo.m_y,3);
+				
 				var msg = { };
 				msg.Dir = 3;
+				msg.ID = ID;
 				msg.request = "Spawn Bullet";
 				msg.Pos = {"X":playerTwo.m_x, "Y":playerTwo.m_y};
+				
+				var message = JSON.stringify(msg);
+				ws.send(message);
+			}
+		}
+		else
+		{
+			console.log("Please Wait on Other Players");
+		}
+	}
+	
+	//Move Buttons
+	if (x > this.UpButton2PosX && x < this.UpButton2PosX + this.UpButton2SizeX &&
+		y > this.UpButton2PosY && y < this.UpButton2PosY + this.UpButton2SizeY)
+	{
+		if(state == "STARTING_GAME")
+		{
+			if(ID == 0)
+			{
+				playerOne.Move(0);
+				//console.log("You Moved");
+				var msg = {		}
+				msg.request = "Movement";
+				msg.ID = ID;
+				msg.Lifes = playerOne.playerLifes;
+				msg.Pos = {"X": playerOne.m_x, "Y": playerOne.m_y};
+				msg.lives = playerOne.playerLifes;
+				var message = JSON.stringify(msg);
+				ws.send(message);
+			}
+			if(ID == 1)
+			{
+				playerTwo.Move(0);
+				//console.log("You Moved");
+				var msg = {		}
+				msg.request = "Movement";
+				msg.ID = ID;
+				msg.Lifes = playerTwo.playerLifes;
+				msg.Pos = {"X": playerTwo.m_x, "Y": playerTwo.m_y};
+				msg.lives = playerTwo.playerLifes;
 				var message = JSON.stringify(msg);
 				ws.send(message);
 			}
@@ -439,40 +481,109 @@ MultiplayerScene.prototype.CheckButtonTouch = function(x, y)
 		}
 	}
 
-	//move buttons
-	if (x > this.UpButton2PosX && x < this.UpButton2PosX + this.UpButton2SizeX &&
-		y > this.UpButton2PosY && y < this.UpButton2PosY + this.UpButton2SizeY)
-	{
-		if(ID == 0)
-			playerOne.Move(0);
-		else
-			playerTwo.Move(0);
-	}
-
 	if (x > this.DownButton2PosX && x < this.DownButton2PosX + this.DownButton2SizeX &&
 		y > this.DownButton2PosY && y < this.DownButton2PosY + this.DownButton2SizeY)
 	{
-		if(ID == 0)
-			playerOne.Move(1);
+		if(state == "STARTING_GAME")
+		{
+			if(ID == 0)
+			{
+				playerOne.Move(1);
+				//console.log("You Moved");
+				var msg = {		}
+				msg.request = "Movement";
+				msg.ID = ID;
+				msg.Lifes = playerOne.playerLifes;
+				msg.Pos = {"X": playerOne.m_x, "Y": playerOne.m_y};
+				var message = JSON.stringify(msg);
+				ws.send(message);
+			}
+			if(ID == 1)
+			{
+				playerTwo.Move(1);
+				//console.log("You Moved");
+				var msg = {		}
+				msg.request = "Movement";
+				msg.ID = ID;
+				msg.Lifes = playerTwo.playerLifes;
+				msg.Pos = {"X": playerTwo.m_x, "Y": playerTwo.m_y};
+				var message = JSON.stringify(msg);
+				ws.send(message);
+			}
+		}
 		else
-			playerTwo.Move(1);
+		{
+			console.log("Please Wait on Other Players");
+		}
 	}
 
 	if (x > this.LeftButton2PosX && x < this.LeftButton2PosX + this.LeftButton2SizeX &&
 		y > this.LeftButton2PosY && y < this.LeftButton2PosY + this.LeftButton2SizeY)
 	{
-		if(ID == 0)
-			playerOne.Move(2);
+		if(state == "STARTING_GAME")
+		{
+			if(ID == 0)
+			{
+				playerOne.Move(2);
+				//console.log("You Moved");
+				var msg = {		}
+				msg.request = "Movement";
+				msg.ID = ID;
+				msg.Lifes = playerOne.playerLifes;
+				msg.Pos = {"X": playerOne.m_x, "Y": playerOne.m_y};
+				var message = JSON.stringify(msg);
+				ws.send(message);
+			}
+			if(ID == 1)
+			{
+				playerTwo.Move(2);
+				//console.log("You Moved");
+				var msg = {		}
+				msg.request = "Movement";
+				msg.ID = ID;
+				msg.Lifes = playerTwo.playerLifes;
+				msg.Pos = {"X": playerTwo.m_x, "Y": playerTwo.m_y};
+				var message = JSON.stringify(msg);
+				ws.send(message);
+			}
+		}
 		else
-			playerTwo.Move(2);
+		{
+			console.log("Please Wait on Other Players");
+		}
 	}
 	if (x > this.RightButton2PosX && x < this.RightButton2PosX + this.RightButton2SizeX &&
 		y > this.RightButton2PosY && y < this.RightButton2PosY + this.RightButton2SizeY)
 	{
-		if(ID == 0)
-			playerOne.Move(3);
+		if(state == "STARTING_GAME")
+		{
+			if(ID == 0)
+			{
+				playerOne.Move(3);
+				var msg = {		}
+				msg.request = "Movement";
+				msg.ID = ID;
+				msg.Lifes = playerOne.playerLifes;
+				msg.Pos = {"X": playerOne.m_x, "Y": playerOne.m_y};
+				var message = JSON.stringify(msg);
+				ws.send(message);
+			}
+			if(ID == 1)
+			{
+				playerTwo.Move(3);
+				var msg = {		}
+				msg.request = "Movement";
+				msg.ID = ID;
+				msg.Lifes = playerTwo.playerLifes;
+				msg.Pos = {"X": playerTwo.m_x, "Y": playerTwo.m_y};
+				var message = JSON.stringify(msg);
+				ws.send(message);
+			}
+		}
 		else
-			playerTwo.Move(3);
+		{
+			console.log("Please Wait on Other Players");
+		}
 	}
 }
 
@@ -498,8 +609,8 @@ MultiplayerScene.prototype.createPhysics = function(e)
 
 MultiplayerScene.prototype.addPlayers = function(e)
 {
-	playerOne = new AnimatedPlayer(p1_x, p1_y, tileManager.tileWidth, tileManager.tileHeight);
-	playerTwo = new AnimatedPlayer(p1_x, p1_y, tileManager.tileWidth, tileManager.tileHeight);
+	playerOne = new MultiplayerPlayer(p1_x, p1_y, tileManager.tileWidth, tileManager.tileHeight);
+	playerTwo = new MultiplayerPlayer(p2_x, p2_y, tileManager.tileWidth, tileManager.tileHeight);
 }
 
 MultiplayerScene.prototype.calculateTileSizes = function()
@@ -635,7 +746,7 @@ MultiplayerScene.prototype.Update = function()
 	playerTwo.Update();
 	for(j = 0; j < bullets.length; j++)
 	{
-		bullets[j].Update();
+		bullets[j].Update(3);
 		if(bullets[j].remove)
 		{
 			bullets.splice(j,1);
@@ -644,8 +755,11 @@ MultiplayerScene.prototype.Update = function()
 	}
 
 	if(this.CheckLives())
-	{
-		sceneManager.ChangeScene("Transition");
+	{	
+		var msg = { };
+		msg.request = "Level_Complete";
+		var message = JSON.stringify(msg);
+		ws.send(message);
 	}
 	return false;
 }
@@ -660,8 +774,16 @@ MultiplayerScene.prototype.CheckLives = function()
 MultiplayerScene.prototype.Draw = function()
 {
 	game.ctx.font = "30px Arial";
-	playerOne.Draw();
-	playerTwo.Draw();
+	if(ID == 0)
+	{
+		playerOne.Draw(ID);
+		playerTwo.Draw(ID + 1);
+	}
+	else
+	{
+		playerOne.Draw(ID - 1);
+		playerTwo.Draw(ID);
+	}
 	for(index = 0; index < bullets.length; index++)
 	{
 		bullets[index].Draw();

@@ -172,7 +172,7 @@ public class GameScene extends BaseScene
 	           public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
 	                                        final float pTouchAreaLocalX,
 	                                        final float pTouchAreaLocalY) {
-	               //setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+	               setBodyPosition(this, pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
 	               return true;
 	           }
 	       };

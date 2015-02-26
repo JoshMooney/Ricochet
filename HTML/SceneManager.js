@@ -8,6 +8,7 @@ var SCENE_TRANS = 2;
 var SCENE_MULTI = 3;
 
 var CURR_SCENE;
+var PREV_SCENE;
 
 function SceneManager()
 {
@@ -21,7 +22,7 @@ SceneManager.prototype.getClickPosiiton = function(e)
 	if(CURR_SCENE == SCENE_GAME)
 		this.GameScene.getClickPosiiton(e);
 	else
-		this.MultiScene.Move(e);
+		this.MultiScene.getClickPosiiton(e);
 }
 
 SceneManager.prototype.setMenuScene = function()
@@ -85,7 +86,17 @@ SceneManager.prototype.UpdateScene = function()
 		case SCENE_TRANS:
 			if(TransitionScene.Update())
 			{
-				CURR_SCENE = SCENE_GAME;
+				if(PREV_SCENE == SCENE_GAME)
+					CURR_SCENE = SCENE_GAME;
+				if(PREV_SCENE == SCENE_MULTI)
+				{
+					console.log("Continue_Next_Level Called");
+				
+					var msg = { };
+					msg.request = "Continue_Next_Level";
+					var message = JSON.stringify(msg);
+					ws.send(message);
+				}
 			}
 			break;
 	}
@@ -102,10 +113,18 @@ SceneManager.prototype.ChangeScene = function(e)
 		this.GameScene.LEVEL_NUM = 0;
 		CURR_SCENE = SCENE_MENU;
 	}
+	else if(e == "Multi-Transition")
+	{
+		this.MultiScene.setUpNextLevel();
+		TransitionScene.Initalise(LEVEL_NUM);
+		PREV_SCENE = CURR_SCENE;
+		CURR_SCENE = SCENE_TRANS;
+	}
 	else
 	{
 		this.GameScene.setUpNextLevel();
 		TransitionScene.Initalise(LEVEL_NUM);
+		PREV_SCENE = CURR_SCENE;
 		CURR_SCENE = SCENE_TRANS;
 	}
 }
@@ -123,7 +142,7 @@ SceneManager.prototype.DrawScene = function()
 			break;
 			
 		case SCENE_MULTI:
-			this.MultiScene.Draw();
+			this.MultiScene.Draw(ID);
 			break;
 			
 		case SCENE_TRANS:
