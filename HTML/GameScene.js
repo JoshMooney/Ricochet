@@ -1,7 +1,11 @@
+
+//var playerOne;
+
 var playerOne, otherPlayer;
 var bullets = new Array();
 var bulletIndex = -1;
-var LEVEL_NUM = 3;
+var LEVEL_NUM = 1;
+
 
 var p1_x, p1_y
 var p2_x, p2_y
